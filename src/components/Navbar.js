@@ -5,7 +5,7 @@ import { FiSend } from "react-icons/fi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
-const Navbar = () => {
+const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -32,16 +32,16 @@ const Navbar = () => {
         <p className="text-3xl font-semibold mx-2">Reelies </p>
       </div>
       <div className="h-[100%] w-[100%] flex items-center justify-between">
-        <CgMenu className="h-[28px] w-[28px] text-white mx-4" />
+        <CgMenu className="h-[28px] w-[28px] text-white mx-4 cursor-pointer" onClick={()=>{props.handleSmallSideBar()}}/>
         <div className="relative inline-block" ref={dropdownRef}>
           <div className="  flex items-center justify-center" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
               className={`px-8 py-2 rounded-full flex items-center gap-2 text-white font-semibold shadow-[-2px_-2px_5px_rgba(255,_255,_255,_0.8),_5px_5px_5px_rgba(0,_0,_0,_0.25)] transition-all hover:shadow-[-1px_-1px_5px_rgba(96,_165,_250,_0.6),_1px_1px_5px_rgba(0,_0,_0,_0.3),inset_-2px_-2px_5px_rgba(96,_165,_250,_1),inset_2px_2px_4px_rgba(0,_0,_0,_0.3)] hover:text-blue-400`}
             >
-              <IoMdAddCircleOutline className="h-[28px] w-[28px]" />
+              <IoMdAddCircleOutline className="h-[24px] w-[24px]" />
 
-              <span className="text-xl">Create</span>
+              <span className="text-md">Create</span>
             </button>
           </div>
 
