@@ -5,7 +5,11 @@ import { FiSend } from "react-icons/fi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
+import useWindowSize from "./../customHooks/useWindowSize";
 const Navbar = (props) => {
+  const smallSideBArActivated = props.smallSideBarActivated;
+  // console.log(props.smallSideBarActivated)
+  const { width, height } = useWindowSize();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -19,6 +23,8 @@ const Navbar = (props) => {
     }
   };
 
+  // console.log(width,height)
+
   useEffect(() => {
     document.addEventListener("click", closeDropdown);
     return () => {
@@ -27,13 +33,25 @@ const Navbar = (props) => {
   }, []);
   return (
     <div className="bg-[#36394C] w-[100vw] h-[70px] flex">
-      <div className="flex flex-shrink-0 w-[240px] bg-[#2A3142]  text-white h-[100%] items-center justify-center">
-        <img src={iosLogo} className="w-[35px] h-[35px]"></img>
-        <p className="text-3xl font-semibold mx-2">Reelies </p>
-      </div>
-      <div className="h-[100%] w-[100%] flex items-center justify-between">
-        <CgMenu className="h-[28px] w-[28px] text-white mx-4 cursor-pointer" onClick={()=>{props.handleSmallSideBar()}}/>
-        <div className="relative inline-block" ref={dropdownRef}>
+      {!smallSideBArActivated && width >= 992 ? (
+        <div className="flex flex-shrink-0 w-[240px] bg-[#2A3142] text-white  h-[100%] items-center justify-center">
+          <img src={iosLogo} className="w-[35px] h-[35px]"></img>
+          <p className="text-3xl font-semibold mx-2">Reelies </p>
+        </div>
+      ) : (
+        <div className="flex flex-shrink-0 w-[70px] bg-[#2A3142]  text-white h-[100%] items-center justify-center">
+          <img src={iosLogo} className="w-[35px] h-[35px]"></img>
+          {/* <p className="text-3xl font-semibold mx-2">Reelies </p> */}
+        </div>
+      )}
+      <div className="h-[100%] w-[100%] flex items-center justify-between pe-8">
+        <CgMenu
+          className="h-[28px] w-[28px] text-white mx-4 cursor-pointer"
+          onClick={() => {
+            props.handleSmallSideBar();
+          }}
+        />
+       { <div className="relative inline-block max-[576px]:hidden" ref={dropdownRef}>
           <div className="  flex items-center justify-center" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
@@ -67,15 +85,19 @@ const Navbar = (props) => {
               </a>
             </div>
           )}
-        </div>{" "}
-        <div className="mx-8 flex items-center h-[50px]">
-          <div className="text-white border-2 px-2 rounded-xl text-bold mx-3 flex items-center justify-center">
-            <input
-              placeholder="search box"
-              className="bg-transparent  outline-none h-[30px] w-[120px] bg-[#2A3142]"
-            ></input>
-            <IoSearch className="h-[24px] w-[24px] mx-2" />
-          </div>
+        </div>}
+        <div className=" flex items-center gap-3 ">
+          {width >= 992 ? (
+            <div className=" text-white  px-2 rounded-xl text-bold  flex items-center justify-center  bg-[#415072]">
+              <input
+                placeholder="search..."
+                className="bg-transparent  outline-none h-[30px] w-[130px] "
+              ></input>
+              <IoSearch className="h-[20px] w-[20px] mx-2" />
+            </div>
+          ) : (
+            <IoSearch className="h-[20px] w-[20px] mx-2 text-white" />
+          )}
           <FaRegUserCircle className="h-[35px] w-[35px] text-white" />
         </div>
       </div>

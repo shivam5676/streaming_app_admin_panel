@@ -8,15 +8,17 @@ import { RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TbCopyPlusFilled } from "react-icons/tb";
 import { TfiLayoutAccordionList, TfiLayoutGrid3 } from "react-icons/tfi";
+import useWindowSize from "../customHooks/useWindowSize";
 
-const BigScreenSideBar = () => {
+const BigScreenSideBar = (props) => {
+  const { width, height } = useWindowSize();
   const [currentMenuOpen, setCurrentMEnuOpen] = useState(null);
   console.log(currentMenuOpen);
   const currentMenuHandler = (value) => {
     setCurrentMEnuOpen(value);
   };
   return (
-    <div className="w-[240px] bg-[#2A3142] h-[100%] pt-4">
+    <div className={`w-[240px] bg-[#2A3142] h-[calc(100vh-70px)] pt-4  overflow-y-auto  ${width<992?"absolute flex flex-col":"flex flex-shrink-0 flex-col"}`}>
       <div className="mx-4 text-white text-sm h-[30px] flex items-center">
         <p className="text-[.75rem]">MAIN</p>
       </div>
