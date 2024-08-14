@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Chip } from "@mui/material";
+import { Box, Checkbox, Chip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
@@ -17,15 +17,28 @@ const LayoutSelector = () => {
     setState(typeof value === "string" ? value.split(",") : value);
   };
   return (
-    <Box sx={{ }}>
-      <FormControl variant="standard" size="large" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="select" label="Lang">
-          Select
-        </InputLabel>
+    <Box sx={{ width: "100%" }}>
+      <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>
+        
         <Select
           multiple
           value={state}
           onChange={handleMultiple}
+          sx={{
+            borderBottom: "2px solid white", // Custom white bottom border
+            '&:before': {
+              borderBottom: 'none', // Remove default underline
+            },
+            '&:after': {
+              borderBottom: 'none', // Remove the blue focus underline
+            },
+            '&:hover:not(.Mui-disabled):before': {
+              borderBottom: 'none', // Ensure no underline on hover
+            },
+            '&.Mui-focused:after': {
+              borderBottom: 'none', // Remove focus underline (blue)
+            },
+          }}
           renderValue={(selLang) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selLang.map((value) => (
@@ -36,6 +49,7 @@ const LayoutSelector = () => {
         >
           {language.map((lang) => (
             <MenuItem key={lang} value={lang}>
+              <Checkbox checked={state.indexOf(lang) > -1} />
               {lang}
             </MenuItem>
           ))}
