@@ -8,6 +8,9 @@ import DragNDropImage from "./components/DragNDropImage";
 import LayoutSelector from "./components/layoutSelector";
 import AddMovies from "./components/AddMovies";
 import AddWebSeries from "./components/AddWebSeries";
+import AddLayout from "./components/AddLayout";
+import AddSlider from "./components/AddSlider";
+import Maintenece from "./components/Maintenece";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -34,6 +37,10 @@ function App() {
         <Routes>
           <Route path="/addMovies" element={<AddMovies />}></Route>
           <Route path="/addWebShows" element={<AddWebSeries/>}></Route>
+          <Route path="/addLayout" element={<AddLayout/>}></Route>
+          <Route path="/addSlider" element={<AddSlider/>}></Route>
+          <Route path="*" element={<Maintenece/>}></Route>
+
         </Routes>
       </div>
     </div>

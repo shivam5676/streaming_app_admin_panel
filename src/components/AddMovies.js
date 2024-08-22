@@ -75,11 +75,22 @@ const AddMovies = () => {
             <p className="text-xl font-semibold">upload shorts here </p>
           </div>{" "}
           <div className="w-[100%] border-2 flex flex-wrap p-2">
-          <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
-            <div className="bg-white h-[100px] w-[150px] m-2"></div> <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>{" "}
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
+            <div className="bg-white h-[100px] w-[150px] m-2"></div>
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
             <div className="bg-white h-[100px] w-[150px] m-2"></div>
