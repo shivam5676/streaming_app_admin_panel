@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,36 +7,38 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const language = ["Java", "Python", "C++", "JavaScript", "SQL"];
-const LayoutSelector = () => {
+const LayoutSelector = (props) => {
   const [state, setState] = useState([]);
-
+  // console.log(state)
   const handleMultiple = (e) => {
     const {
       target: { value },
     } = e;
     setState(typeof value === "string" ? value.split(",") : value);
   };
+  useEffect(() => {
+    props.selectedArray(state);
+  }, [state])
   return (
     <Box sx={{ width: "100%" }}>
       <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>
-        
         <Select
           multiple
           value={state}
           onChange={handleMultiple}
           sx={{
             borderBottom: "2px solid white", // Custom white bottom border
-            '&:before': {
-              borderBottom: 'none', // Remove default underline
+            "&:before": {
+              borderBottom: "none", // Remove default underline
             },
-            '&:after': {
-              borderBottom: 'none', // Remove the blue focus underline
+            "&:after": {
+              borderBottom: "none", // Remove the blue focus underline
             },
-            '&:hover:not(.Mui-disabled):before': {
-              borderBottom: 'none', // Ensure no underline on hover
+            "&:hover:not(.Mui-disabled):before": {
+              borderBottom: "none", // Ensure no underline on hover
             },
-            '&.Mui-focused:after': {
-              borderBottom: 'none', // Remove focus underline (blue)
+            "&.Mui-focused:after": {
+              borderBottom: "none", // Remove focus underline (blue)
             },
           }}
           renderValue={(selLang) => (
