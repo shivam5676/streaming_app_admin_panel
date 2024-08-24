@@ -6,8 +6,8 @@ import { Box, Checkbox, Chip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const language = ["Latest Movies", "Action Movies", "Blockbuster Movies", "latest Movies"];
-const LayoutSelector = (props) => {
+const language = ["Comedy", "Action", "Thriller", "Romance", "Adventure"];
+const GenreSelector = (props) => {
   const [state, setState] = useState([]);
   // console.log(state)
   const handleMultiple = (e) => {
@@ -18,7 +18,7 @@ const LayoutSelector = (props) => {
   };
   useEffect(() => {
     if(state.length>0){
-       props.selectedArray(state); 
+       props.selectedGenre(state); 
     }
   
   }, [state])
@@ -64,4 +64,4 @@ const LayoutSelector = (props) => {
   );
 };
 
-export default LayoutSelector;
+export default GenreSelector;

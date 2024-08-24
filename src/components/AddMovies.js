@@ -5,29 +5,51 @@ import axios from "axios";
 import dragNDropVideos from "./dragNDropVideos";
 import DragNDropVideos from "./dragNDropVideos";
 import { FaTrash } from "react-icons/fa";
+import GenreSelector from "./genreSelector";
 
 const AddMovies = () => {
   const titleRef = useRef();
   const [videoFiles, setvideoFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
-  let layOutArray = []; //contains multiple layout where we want to show our movies and related shorts
-  let thumbNail = null; //contains object for thumbnail file ,initially it will be null
+  const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
+  const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
+
+  const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
+  // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
   const connectionString = "http://localhost:8765/admin/addMovie";
   const addMoviesHandler = async () => {
-    console.log(thumbNail);
-    const response = axios.post(`${connectionString}`, { data: "hello" });
+    console.log(thumbnailRef.current);
+    const formdata = new FormData();
+    formdata.append("thumbnail", thumbnailRef.current);
+    videoFiles.forEach((current) => formdata.append("shorts", current));
+    formdata.append("title", titleRef.current.value);
+    formdata.append("layouts", layOutArrayRef.current);
+    formdata.append("freeVideos", freeVideosRef.current.value);
+    formdata.append("visible", visibleRef.current.value);
+
+    const response = axios.post(`${connectionString}`, formdata, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   };
   const selectionHandler = (value) => {
     // console.log(value);
-    layOutArray = value;
-    console.log(layOutArray);
+    layOutArrayRef.current = value;
+    // console.log(layOutArray);
+  };
+  const GenreHandler = (value) => {
+    // console.log(value);
+    genreRef.current = value;
+    // console.log(layOutArray);
   };
   const getThumbnail = (thumbnail) => {
     console.log(thumbnail);
-    thumbNail = thumbnail;
+    thumbnailRef.current = thumbnail;
+    // console.log(thumbnailRef)
     if (thumbnail != null) {
       const objectUrlCreation = URL.createObjectURL(thumbnail);
       console.log(objectUrlCreation);
@@ -36,7 +58,6 @@ const AddMovies = () => {
   };
   console.log(thumbnailUrlPreview);
   const getVideoFilesHandler = (videoFiles) => {
-    console.log(videoFiles.length);
     Object.values(videoFiles).forEach((current) => {
       const videoFile = current;
       const videoURL = URL.createObjectURL(videoFile);
@@ -78,16 +99,18 @@ const AddMovies = () => {
   };
   // console.log(videoFilesSnapshot);
   const deleteVideoHandler = (id) => {
-    console.log(id);
     const allVideos = [...videoFiles];
-    const allSnapshots=[...videoFilesSnapshot]
-    const videosAfterDeletion = allVideos.filter((current, index) => index != id);
-    const snapshotsAfterDeletion=allSnapshots.filter((current, index) => index != id);
-    setVideoFilesSnapshot(snapshotsAfterDeletion)
-    setvideoFiles(videosAfterDeletion)
+    const allSnapshots = [...videoFilesSnapshot];
+    const videosAfterDeletion = allVideos.filter(
+      (current, index) => index != id
+    );
+    const snapshotsAfterDeletion = allSnapshots.filter(
+      (current, index) => index != id
+    );
+    setVideoFilesSnapshot(snapshotsAfterDeletion);
+    setvideoFiles(videosAfterDeletion);
   };
-  console.log(videoFiles)
-  console.log(videoFilesSnapshot)
+
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
@@ -132,18 +155,26 @@ const AddMovies = () => {
                 <p>Visible</p>
 
                 <select
-                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-white  rounded-md my-2"
+                  className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
                   ref={visibleRef}
                 >
-                  <option value={true}>Yes,make it live</option>
-                  <option value={false}>No,will make it live later</option>
+                  <option value={true}>Yes, make it live</option>
+                  <option value={false}>No, will make it live later</option>
                 </select>
               </div>
-              {/* <div className="p-4 font-semibold w-[100%] md:w-[50%] flex justify-center items-center">
-                <div className="w-fit h-fit bg-[#626ED4] px-6 py-2 hover:bg-[#5764d4] cursor-pointer rounded-md">
-                  Add
-                </div>
-              </div> */}
+            </div>
+            <div className="flex sm:flex-row flex-col">
+              <div className="p-4 font-semibold w-[100%]">
+                <p>Movie Type ( Genre )</p>
+                <GenreSelector selectedGenre={GenreHandler}/>
+                {/* <select
+                  className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
+                  ref={visibleRef}
+                >
+                  <option value={true}>Yes, make it live</option>
+                  <option value={false}>No, will make it live later</option>
+                </select> */}
+              </div>
             </div>
           </div>
           <div className="bg-[#2A3042] flex-1  rounded-md text-white">

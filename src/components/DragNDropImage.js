@@ -9,7 +9,9 @@ function DragNDropImage(props) {
     setFile(file);
   };
   useEffect(() => {
-    props.thumbnail(file);
+    if (file) {
+      props.thumbnail(file);
+    }
   }, [file]);
   return (
     <FileUploader handleChange={handleChange} name="file" types={fileTypes}>
