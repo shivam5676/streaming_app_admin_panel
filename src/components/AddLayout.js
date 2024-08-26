@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import React from "react";
+import MovieSelector from "./movieSelector";
 
 const AddLayout = () => {
   return (
@@ -37,6 +38,7 @@ const AddLayout = () => {
                 />
               </FormGroup>
             </div>
+            <div className="m-4 font-semibold"><MovieSelector/></div>
           </div>
         </div>
       </section>

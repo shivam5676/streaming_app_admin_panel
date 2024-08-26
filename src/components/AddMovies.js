@@ -14,6 +14,7 @@ const AddMovies = () => {
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
+  const genre = [];
 
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
   // let thumbNail = null;
@@ -21,7 +22,7 @@ const AddMovies = () => {
   const visibleRef = useRef();
   const connectionString = "http://localhost:8765/admin/addMovie";
   const addMoviesHandler = async () => {
-    console.log(thumbnailRef.current);
+    console.log(genreRef.current);
     const formdata = new FormData();
     formdata.append("thumbnail", thumbnailRef.current);
     videoFiles.forEach((current) => formdata.append("shorts", current));
@@ -29,7 +30,7 @@ const AddMovies = () => {
     formdata.append("layouts", layOutArrayRef.current);
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
-
+    formdata.append("genre", genreRef.current);
     const response = axios.post(`${connectionString}`, formdata, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -166,7 +167,7 @@ const AddMovies = () => {
             <div className="flex sm:flex-row flex-col">
               <div className="p-4 font-semibold w-[100%]">
                 <p>Movie Type ( Genre )</p>
-                <GenreSelector selectedGenre={GenreHandler}/>
+                <GenreSelector selectedGenre={GenreHandler} />
                 {/* <select
                   className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
                   ref={visibleRef}
