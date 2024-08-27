@@ -1,31 +1,6 @@
-import React, { useRef } from "react";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import axios from "axios";
+import React from "react";
 
-const AddSlider = () => {
-  const connectionString = "http://localhost:8765";
-  const sliderNameRef = useRef();
-  const sliderTypeRef = useRef();
-  const linkedMovieIdRef = useRef();
-  const addSliderHandler = async () => {
-    console.log(
-      sliderNameRef.current.value,
-      sliderTypeRef.current.value,
-      linkedMovieIdRef.current.value
-    );
-    const sliderObj = {
-      name: sliderNameRef.current.value,
-      type: sliderTypeRef.current.value,
-      movieId: linkedMovieIdRef.current.value,
-    };
-    console.log(sliderObj)
-    try {
-      const response = await axios.post(`${connectionString}/admin/addSlider`,sliderObj);
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const AllMovies = () => {
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
@@ -41,10 +16,27 @@ const AddSlider = () => {
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
           <div className="bg-[#2A3042] flex-1  rounded-md text-white">
-            <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
-              <p>Layout Info</p>
+            <div className="m-4 text-[.9rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
+              <div className="flex justify-between">
+                <div className="flex items-center">
+                  <p>Show </p>
+                  <select className="bg-[#2E3648]  mx-2 px-4 py-1">
+                    <option>10</option>
+                    <option>10</option>
+                    <option>10</option>
+                  </select>
+                  <p>results </p>
+                </div>
+                <div className="flex items-center">
+                  <p>search : </p>
+                  <input
+                    className="w-[150px] bg-[#2E3648] mx-2 p-2"
+                    placeholder="search"
+                  ></input>
+                </div>
+              </div>
             </div>
-            <div className="m-4 font-semibold">
+            {/* <div className="m-4 font-semibold">
               <p>
                 Slider Name <span className="text-red-500"> *</span>
               </p>
@@ -67,7 +59,7 @@ const AddSlider = () => {
                 <option value={"movies_shorts"}>Movies_shorts</option>
               </select>
             </div>
-            {/* if user select Movies_shorts then this will dropdown all movies  from backend and  thier shorts will be  linked to the slide*/}
+           
             <div className="p-4 font-semibold w-[100%]">
               <p>
                 Link Movie and thier shorts to this Slide{" "}
@@ -96,11 +88,11 @@ const AddSlider = () => {
                   <p>Thumbnail Preview</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
-      <div className="my-3">
+      {/* <div className="my-3">
         {" "}
         <div className="flex justify-end w-[100%]">
           <div
@@ -113,9 +105,9 @@ const AddSlider = () => {
             <span className="relative font-semibold">Add Slider</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default AddSlider;
+export default AllMovies;

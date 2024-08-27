@@ -8,13 +8,18 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function MovieSelector() {
+export default function MovieSelector(props) {
+  const selectedMoviesHandler = (event, value) => {
+    // console.log("Selected movies:", value);
+    props.getSelectedMovies(value)
+  };
   return (
     <Autocomplete
       multiple
       id="checkboxes-tags-demo"
       options={top100Films}
       disableCloseOnSelect
+      onChange={selectedMoviesHandler} // Add the onChange handler
       getOptionLabel={(option) => option.title}
       renderOption={(props, option, { selected }) => {
         const { key, ...optionProps } = props;
@@ -58,6 +63,13 @@ export default function MovieSelector() {
           }}
         />
       )}
+      ChipProps={{
+        sx: {
+          backgroundColor: "white", // Set the background color of the selected chips
+          color: "#2E3648", // Set the text color inside the chips
+          borderRadius: "4px",
+        },
+      }}
     />
   );
 }

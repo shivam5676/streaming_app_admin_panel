@@ -31,7 +31,8 @@ const AddMovies = () => {
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
-    const response = axios.post(`${connectionString}`, formdata, {
+    
+    const response = await axios.post(`${connectionString}`, formdata, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
