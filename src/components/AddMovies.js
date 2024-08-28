@@ -20,7 +20,7 @@ const AddMovies = () => {
   // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
-  const connectionString = "http://localhost:8765/admin/addMovie";
+  const connectionString = "http://localhost:8765";
   const addMoviesHandler = async () => {
     console.log(genreRef.current);
     const formdata = new FormData();
@@ -32,7 +32,7 @@ const AddMovies = () => {
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
     
-    const response = await axios.post(`${connectionString}`, formdata, {
+    const response = await axios.post(`${connectionString}/admin/addMovie`, formdata, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

@@ -33,11 +33,14 @@ const BigScreenSideBar = (props) => {
         <p className="text-[.75rem]">MAIN</p>
       </div>
       <div className=" text-white  hover:bg-[#2F374A] cursor-pointer">
-        <div className="mx-4 h-[50px] flex items-center" onClick={() => {
-                  navigate("/");
-                }}>
+        <div
+          className="mx-4 h-[50px] flex items-center"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <HiOutlineHome className="h-[20px] w-[20px]" />
-          <p className="text-[1rem] px-4 font-semibold" >Dashboard</p>
+          <p className="text-[1rem] px-4 font-semibold">Dashboard</p>
         </div>
       </div>
       <section>
@@ -166,7 +169,12 @@ const BigScreenSideBar = (props) => {
                 <p>Add Movies</p>
               </div>
 
-              <div className="flex h-[40px] items-center  cursor-pointer ps-12">
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/allMovies");
+                }}
+              >
                 <TfiLayoutAccordionList className="mx-2" />
                 <p>All Movies</p>
               </div>
@@ -226,7 +234,7 @@ const BigScreenSideBar = (props) => {
                 : currentMenuHandler("Ads Section");
             }}
           >
-            <div className="mx-4 h-[50px] flex items-center justify-between" >
+            <div className="mx-4 h-[50px] flex items-center justify-between">
               <div className="flex">
                 {" "}
                 <RiAdvertisementFill className="h-[20px] w-[20px]" />
@@ -241,9 +249,12 @@ const BigScreenSideBar = (props) => {
           </div>
           {currentMenuOpen == "Ads Section" && (
             <div className="font-[.8rem] text-white">
-              <div className="flex h-[40px] items-center cursor-pointer ps-12" onClick={() => {
+              <div
+                className="flex h-[40px] items-center cursor-pointer ps-12"
+                onClick={() => {
                   navigate("/");
-                }}>
+                }}
+              >
                 <MdOutlineAddToQueue className="mx-2" />
                 <p>Add Ads</p>
               </div>

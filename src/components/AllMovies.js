@@ -1,26 +1,55 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const AllMovies = () => {
+  const connectionString = "http://localhost:8765";
+  const [allMovies, setAllMovies] = useState([]);
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await axios.get(`${connectionString}/admin/allMovies`);
+        setAllMovies(res.data.allMovies);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+  const deleteMovieHandler = async (id) => {
+    console.log(id);
+    toast.success("movie deleted successfully");
+    try {
+      const response = await axios.delete(
+        `${connectionString}/admin/deleteMovie/${id}`
+      );
+    } catch (err) {}
+  };
+  const handleSelectChange = (id, event) => {
+    const action = event.target.value;
+    if (action === "DELETE") {
+      deleteMovieHandler(id);
+    }
+  };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">Add Slider</p>
+        <p className="text-lg font-bold">All Movies</p>
         <p className="text-[.95rem] font-semibold">
           <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Hero section</span>
+          <span>Movies section</span>
           <span className="mx-2"> &gt; </span>
-          <span>Add Slider</span>
+          <span>All Movies</span>
         </p>
       </div>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-          <div className="bg-[#2A3042] flex-1  rounded-md text-white">
-            <div className="m-4 text-[.9rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
-              <div className="flex justify-between">
+          <div className="bg-[#2A3042] flex-1  rounded-md text-gray-400 max-[690px]:overflow-auto py-2">
+            <div className="m-4 text-[.9rem] font-semibold ">
+              <div className="flex justify-between text-white">
                 <div className="flex items-center">
                   <p>Show </p>
-                  <select className="bg-[#2E3648]  mx-2 px-4 py-1">
+                  <select className="bg-[#2E3648] text-[#959db6] mx-2 px-4 py-1  font-normal">
                     <option>10</option>
                     <option>10</option>
                     <option>10</option>
@@ -36,76 +65,95 @@ const AllMovies = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="m-4 font-semibold">
-              <p>
-                Slider Name <span className="text-red-500"> *</span>
-              </p>
-              <input
-                className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                ref={sliderNameRef}
-              ></input>
-            </div>
-            <div className="p-4 font-semibold w-[100%]">
-              <p>
-                Slider Type <span className="text-red-500"> *</span>
-              </p>
-
-              <select
-                className="w-full h-[40px] bg-[#2E3648]  py-2 px-4 outline-none text-white  rounded-md my-2"
-                ref={sliderTypeRef}
-              >
-                <option value={"Promotional"}>Promotional</option>
-                <option value={"Trailer"}>Trailer</option>
-                <option value={"movies_shorts"}>Movies_shorts</option>
-              </select>
-            </div>
-           
-            <div className="p-4 font-semibold w-[100%]">
-              <p>
-                Link Movie and thier shorts to this Slide{" "}
-                <span className="text-red-500"> *</span>
-              </p>
-
-              <select
-                className="w-full h-[40px]  py-2 px-4 bg-[#2E3648]  outline-none text-white  rounded-md my-2"
-                ref={linkedMovieIdRef}
-              >
-                <option value={1}>tiger 3</option>
-                <option value={2}>kgf</option>
-                <option value={1}>indian 2</option>
-              </select>
-            </div>
-
-            <div className="p-4 font-semibold w-[100%]">
-              <p>Additional Info</p>
-              <div className=" p-4 flex flex-row gap-4">
-                <div className=" w-[70%]">
-                  <div className=" border-dashed border-2 h-[400px] flex items-center justify-center">
-                    <p>Upload Thumbnail</p>
-                  </div>
+            <div className="m-4 font-normal text-[.9rem] min-w-[640px]">
+              <div className="font-semibold flex border-b pb-2 border-gray-500">
+                <div className="w-[50px] flex-shrink-0">
+                  <p className="p-2">sr</p>
                 </div>
-                <div className=" border-2 w-[200px]">
-                  <p>Thumbnail Preview</p>
+                <div className="w-[90px]  flex-shrink-0">
+                  <p className="p-2">action</p>
+                </div>
+                <div className="w-[100px]  flex-shrink-0">
+                  <p className="p-2">Thumbnail</p>
+                </div>
+                <div className="w-[120px]  flex-shrink-0">
+                  <p className="p-2">Name</p>
+                </div>
+                <div className="w-[100%] min-w-[100px]  flex-shrink-1">
+                  <p className="p-2">Genre</p>
+                </div>
+                <div className="w-[100%] min-w-[100px]  flex-shrink-1">
+                  <p className="p-2">Layouts</p>
+                </div>
+                <div className="w-[80px]  flex-shrink-0">
+                  <p className="p-2">status</p>
                 </div>
               </div>
-            </div> */}
+              {/* items */}
+              {allMovies.length > 0 &&
+                allMovies.map((current, index) => (
+                  <div className="font-normal flex my-2  border-b border-gray-500">
+                    <div className="w-[50px] p-2  flex-shrink-0">
+                      <p className="p-2">{index + 1}</p>
+                    </div>
+                    <div className="w-[90px] text-white font-semibold flex-shrink-0">
+                      <select
+                        className="bg-[#3C445A] rounded-sm p-2"
+                        onChange={(event) =>
+                          handleSelectChange(current._id, event)
+                        }
+                      >
+                        <option
+                          value=""
+                          disabled
+                          className="border-b-2 border-gray-400"
+                        >
+                          option
+                        </option>
+                        <option value="EDIT">EDIT</option>
+                        <option value="DELETE">DELETE</option>
+                      </select>
+                    </div>
+                    <div className="w-[100px]  flex-shrink-0">
+                      <img
+                        src={`${connectionString}/thumbnails/${current.fileLocation.replace(
+                          "uploads/thumbnail",
+                          ""
+                        )}`}
+                        className=" w-[100px] p-2"
+                      ></img>
+                    </div>
+                    <div className="w-[120px]  flex-shrink-0">
+                      <p className="p-2">{current.name}</p>
+                    </div>
+                    <div className="w-[100%] min-w-[100px] flex-shrink-1">
+                      <p className="p-2 break-words">{current.genre}</p>
+                    </div>{" "}
+                    <div className="w-[100%] min-w-[100px] flex-shrink-1">
+                      <p className="p-2 break-words">{current.layout}</p>
+                    </div>
+                    <div className="w-[80px]  flex-shrink-0">
+                      <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
+                        Not published
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
+              <p>Showing 1 to 10 of 155 entries</p>
+              <div className="flex">
+                <p className="border border-gray-500 px-2 py-1">Previous</p>
+                <p className="border border-gray-500 px-2 py-1">1</p>
+                <p className="border border-gray-500 px-2 py-1">2</p>
+                <p className="border border-gray-500 px-2 py-1">3</p>
+                <p className="border border-gray-500 px-2 py-1">.......</p>
+                <p className="border border-gray-500 px-2 py-1">Next</p>
+              </div>
+            </section>
           </div>
         </div>
       </section>
-      {/* <div className="my-3">
-        {" "}
-        <div className="flex justify-end w-[100%]">
-          <div
-            onClick={() => {
-              addSliderHandler();
-            }}
-            className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
-          >
-            <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-            <span className="relative font-semibold">Add Slider</span>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
