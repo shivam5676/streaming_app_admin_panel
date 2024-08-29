@@ -6,10 +6,22 @@ import { Box, Checkbox, Chip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const language = ["Latest Movies", "Action Movies", "Blockbuster Movies", "latest Movies"];
+const language = [
+  "Latest Movies",
+  "Action Movies",
+  "Blockbuster Movies",
+  "latest Movies",
+];
 const LayoutSelector = (props) => {
+  console.log(props.editLayouts);
   const [state, setState] = useState([]);
-  // console.log(state)
+  useEffect(() => {
+    if (props.editLayouts) {
+      const layOutArray = props.editLayouts.split(",");
+      console.log(layOutArray);
+      setState(layOutArray);
+    }
+  }, [props.editLayouts]);
   const handleMultiple = (e) => {
     const {
       target: { value },
@@ -17,11 +29,10 @@ const LayoutSelector = (props) => {
     setState(typeof value === "string" ? value.split(",") : value);
   };
   useEffect(() => {
-    if(state.length>0){
-       props.selectedArray(state); 
+    if (state.length > 0) {
+      props.selectedArray(state);
     }
-  
-  }, [state])
+  }, [state]);
   return (
     <Box sx={{ width: "100%" }}>
       <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>

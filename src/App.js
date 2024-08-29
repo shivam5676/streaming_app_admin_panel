@@ -12,6 +12,7 @@ import AddLayout from "./components/AddLayout";
 import AddSlider from "./components/AddSlider";
 import Maintenece from "./components/Maintenece";
 import AllMovies from "./components/AllMovies";
+import EditMovies from "./components/editMovie";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -40,7 +41,8 @@ function App() {
           <Route path="/addWebShows" element={<AddWebSeries />}></Route>
           <Route path="/addLayout" element={<AddLayout />}></Route>
           <Route path="/addSlider" element={<AddSlider />}></Route>
-          <Route path="/allMovies" element={<AllMovies/>}></Route>
+          <Route path="/allMovies" element={<AllMovies />}></Route>
+          <Route path="allMovies/:edit" element={<EditMovies />}></Route>
           <Route path="*" element={<Maintenece />}></Route>
         </Routes>
       </div>

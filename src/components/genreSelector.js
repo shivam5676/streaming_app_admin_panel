@@ -10,6 +10,12 @@ const language = ["Comedy", "Action", "Thriller", "Romance", "Adventure"];
 const GenreSelector = (props) => {
   const [state, setState] = useState([]);
   // console.log(state)
+  useEffect(() => {
+    if (props.editGenres) {
+      const allGenre = props.editGenres.split(",");
+      setState(allGenre);
+    }
+  }, [props.editGenres]);
   const handleMultiple = (e) => {
     const {
       target: { value },
@@ -17,11 +23,10 @@ const GenreSelector = (props) => {
     setState(typeof value === "string" ? value.split(",") : value);
   };
   useEffect(() => {
-    if(state.length>0){
-       props.selectedGenre(state); 
+    if (state.length > 0) {
+      props.selectedGenre(state);
     }
-  
-  }, [state])
+  }, [state]);
   return (
     <Box sx={{ width: "100%" }}>
       <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>
