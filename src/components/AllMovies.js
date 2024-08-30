@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AllMovies = () => {
   const connectionString = "http://localhost:8765";
+  const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
   useEffect(() => {
     try {
@@ -26,8 +28,14 @@ const AllMovies = () => {
   };
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
+    console.log(action);
+    // Reset the select value after handling the event to ensure proper re-rendering
+    event.target.value = ""; // Reset the value to ensure change is recognized next time
+
     if (action === "DELETE") {
       deleteMovieHandler(id);
+    } else if (action === "EDIT") {
+      navigate(`/allMovies/${id}`);
     }
   };
   return (
@@ -105,7 +113,7 @@ const AllMovies = () => {
                       >
                         <option
                           value=""
-                          disabled
+                          // disabled
                           className="border-b-2 border-gray-400"
                         >
                           option

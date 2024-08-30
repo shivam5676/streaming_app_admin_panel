@@ -6,6 +6,7 @@ import dragNDropVideos from "./dragNDropVideos";
 import DragNDropVideos from "./dragNDropVideos";
 import { FaTrash } from "react-icons/fa";
 import GenreSelector from "./genreSelector";
+import { toast } from "react-toastify";
 
 const AddMovies = () => {
   const titleRef = useRef();
@@ -31,12 +32,18 @@ const AddMovies = () => {
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
-    
-    const response = await axios.post(`${connectionString}/admin/addMovie`, formdata, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    try {
+      const response = await axios.post(
+        `${connectionString}/admin/addMovie`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success("movie added successfully");
+    } catch (err) {}
   };
   const selectionHandler = (value) => {
     // console.log(value);
@@ -95,9 +102,6 @@ const AddMovies = () => {
         return [...prev, current];
       });
     });
-    // setvideoFiles((prev)=>{
-    //   return
-    // })
   };
   // console.log(videoFilesSnapshot);
   const deleteVideoHandler = (id) => {
