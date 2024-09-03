@@ -4,23 +4,38 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function MovieSelector(props) {
+  const [allMovies, setAllMovies] = useState([]);
+  const connectionString = "http://localhost:8765";
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await axios.get(`${connectionString}/admin/allMovies`);
+        setAllMovies(res.data.allMovies);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
   const selectedMoviesHandler = (event, value) => {
-    // console.log("Selected movies:", value);
-    props.getSelectedMovies(value)
+    console.log("Selected movies:", value);
+    props.getSelectedMovies(value);
   };
   return (
     <Autocomplete
       multiple
       id="checkboxes-tags-demo"
-      options={top100Films}
+      options={allMovies}
       disableCloseOnSelect
       onChange={selectedMoviesHandler} // Add the onChange handler
-      getOptionLabel={(option) => option.title}
+      getOptionLabel={(option) => option.name}
       renderOption={(props, option, { selected }) => {
         const { key, ...optionProps } = props;
         return (
@@ -31,7 +46,7 @@ export default function MovieSelector(props) {
               style={{ marginRight: 8 }}
               checked={selected}
             />
-            {option.title}
+            {option.name}
           </li>
         );
       }}
@@ -75,7 +90,7 @@ export default function MovieSelector(props) {
 }
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
+const allMovies = [
   { title: "The Shawshank Redemption", year: 1994 },
   { title: "The Godfather", year: 1972 },
   { title: "The Godfather: Part II", year: 1974 },

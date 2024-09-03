@@ -1,31 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
-const AllMovies = () => {
+const AllLAyout = () => {
   const connectionString = "http://localhost:8765";
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get(`${connectionString}/admin/allMovies`);
-        setAllMovies(res.data.allMovies);
+        const res = await axios.get(`${connectionString}/admin/allLayouts`);
+        console.log(res.data);
+        setAllMovies(res.data.Layout);
       })();
     } catch (err) {
       console.log(err);
     }
   }, []);
-  const deleteMovieHandler = async (id) => {
-    console.log(id);
-    toast.success("movie deleted successfully");
-    try {
-      const response = await axios.delete(
-        `${connectionString}/admin/deleteMovie/${id}`
-      );
-    } catch (err) {}
-  };
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
     console.log(action);
@@ -33,20 +24,20 @@ const AllMovies = () => {
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
     if (action === "DELETE") {
-      deleteMovieHandler(id);
+      //   deleteMovieHandler(id);
     } else if (action === "EDIT") {
-      navigate(`/allMovies/${id}`);
+        navigate(`/allLayout/${id}`);
     }
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Movies</p>
+        <p className="text-lg font-bold">All Layouts</p>
         <p className="text-[.95rem] font-semibold">
           <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Movies section</span>
+          <span>Layout section</span>
           <span className="mx-2"> &gt; </span>
-          <span>All Movies</span>
+          <span>All Layouts</span>
         </p>
       </div>
       <section className="w-[100%]">
@@ -81,24 +72,17 @@ const AllMovies = () => {
                 <div className="w-[90px]  flex-shrink-0">
                   <p className="p-2">action</p>
                 </div>
-                <div className="w-[100px]  flex-shrink-0">
-                  <p className="p-2">Thumbnail</p>
-                </div>
-                <div className="w-[120px]  flex-shrink-0">
+
+                <div className="w-[100%] flex-shrink-1 mx-8">
                   <p className="p-2">Name</p>
                 </div>
-                <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Genre</p>
-                </div>
-                <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Layouts</p>
-                </div>
+
                 <div className="w-[80px]  flex-shrink-0">
                   <p className="p-2">status</p>
                 </div>
               </div>
               {/* items */}
-              {allMovies.length > 0 &&
+              {allMovies?.length > 0 &&
                 allMovies.map((current, index) => (
                   <div className="font-normal flex my-2  border-b border-gray-500">
                     <div className="w-[50px] p-2  flex-shrink-0">
@@ -122,28 +106,11 @@ const AllMovies = () => {
                         <option value="DELETE">DELETE</option>
                       </select>
                     </div>
-                    <div className="w-[100px] flex-shrink-0">
-                      <img
-                        src={`${connectionString}/thumbnails/${current.fileLocation.replace(
-                          "uploads/thumbnail",
-                          ""
-                        )}`}
-                        className=" h-[120px] w-[100px] p-2"
-                      ></img>
-                    </div>
-                    <div className="w-[120px]  flex-shrink-0">
+                  
+                    <div className="w-[100%]  flex-shrink-1 mx-8">
                       <p className="p-2">{current.name}</p>
                     </div>
-                    <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">{current.genre}</p>
-                    </div>{" "}
-                    <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">
-                        {current.layouts.map((currentIndex) => {
-                          return <span>{currentIndex.name}</span>;
-                        })}
-                      </p>
-                    </div>
+                 
                     <div className="w-[80px]  flex-shrink-0">
                       {!current.visible ? (
                         <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
@@ -176,4 +143,4 @@ const AllMovies = () => {
   );
 };
 
-export default AllMovies;
+export default AllLAyout;

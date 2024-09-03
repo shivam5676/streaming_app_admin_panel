@@ -65,23 +65,29 @@ const EditMovies = () => {
 
     videoFiles.forEach((current) => formdata.append("shorts", current));
     formdata.append("title", titleRef.current.value);
-    formdata.append("layouts", layOutArrayRef.current);
+    formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
     formdata.append("id", AllData._id);
-    const response = await axios.post(
-      `${connectionString}/admin/editMovie`,
-      formdata,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    try {
+      const response = await axios.post(
+        `${connectionString}/admin/editMovie`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success("file edited successfully");
+    } catch (err) {
+      toast.error("something went wrong while editing movies");
+    }
   };
   const selectionHandler = (value) => {
-    // console.log(value);
+    console.log(value);
     layOutArrayRef.current = value;
     // console.log(layOutArray);
   };
@@ -156,9 +162,14 @@ const EditMovies = () => {
   };
   console.log(shortsPreviewFromBackend);
   const deleteVideoFromBackendHandler = async (id) => {
-    const response = await axios.delete(
-      `${connectionString}/admin/deleteShort/${id}`
-    );
+    try {
+      const response = await axios.delete(
+        `${connectionString}/admin/deleteShort/${id}`
+      );
+      toast.success("file deleted successfully");
+    } catch (error) {
+      toast.error("something went wrong");
+    }
   };
   return (
     <>
@@ -191,7 +202,7 @@ const EditMovies = () => {
                 <p>Select Layout</p>
                 <LayoutSelector
                   selectedArray={selectionHandler}
-                  editLayouts={AllData?.layout}
+                  editLayouts={AllData?.layouts}
                 />
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>

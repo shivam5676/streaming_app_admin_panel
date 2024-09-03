@@ -1,18 +1,33 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MovieSelector from "./movieSelector";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddLayout = (req, res, next) => {
   const connectionString = "http://localhost:8765";
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);
+  const [allMovies, setAllMovies] = useState([]);
+  const [linkMoviesStatus, setLinkMovieStatus] = useState(false);
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await axios.get(`${connectionString}/admin/allMovies`);
+        setAllMovies(res.data.allMovies);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
   const selectedMoviesHandler = (selectedMovies) => {
     console.log("object,", selectedMovies);
     selectedMoviesRef.current = selectedMovies;
   };
   const addLayoutHandler = async () => {
+    console.log(selectedMoviesRef);
     const layoutObj = {
       name: layOutNameRef.current.value,
       Description: layoutDescriptionRef.current.value,
@@ -25,11 +40,15 @@ const AddLayout = (req, res, next) => {
         layoutObj
       );
       console.log(layoutResponse);
+      toast.success("layout added successfully");
     } catch (err) {
       console.log(err);
+      toast.error("something went wrong while creating layout");
     }
   };
-
+  const handleMovieLinking = (e) => {
+    setLinkMovieStatus(!linkMoviesStatus);
+  };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
@@ -69,14 +88,24 @@ const AddLayout = (req, res, next) => {
               <FormGroup>
                 {" "}
                 <FormControlLabel
-                  control={<Checkbox defaultChecked />}
-                  label="Do you Want to add content now in this layout?"
+                  control={<Checkbox />}
+                  label="Do you Want to Link Movies now to this layout?"
+                  onChange={(e) => handleMovieLinking()}
                 />
               </FormGroup>
+              <p className="text-red-500 text-[.8rem]">
+                note * :
+                <span className="text-yellow-400 text-[.75rem]">
+                  {" "}
+                  You can also Link movies later to any layout
+                </span>
+              </p>
             </div>
-            <div className="m-4 font-semibold">
-              <MovieSelector getSelectedMovies={selectedMoviesHandler} />
-            </div>
+            {linkMoviesStatus && (
+              <div className="m-4 font-semibold">
+                <MovieSelector getSelectedMovies={selectedMoviesHandler} />
+              </div>
+            )}
           </div>
         </div>
       </section>

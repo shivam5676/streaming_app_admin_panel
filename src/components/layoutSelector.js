@@ -1,72 +1,77 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import { Box, Checkbox, Chip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import axios from "axios";
 
-const language = [
-  "Latest Movies",
-  "Action Movies",
-  "Blockbuster Movies",
-  "latest Movies",
-];
 const LayoutSelector = (props) => {
-  console.log(props.editLayouts);
-  const [state, setState] = useState([]);
+  const [layouts, setLayouts] = useState([]);
+  const [selectedLayouts, setSelectedLayouts] = useState([]);
+  const connectionString = "http://localhost:8765";
+
+  // Fetch layouts from the server
+  useEffect(() => {
+    async function fetchLayouts() {
+      try {
+        const response = await axios.get(`${connectionString}/admin/allLayouts`);
+        setLayouts(response.data.Layout);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchLayouts();
+  }, []);
+
+  // Initialize state with props.editLayouts if available
   useEffect(() => {
     if (props.editLayouts) {
-      const layOutArray = props.editLayouts.split(",");
-      console.log(layOutArray);
-      setState(layOutArray);
+      setSelectedLayouts(props.editLayouts.map(layout => layout._id)); // Only store IDs
     }
   }, [props.editLayouts]);
-  const handleMultiple = (e) => {
+
+  // Handle changes to the selection
+  const handleMultiple = (event) => {
     const {
       target: { value },
-    } = e;
-    setState(typeof value === "string" ? value.split(",") : value);
+    } = event;
+    setSelectedLayouts(value); // Value should be an array of IDs
   };
+
+  // Notify parent component of selection changes
   useEffect(() => {
-    if (state.length > 0) {
-      props.selectedArray(state);
-    }
-  }, [state]);
+    const selectedItems = layouts.filter(layout => selectedLayouts.includes(layout._id));
+    console.log(selectedItems)
+    props.selectedArray(selectedItems);
+  }, [selectedLayouts, layouts]);
+
   return (
     <Box sx={{ width: "100%" }}>
       <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>
         <Select
           multiple
-          value={state}
+          value={selectedLayouts}
           onChange={handleMultiple}
           sx={{
-            borderBottom: "2px solid white", // Custom white bottom border
-            "&:before": {
-              borderBottom: "none", // Remove default underline
-            },
-            "&:after": {
-              borderBottom: "none", // Remove the blue focus underline
-            },
-            "&:hover:not(.Mui-disabled):before": {
-              borderBottom: "none", // Ensure no underline on hover
-            },
-            "&.Mui-focused:after": {
-              borderBottom: "none", // Remove focus underline (blue)
-            },
+            borderBottom: "2px solid white",
+            "&:before": { borderBottom: "none" },
+            "&:after": { borderBottom: "none" },
+            "&:hover:not(.Mui-disabled):before": { borderBottom: "none" },
+            "&.Mui-focused:after": { borderBottom: "none" },
           }}
-          renderValue={(selLang) => (
+          renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selLang.map((value) => (
-                <Chip key={value} color="info" label={value} />
+              {layouts.filter(layout => selectedIds.includes(layout._id)).map((selected) => (
+                <Chip key={selected._id} color="info" label={selected.name} />
               ))}
             </Box>
           )}
         >
-          {language.map((lang) => (
-            <MenuItem key={lang} value={lang}>
-              <Checkbox checked={state.indexOf(lang) > -1} />
-              {lang}
+          {layouts.map((layout) => (
+            <MenuItem key={layout._id} value={layout._id}>
+              <Checkbox checked={selectedLayouts.includes(layout._id)} />
+              {layout.name}
             </MenuItem>
           ))}
         </Select>

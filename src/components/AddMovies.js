@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DragNDropImage from "./DragNDropImage";
 import LayoutSelector from "./layoutSelector";
 import axios from "axios";
@@ -22,13 +22,14 @@ const AddMovies = () => {
   const freeVideosRef = useRef();
   const visibleRef = useRef();
   const connectionString = "http://localhost:8765";
+
   const addMoviesHandler = async () => {
-    console.log(genreRef.current);
+    console.log(layOutArrayRef.current);//array of object
     const formdata = new FormData();
     formdata.append("thumbnail", thumbnailRef.current);
     videoFiles.forEach((current) => formdata.append("shorts", current));
     formdata.append("title", titleRef.current.value);
-    formdata.append("layouts", layOutArrayRef.current);
+    formdata.append("layouts",JSON.stringify(layOutArrayRef.current) );
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
