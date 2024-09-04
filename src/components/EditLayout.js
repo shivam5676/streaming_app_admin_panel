@@ -62,7 +62,7 @@ const EditLayout = () => {
       linkedMovies: selectedMoviesRef.current,
       id: AllLayoutsData?._id,
     };
-    console.log(layoutObj);
+    // console.log(layoutObj);
     try {
       const layoutResponse = await axios.post(
         `${connectionString}/admin/editLayout`,
@@ -77,6 +77,15 @@ const EditLayout = () => {
   };
   const handleMovieLinking = (e) => {
     setLinkMovieStatus(!linkMoviesStatus);
+  };
+  const removeLinkedMovis = async (id) => {
+    console.log(id);
+    try {
+      const deleteMoviesResponse = await axios.post(
+        `${connectionString}/admin/deleteLinkedMovie`,
+        { movieId: id, LayoutId: AllLayoutsData._id }
+      );
+    } catch (error) {}
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -118,7 +127,20 @@ const EditLayout = () => {
             {/* already fetched linked movie will display here with individual deleting functionality */}
             <div className=" m-4  border-white border ">
               <div className="flex m-2 overflow-x-none flex-wrap">
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
+                {AllLayoutsData?.linkedMovies?.map((current) => {
+                  return (
+                    <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
+                      <p>{current?.name}</p>
+                      <IoMdCloseCircle
+                        className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer"
+                        onClick={() => {
+                          removeLinkedMovis(current._id);
+                        }}
+                      />
+                    </div>
+                  );
+                })}{" "}
+                {/* <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
                   <p>text 1</p>
                   <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
                 </div>{" "}
@@ -149,11 +171,7 @@ const EditLayout = () => {
                 <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
                   <p>text 1</p>
                   <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="m-4 font-semibold">
