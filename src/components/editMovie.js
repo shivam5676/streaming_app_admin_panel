@@ -38,7 +38,7 @@ const EditMovies = () => {
         `${connectionString}/admin/getMovie/${id}`
       );
 
-      if (Object.values(response.data.movieData).length > 0) {
+      if (response.data.movieData&&Object.values(response.data.movieData).length > 0) {
         setAllData(response.data.movieData);
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")

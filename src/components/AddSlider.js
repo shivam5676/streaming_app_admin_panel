@@ -1,30 +1,59 @@
-import React, { useRef } from "react";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+} from "@mui/material";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddSlider = () => {
   const connectionString = "http://localhost:8765";
   const sliderNameRef = useRef();
   const sliderTypeRef = useRef();
   const linkedMovieIdRef = useRef();
+  const [allMovies, setAllMovies] = useState([]);
+
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await axios.get(`${connectionString}/admin/allMovies`);
+
+        setAllMovies(res.data.allMovies);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
   const addSliderHandler = async () => {
     console.log(
       sliderNameRef.current.value,
       sliderTypeRef.current.value,
-      linkedMovieIdRef.current.value
+      linkedMovieIdRef.current,"........................."
     );
     const sliderObj = {
       name: sliderNameRef.current.value,
       type: sliderTypeRef.current.value,
-      movieId: linkedMovieIdRef.current.value,
+      movieId: linkedMovieIdRef.current,
     };
-    console.log(sliderObj)
+    console.log(sliderObj);
     try {
-      const response = await axios.post(`${connectionString}/admin/addSlider`,sliderObj);
+      const response = await axios.post(
+        `${connectionString}/admin/addSlider`,
+        sliderObj
+      );
       console.log(response);
+      toast.success("slider added successfully");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleMoviesSelection = (event, value) => {
+    console.log(value);
+    linkedMovieIdRef.current = value;
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -73,18 +102,71 @@ const AddSlider = () => {
                 Link Movie and thier shorts to this Slide{" "}
                 <span className="text-red-500"> *</span>
               </p>
+              <Autocomplete
+                onChange={handleMoviesSelection}
+                disablePortal
+                options={allMovies}
+                isOptionEqualToValue={(option, value) =>
+                  option._id === value?._id
+                }
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Movies list"
+                    InputLabelProps={{
+                      style: { color: "white" },
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      sx: {
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "white",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "white",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "white",
+                          },
+                        },
+                        color: "white",
+                      },
+                    }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "white",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "white",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "white",
+                        },
+                        color: "white",
+                      },
+                      "& .MuiInputBase-input": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                )}
+                sx={{ py: 2 }}
+              />
 
-              <select
+              {/* <select
                 className="w-full h-[40px]  py-2 px-4 bg-[#2E3648]  outline-none text-white  rounded-md my-2"
-                ref={linkedMovieIdRef}
+                // ref={linkedMovieIdRef}
               >
                 <option value={1}>tiger 3</option>
                 <option value={2}>kgf</option>
                 <option value={1}>indian 2</option>
-              </select>
+              </select> */}
             </div>
 
-            <div className="p-4 font-semibold w-[100%]">
+            {/* <div className="p-4 font-semibold w-[100%]">
               <p>Additional Info</p>
               <div className=" p-4 flex flex-row gap-4">
                 <div className=" w-[70%]">
@@ -96,7 +178,7 @@ const AddSlider = () => {
                   <p>Thumbnail Preview</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

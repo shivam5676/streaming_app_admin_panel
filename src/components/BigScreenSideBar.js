@@ -81,7 +81,12 @@ const BigScreenSideBar = (props) => {
                 <p>Add Slider</p>
               </div>
 
-              <div className="flex h-[40px] items-center  cursor-pointer ps-12">
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/allSliders");
+                }}
+              >
                 <TfiLayoutAccordionList className="mx-2" />
                 <p>All Sliders</p>
               </div>
@@ -122,9 +127,12 @@ const BigScreenSideBar = (props) => {
                 <p>Add Layout</p>
               </div>
 
-              <div className="flex h-[40px] items-center  cursor-pointer ps-12"   onClick={() => {
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
                   navigate("/allLayouts");
-                }}>
+                }}
+              >
                 <LuLayoutList className="mx-2" />
 
                 <p>All Layouts</p>
