@@ -21,7 +21,7 @@ const AddMovies = () => {
   // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
 
   const addMoviesHandler = async () => {
     console.log(layOutArrayRef.current);//array of object
