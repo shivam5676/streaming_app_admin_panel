@@ -9,7 +9,7 @@ import axios from "axios";
 const LayoutSelector = (props) => {
   const [layouts, setLayouts] = useState([]);
   const [selectedLayouts, setSelectedLayouts] = useState([]);
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
 
   // Fetch layouts from the server
   useEffect(() => {

@@ -8,7 +8,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 
 const EditLayout = () => {
   const params = useParams();
-  const connectionString = "http://localhost:8765";
+  const connectionString = process.env.REACT_APP_API_URL
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);

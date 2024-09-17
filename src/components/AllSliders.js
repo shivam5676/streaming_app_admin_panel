@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const AllSliders = () => {
-  const connectionString = "http://localhost:8765";
+  const connectionString = process.env.REACT_APP_API_URL
   const [allSliders, setAllSliders] = useState([]);
   useEffect(() => {
     try {

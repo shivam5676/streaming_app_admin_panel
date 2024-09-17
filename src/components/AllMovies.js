@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AllMovies = () => {
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
   useEffect(() => {
@@ -127,7 +127,7 @@ const AllMovies = () => {
                         src={`${connectionString}/thumbnails/${current.fileLocation.replace(
                           "uploads/thumbnail",
                           ""
-                        )}`}
+                        )}`}    
                         className=" h-[120px] w-[100px] p-2"
                       ></img>
                     </div>

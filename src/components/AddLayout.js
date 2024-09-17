@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AddLayout = (req, res, next) => {
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);

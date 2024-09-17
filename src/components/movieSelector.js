@@ -12,7 +12,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function MovieSelector(props) {
   const [allMovies, setAllMovies] = useState([]);
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
 
   useEffect(() => {
     try {

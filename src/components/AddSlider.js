@@ -10,7 +10,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AddSlider = () => {
-  const connectionString = "http://localhost:8765";
+  const connectionString =  process.env.REACT_APP_API_URL
   const sliderNameRef = useRef();
   const sliderTypeRef = useRef();
   const linkedMovieIdRef = useRef();
