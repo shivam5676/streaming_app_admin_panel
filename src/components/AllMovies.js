@@ -124,7 +124,7 @@ const AllMovies = () => {
                     </div>
                     <div className="w-[100px] flex-shrink-0">
                       <img
-                        src={`${connectionString}/thumbnails/${current.fileLocation.replace(
+                        src={`${connectionString}/thumbnails${current.fileLocation.replace(
                           "uploads/thumbnail",
                           ""
                         )}`}    
