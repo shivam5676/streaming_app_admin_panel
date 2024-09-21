@@ -262,7 +262,7 @@ const BigScreenSideBar = (props) => {
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
-                  navigate("/");
+                  navigate("/addAds");
                 }}
               >
                 <MdOutlineAddToQueue className="mx-2" />
@@ -286,6 +286,31 @@ const BigScreenSideBar = (props) => {
           <div className="mx-4 h-[50px] flex items-center">
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[1rem] px-4 font-semibold">Users</p>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+          <p className="text-[.75rem]">OTHERS</p>
+        </div>
+        <div className=" text-white  hover:bg-[#2F374A]">
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              navigate("/GenresList");
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[1rem] px-4 font-semibold">Genres</p>
+          </div>
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              navigate("/LanguageList");
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[1rem] px-4 font-semibold">Languages</p>
           </div>
         </div>
       </section>

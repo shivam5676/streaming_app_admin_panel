@@ -16,6 +16,7 @@ import EditMovies from "./components/editMovie";
 import AllLAyout from "./components/AllLAyout";
 import EditLayout from "./components/EditLayout";
 import AllSliders from "./components/AllSliders";
+import AllGenreList from "./components/AllGenreList";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -48,7 +49,7 @@ function App() {
           <Route path="/allMovies/:edit" element={<EditMovies />}></Route>
           <Route path="/allLayouts" element={<AllLAyout/>}></Route>
           <Route path="/allLayout/:edit" element={<EditLayout/>}></Route>
-          <Route path="/allSliders" element={<AllSliders/>}></Route>
+          <Route path="/allSliders" element={<AllSliders/>}></Route><Route path="/genreslist" element={<AllGenreList/>}></Route>
           <Route path="*" element={<Maintenece />}></Route>
         </Routes>
       </div>
