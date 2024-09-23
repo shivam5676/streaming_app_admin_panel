@@ -21,15 +21,15 @@ const AddMovies = () => {
   // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
-  const connectionString =  process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
 
   const addMoviesHandler = async () => {
-    console.log(layOutArrayRef.current);//array of object
+    console.log(layOutArrayRef.current); //array of object
     const formdata = new FormData();
     formdata.append("thumbnail", thumbnailRef.current);
     videoFiles.forEach((current) => formdata.append("shorts", current));
     formdata.append("title", titleRef.current.value);
-    formdata.append("layouts",JSON.stringify(layOutArrayRef.current) );
+    formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
@@ -172,17 +172,17 @@ const AddMovies = () => {
             </div>
             <div className="flex sm:flex-row flex-col">
               <div className="p-4 font-semibold w-[100%]">
-                <p>Movie Type ( Genre )</p>
-                <GenreSelector selectedGenre={GenreHandler} />
-                {/* <select
-                  className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
-                  ref={visibleRef}
-                >
-                  <option value={true}>Yes, make it live</option>
-                  <option value={false}>No, will make it live later</option>
-                </select> */}
+                <p>Content Language:</p>
+                {/* <GenreSelector selectedGenre={GenreHandler} /> */}
+                {/* we need to made a language selector like genere selector and in backend we will append languages and content id vice versa */}
               </div>
             </div>
+            <div className="flex sm:flex-row flex-col">
+              <div className="p-4 font-semibold w-[100%]">
+                <p>Movie Type ( Genre )</p>
+                <GenreSelector selectedGenre={GenreHandler} />
+              </div>
+            </div>{" "}
           </div>
           <div className="bg-[#2A3042] flex-1  rounded-md text-white">
             <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
