@@ -10,7 +10,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AddSlider = () => {
-  const connectionString =  process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
+  const [sliderType, setSliderType] = useState("Promotional");
+  const [promotionalContentType, setpromotionalContentType] =
+    useState("Image-upload");
   const sliderNameRef = useRef();
   const sliderTypeRef = useRef();
   const linkedMovieIdRef = useRef();
@@ -28,11 +31,25 @@ const AddSlider = () => {
     }
   }, []);
   const addSliderHandler = async () => {
-    console.log(
-      sliderNameRef.current.value,
-      sliderTypeRef.current.value,
-      linkedMovieIdRef.current,"........................."
-    );
+    // console.log(
+    //   // sliderNameRef.current.value,
+    //   // sliderTypeRef.current.value,
+    //   // linkedMovieIdRef.current,
+    //   sliderType,
+    //   "........................."
+    // );
+    // if (sliderNameRef.current.value.length == 0) {
+    //   toast.error("please select a valid slider name");
+    //   return;
+    // }
+    // if (sliderTypeRef.current.value.length == 0) {
+    //   toast.error("please select a valid movie type");
+    //   return;
+    // }
+    // if(!linkedMovieIdRef.current||!linkedMovieIdRef.current.value||linkedMovieIdRef.current.value.length==0){
+    //   toast.error("please select a valid movie")
+    //   return
+    // }
     const sliderObj = {
       name: sliderNameRef.current.value,
       type: sliderTypeRef.current.value,
@@ -54,6 +71,12 @@ const AddSlider = () => {
   const handleMoviesSelection = (event, value) => {
     console.log(value);
     linkedMovieIdRef.current = value;
+  };
+  const handleSliderTypeChange = (e) => {
+    setSliderType(e.target.value);
+  };
+  const handlePromotionalContentType = (e) => {
+    setpromotionalContentType(e.target.value);
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -89,37 +112,57 @@ const AddSlider = () => {
 
               <select
                 className="w-full h-[40px] bg-[#2E3648]  py-2 px-4 outline-none text-white  rounded-md my-2"
+                onChange={handleSliderTypeChange}
                 ref={sliderTypeRef}
               >
                 <option value={"Promotional"}>Promotional</option>
+                {/*this will not click any things this willl only take and image of promotional conttnt*/}
                 <option value={"Trailer"}>Trailer</option>
-                <option value={"movies_shorts"}>Movies_shorts</option>
+                {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
+                <option value={"Redirection"}>Redirection(app section)</option>{" "}
+                {/*this will  take an image and also a link for redirection to app and othger things*/}
               </select>
             </div>
             {/* if user select Movies_shorts then this will dropdown all movies  from backend and  thier shorts will be  linked to the slide*/}
-            <div className="p-4 font-semibold w-[100%]">
-              <p>
-                Link Movie and thier shorts to this Slide{" "}
-                <span className="text-red-500"> *</span>
-              </p>
-              <Autocomplete
-                onChange={handleMoviesSelection}
-                disablePortal
-                options={allMovies}
-                isOptionEqualToValue={(option, value) =>
-                  option._id === value?._id
-                }
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Movies list"
-                    InputLabelProps={{
-                      style: { color: "white" },
-                    }}
-                    InputProps={{
-                      ...params.InputProps,
-                      sx: {
+            {sliderType == "Trailer" && (
+              <div className="p-4 font-semibold w-[100%]">
+                <p>
+                  Link Movie and thier shorts to this Slide{" "}
+                  <span className="text-red-500"> *</span>
+                </p>
+                <Autocomplete
+                  onChange={handleMoviesSelection}
+                  disablePortal
+                  options={allMovies}
+                  isOptionEqualToValue={(option, value) =>
+                    option._id === value?._id
+                  }
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Movies list"
+                      InputLabelProps={{
+                        style: { color: "white" },
+                      }}
+                      InputProps={{
+                        ...params.InputProps,
+                        sx: {
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "white",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "white",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "white",
+                            },
+                          },
+                          color: "white",
+                        },
+                      }}
+                      sx={{
                         "& .MuiOutlinedInput-root": {
                           "& fieldset": {
                             borderColor: "white",
@@ -130,33 +173,18 @@ const AddSlider = () => {
                           "&.Mui-focused fieldset": {
                             borderColor: "white",
                           },
+                          color: "white",
                         },
-                        color: "white",
-                      },
-                    }}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "white",
+                        "& .MuiInputBase-input": {
+                          color: "white",
                         },
-                        "&:hover fieldset": {
-                          borderColor: "white",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "white",
-                        },
-                        color: "white",
-                      },
-                      "& .MuiInputBase-input": {
-                        color: "white",
-                      },
-                    }}
-                  />
-                )}
-                sx={{ py: 2 }}
-              />
+                      }}
+                    />
+                  )}
+                  sx={{ py: 2 }}
+                />
 
-              {/* <select
+                {/* <select
                 className="w-full h-[40px]  py-2 px-4 bg-[#2E3648]  outline-none text-white  rounded-md my-2"
                 // ref={linkedMovieIdRef}
               >
@@ -164,7 +192,29 @@ const AddSlider = () => {
                 <option value={2}>kgf</option>
                 <option value={1}>indian 2</option>
               </select> */}
-            </div>
+              </div>
+            )}
+            {sliderType == "Promotional" && (
+              <div className="p-4 font-semibold w-[100%]">
+                <p>
+                  Link Promotional Content :
+                  <span className="text-red-500"> *</span>
+                  <select
+                    className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
+                    onChange={handlePromotionalContentType}
+                  >
+                    <option className="px-2 bg-[#2E3648]" value="Image-upload">
+                      By Image Upload:
+                    </option>
+                    <option className="px-2 bg-[#2E3648]" value="URL">
+                      By URL (pre uploaded Image) :
+                    </option>
+                  </select>
+                </p>
+                <div></div>{" "}
+                {/* if promotional content typw will be url then we will show url input box else we will show file input box with thier given key property*/}
+              </div>
+            )}
 
             {/* <div className="p-4 font-semibold w-[100%]">
               <p>Additional Info</p>
