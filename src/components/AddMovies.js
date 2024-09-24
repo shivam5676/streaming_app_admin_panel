@@ -7,6 +7,7 @@ import DragNDropVideos from "./dragNDropVideos";
 import { FaTrash } from "react-icons/fa";
 import GenreSelector from "./genreSelector";
 import { toast } from "react-toastify";
+import LanguageSelector from "./LanguageSelector";
 
 const AddMovies = () => {
   const titleRef = useRef();
@@ -16,11 +17,13 @@ const AddMovies = () => {
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const genre = [];
-
+  const [trailerType, setTrailerType] = useState("Upload");
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
   // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
+  const moviesTrailerVideoRef = useRef();
+  const moviesTrailerVideoLinkRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
 
   const addMoviesHandler = async () => {
@@ -33,6 +36,12 @@ const AddMovies = () => {
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", genreRef.current);
+    if (moviesTrailerVideoRef?.current?.value) {
+      formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
+    }
+    if (moviesTrailerVideoLinkRef?.current?.value) {
+      formdata.append("trailerUrl", moviesTrailerVideoLinkRef.current.value);
+    }
     try {
       const response = await axios.post(
         `${connectionString}/admin/addMovie`,
@@ -56,6 +65,9 @@ const AddMovies = () => {
     genreRef.current = value;
     // console.log(layOutArray);
   };
+  const languageHandler=(value)=>{
+    console.log(value);
+  }
   const getThumbnail = (thumbnail) => {
     console.log(thumbnail);
     thumbnailRef.current = thumbnail;
@@ -117,7 +129,9 @@ const AddMovies = () => {
     setVideoFilesSnapshot(snapshotsAfterDeletion);
     setvideoFiles(videosAfterDeletion);
   };
-
+  const handletrailerTypeChange = (e) => {
+    setTrailerType(e.target.value);
+  };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
@@ -173,7 +187,9 @@ const AddMovies = () => {
             <div className="flex sm:flex-row flex-col">
               <div className="p-4 font-semibold w-[100%]">
                 <p>Content Language:</p>
+                <LanguageSelector selectedLanguage={languageHandler}/>
                 {/* <GenreSelector selectedGenre={GenreHandler} /> */}
+
                 {/* we need to made a language selector like genere selector and in backend we will append languages and content id vice versa */}
               </div>
             </div>
@@ -183,6 +199,42 @@ const AddMovies = () => {
                 <GenreSelector selectedGenre={GenreHandler} />
               </div>
             </div>{" "}
+            <div className="p-4 font-semibold w-[100%] ">
+              <p>
+                Link Promotional Content :
+                <span className="text-red-500"> *</span>
+                <select
+                  className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
+                  onChange={handletrailerTypeChange}
+                >
+                  <option className="px-2 bg-[#2E3648]" value="Upload">
+                    By Video Upload:
+                  </option>
+                  <option className="px-2 bg-[#2E3648]" value="URL">
+                    By URL (pre uploaded Image) :
+                  </option>
+                </select>
+              </p>
+              <div className="my-4">
+                {" "}
+                {trailerType === "Upload" && (
+                  <input
+                    className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                    ref={moviesTrailerVideoRef}
+                    type="file"
+                  ></input>
+                )}{" "}
+                {trailerType === "URL" && (
+                  <input
+                    className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                    ref={moviesTrailerVideoLinkRef}
+                    // type="file"
+                    placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                  ></input>
+                )}
+              </div>{" "}
+              {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+            </div>
           </div>
           <div className="bg-[#2A3042] flex-1  rounded-md text-white">
             <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
