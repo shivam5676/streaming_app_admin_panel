@@ -17,8 +17,10 @@ const AddSlider = () => {
   const sliderNameRef = useRef();
   const sliderTypeRef = useRef();
   const linkedMovieIdRef = useRef();
+  const visibleRef = useRef();
   const [allMovies, setAllMovies] = useState([]);
-
+  const promotionalImageRef = useRef();
+  const promotionalImageURLRef=useRef()
   useEffect(() => {
     try {
       (async () => {
@@ -50,16 +52,36 @@ const AddSlider = () => {
     //   toast.error("please select a valid movie")
     //   return
     // }
+    // console.log(visibleRef.current.value);
+    // return;
     const sliderObj = {
       name: sliderNameRef.current.value,
       type: sliderTypeRef.current.value,
       movieId: linkedMovieIdRef.current,
     };
-    console.log(sliderObj);
+    const formdata = new FormData();
+    formdata.append("name", sliderNameRef.current.value);
+    formdata.append("type", sliderTypeRef.current.value);
+    formdata.append("movieId",linkedMovieIdRef.current );
+    formdata.append("visible", visibleRef.current.value);
+    if (
+      promotionalContentType === "Image-upload" &&
+      sliderType === "Promotional"
+    ) {
+      formdata.append("promotionalImage",  promotionalImageRef.current.files[0]);
+    } if (
+      promotionalContentType === "URL" &&
+      sliderType === "Promotional"
+    ) {
+      formdata.append("PromotionalImageURL", promotionalImageURLRef.current.value);
+    }
+    // console.log(formdata);
+    // formdata.forEach((current) => console.log(current));
+    // return;
     try {
       const response = await axios.post(
         `${connectionString}/admin/addSlider`,
-        sliderObj
+        formdata
       );
       console.log(response);
       toast.success("slider added successfully");
@@ -69,8 +91,9 @@ const AddSlider = () => {
   };
 
   const handleMoviesSelection = (event, value) => {
-    console.log(value);
-    linkedMovieIdRef.current = value;
+    // console.log(value,"...>");
+    // return
+    linkedMovieIdRef.current = value._id;
   };
   const handleSliderTypeChange = (e) => {
     setSliderType(e.target.value);
@@ -195,7 +218,7 @@ const AddSlider = () => {
               </div>
             )}
             {sliderType == "Promotional" && (
-              <div className="p-4 font-semibold w-[100%]">
+              <div className="p-4 font-semibold w-[100%] ">
                 <p>
                   Link Promotional Content :
                   <span className="text-red-500"> *</span>
@@ -211,26 +234,40 @@ const AddSlider = () => {
                     </option>
                   </select>
                 </p>
-                <div></div>{" "}
-                {/* if promotional content typw will be url then we will show url input box else we will show file input box with thier given key property*/}
+                <div className="my-4">
+                  {" "}
+                  {promotionalContentType === "Image-upload" && (
+                    <input
+                      className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                      ref={promotionalImageRef}
+                      type="file"
+                    ></input>
+                  )}{" "}
+                  {promotionalContentType === "URL" && (
+                    <input
+                      className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                      ref={promotionalImageURLRef}
+                      // type="file"
+                      placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                    ></input>
+                  )}
+                </div>{" "}
+                {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
               </div>
-            )}
+            )}{" "}
+            <div className="p-4 font-semibold w-[100%]">
+              <p>Visible</p>
 
-            {/* <div className="p-4 font-semibold w-[100%]">
-              <p>Additional Info</p>
-              <div className=" p-4 flex flex-row gap-4">
-                <div className=" w-[70%]">
-                  <div className=" border-dashed border-2 h-[400px] flex items-center justify-center">
-                    <p>Upload Thumbnail</p>
-                  </div>
-                </div>
-                <div className=" border-2 w-[200px]">
-                  <p>Thumbnail Preview</p>
-                </div>
-              </div>
-            </div> */}
+              <select
+                className="w-full h-[40px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
+                ref={visibleRef}
+              >
+                <option value={true}>Yes, make it live now</option>
+                <option value={false}>No, will make it live later</option>
+              </select>
+            </div>
           </div>
-        </div>
+        </div>{" "}
       </section>
       <div className="my-3">
         {" "}

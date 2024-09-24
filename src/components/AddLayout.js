@@ -5,13 +5,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AddLayout = (req, res, next) => {
-  const connectionString =  process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);
   const [allMovies, setAllMovies] = useState([]);
   const [linkMoviesStatus, setLinkMovieStatus] = useState(false);
-
+  const visibleRef = useRef();
   useEffect(() => {
     try {
       (async () => {
@@ -32,6 +32,7 @@ const AddLayout = (req, res, next) => {
       name: layOutNameRef.current.value,
       Description: layoutDescriptionRef.current.value,
       linkedMovies: selectedMoviesRef.current,
+      visible:visibleRef.current.value
     };
     console.log(layoutObj);
     try {
@@ -83,6 +84,17 @@ const AddLayout = (req, res, next) => {
                 className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"
                 ref={layoutDescriptionRef}
               ></textarea>
+            </div>
+            <div className="p-4 font-semibold w-[100%]">
+              <p>Visible</p>
+
+              <select
+                className="w-full h-[40px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
+                ref={visibleRef}
+              >
+                <option value={true}>Yes, make it live now</option>
+                <option value={false}>No, will make it live later</option>
+              </select>
             </div>
             <div className="m-4 font-semibold">
               <FormGroup>

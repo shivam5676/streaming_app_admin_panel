@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AllLAyout = () => {
-  const connectionString =  process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
   useEffect(() => {
@@ -26,7 +26,7 @@ const AllLAyout = () => {
     if (action === "DELETE") {
       //   deleteMovieHandler(id);
     } else if (action === "EDIT") {
-        navigate(`/allLayout/${id}`);
+      navigate(`/allLayout/${id}`);
     }
   };
   return (
@@ -106,11 +106,11 @@ const AllLAyout = () => {
                         <option value="DELETE">DELETE</option>
                       </select>
                     </div>
-                  
+
                     <div className="w-[100%]  flex-shrink-1 mx-8">
                       <p className="p-2">{current.name}</p>
                     </div>
-                 
+
                     <div className="w-[80px]  flex-shrink-0">
                       {!current.visible ? (
                         <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
