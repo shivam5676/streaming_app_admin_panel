@@ -5,15 +5,30 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, Checkbox, Chip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import axios from "axios";
 
-
-const language = ["hindi", "English", "kannada", "tamil", "sanskrit"];
+// const language = ["hindi", "English", "kannada", "tamil", "sanskrit"];
 const LanguageSelector = (props) => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  const [language, setLanguage] = useState([]);
   const [state, setState] = useState([]);
   // console.log(state)
   useEffect(() => {
+    try {
+      (async () => {
+        const res = await axios.get(`${connectionString}/admin/allLanguages`);
+        console.log(res.data);
+        setLanguage(res.data.Languages);
+        // setAllMovies(res.data.Layout);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+  console.log(language)
+  useEffect(() => {
     if (props.editLanguages) {
-      const allLanguage = props.editGenres.split(",");
+      const allLanguage = props.editLanguages.split(",");
       setState(allLanguage);
     }
   }, [props.editGenres]);
@@ -52,16 +67,16 @@ const LanguageSelector = (props) => {
           }}
           renderValue={(selLang) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selLang.map((value) => (
-                <Chip key={value} color="info" label={value} />
+              {selLang.map((lang) => (
+                <Chip key={lang._id} color="info" label={lang.name} />
               ))}
             </Box>
           )}
         >
           {language.map((lang) => (
-            <MenuItem key={lang} value={lang}>
-              <Checkbox checked={state.indexOf(lang) > -1} />
-              {lang}
+            <MenuItem key={lang._id} value={lang}>
+              <Checkbox checked={state.some((s) => s._id === lang._id)} />
+              {lang.name}
             </MenuItem>
           ))}
         </Select>

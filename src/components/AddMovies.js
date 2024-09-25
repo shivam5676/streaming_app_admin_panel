@@ -15,6 +15,7 @@ const AddMovies = () => {
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
+  const languageRef=useRef()
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const genre = [];
   const [trailerType, setTrailerType] = useState("Upload");
@@ -35,7 +36,8 @@ const AddMovies = () => {
     formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
-    formdata.append("genre", genreRef.current);
+    formdata.append("genre", JSON.stringify(genreRef.current))
+    formdata.append("language", JSON.stringify(languageRef.current))
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -61,12 +63,13 @@ const AddMovies = () => {
     // console.log(layOutArray);
   };
   const GenreHandler = (value) => {
-    // console.log(value);
+    console.log(value);
     genreRef.current = value;
     // console.log(layOutArray);
   };
   const languageHandler=(value)=>{
     console.log(value);
+    languageRef.current=value
   }
   const getThumbnail = (thumbnail) => {
     console.log(thumbnail);
