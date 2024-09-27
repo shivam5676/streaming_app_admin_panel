@@ -18,6 +18,7 @@ import EditLayout from "./components/EditLayout";
 import AllSliders from "./components/AllSliders";
 import AllGenreList from "./components/AllGenreList";
 import LanguageList from "./components/LanguageLIst";
+import EdducationQuestionGenerator from "./components/educationQuestionGenerator";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -52,7 +53,11 @@ function App() {
           <Route path="/allLayout/:edit" element={<EditLayout />}></Route>
           <Route path="/allSliders" element={<AllSliders />}></Route>
           <Route path="/genreslist" element={<AllGenreList />}></Route>
-          <Route path="LanguageList" element={<LanguageList/>}></Route>
+          <Route path="LanguageList" element={<LanguageList />}></Route>{" "}
+          <Route
+            path="/QuestionUploader"
+            element={<EdducationQuestionGenerator />}
+          ></Route>
           <Route path="*" element={<Maintenece />}></Route>
         </Routes>
       </div>
