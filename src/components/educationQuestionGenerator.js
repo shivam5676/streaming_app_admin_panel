@@ -6,10 +6,13 @@ import axios from "axios";
 import { FormControl } from "@mui/material/FormControl";
 import { toast } from "react-toastify";
 import QuestionModal from "./questionModal";
-
+import { GiPowerGenerator } from "react-icons/gi";
+import scanner from "../assests/scanner.gif";
+import logo from "../assests/logo.png";
 const EdducationQuestionGenerator = () => {
   const connectionString = "http://192.168.1.57:8000";
-  const [questionArray, setQuestionArray] = useState();
+  const [changeText, setChangeText] = useState("");
+  const [questionArray, setQuestionArray] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
@@ -39,11 +42,14 @@ const EdducationQuestionGenerator = () => {
   };
   console.log(uploadedFiles);
   const generateQuestionHAndler = async (index) => {
+    setChangeText(<p className="font-bold text-green-600">wait!! File is scanning ...</p>);
+    setQuestionModalOpen(true);
     const response = await axios.post(
       `${connectionString}/videos/generateQuestions/`,
       { file: uploadedFiles[index] }
     );
     console.log(response.data.data);
+    setChangeText(<p className="font-bold text-blue-600">Generating Question Paper from Your videos ...</p>);
     const promptResponse = await axios.post(
       `${connectionString}/videos/questionHAndler/`,
       { questionPrompt: response.data.data }
@@ -51,7 +57,7 @@ const EdducationQuestionGenerator = () => {
     console.log(promptResponse.data.data[0].result);
     if (promptResponse.data.data[0].result) {
       setQuestionModalOpen(true);
-      setQuestionArray (promptResponse.data.data[0].result);
+      setQuestionArray(promptResponse.data.data[0].result);
     }
   };
   return (
@@ -105,6 +111,19 @@ const EdducationQuestionGenerator = () => {
             </div>
           </div>
         </div>
+      </section>
+      <div className="flex justify-end w-[100%]">
+        <div
+          onClick={() => {
+            addMoviesHandler();
+          }}
+          className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
+        >
+          <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+          <span className="relative font-semibold">Add Movies</span>
+        </div>
+      </div>{" "}
+      {uploadedFiles.length > 0 && (
         <div className="w-[100%] border-2 flex flex-wrap p-2">
           {uploadedFiles?.map((current, index) => (
             <div
@@ -119,8 +138,8 @@ const EdducationQuestionGenerator = () => {
               <div className="absolute top-0 left-0 right-0 bg-black bg-opacity-30 text-white text-xs p-1 text-center break-words">
                 {current.name}
               </div>
-              <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <FaTrash
+              <div className="absolute inset-0 flex items-center justify-center bg-green-500 bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <GiPowerGenerator
                   className="text-white text-lg cursor-pointer w-[30px] h-[30px]"
                   onClick={async () => {
                     // deleteVideoHandler(index);
@@ -132,19 +151,34 @@ const EdducationQuestionGenerator = () => {
             </div>
           ))}
         </div>
-      </section>
-      <div className="flex justify-end w-[100%]">
-        <div
-          onClick={() => {
-            addMoviesHandler();
+      )}
+      {questionModalOpen && questionArray.length > 0 && (
+        <QuestionModal
+          questionArray={questionArray}
+          closeModal={() => {
+            setQuestionModalOpen(false);
+            setQuestionArray([]);
           }}
-          className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
+        />
+      )}{" "}
+      {/* {console.log(questionModalOpen)} */}
+      {questionModalOpen && questionArray.length == 0 && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          // onClick={props.closeModal} // Close modal when clicking outside the modal content
         >
-          <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-          <span className="relative font-semibold">Add Movies</span>
+          <div
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700 w-[700px] max-w-md p-6 h-[60%] flex flex-col justifyde-center items-center"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
+            <img src={logo} className="bg-black h-[150px] w-[100%]"></img>
+            <div className="h-[200px] w-[200px]">
+              <img src={scanner} className="h-[200px] w-[200px] my-6"></img>
+              <p className="text-center">{changeText}</p>
+            </div>
+          </div>
         </div>
-      </div>
-      {questionModalOpen && <QuestionModal questionArray={questionArray} />}
+      )}
     </div>
   );
 };
