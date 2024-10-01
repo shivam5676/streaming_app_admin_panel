@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const AllMovies = () => {
+const AllUsers = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get(`${connectionString}/admin/allMovies`);
+        const res = await axios.get(`${connectionString}/admin/allUsers`);
         setAllMovies(res.data.allMovies);
       })();
     } catch (err) {
@@ -41,12 +41,12 @@ const AllMovies = () => {
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Movies</p>
+        <p className="text-lg font-bold">All Users</p>
         <p className="text-[.95rem] font-semibold">
           <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Movies section</span>
+          <span>Users section</span>
           <span className="mx-2"> &gt; </span>
-          <span>All Movies</span>
+          <span>All Users</span>
         </p>
       </div>
       <section className="w-[100%]">
@@ -82,16 +82,16 @@ const AllMovies = () => {
                   <p className="p-2">action</p>
                 </div>
                 <div className="w-[100px]  flex-shrink-0">
-                  <p className="p-2">Thumbnail</p>
+                  <p className="p-2">Profile Pic</p>
                 </div>
-                <div className="w-[120px]  flex-shrink-0">
+                <div className="w-[100%]  min-w-[120px] flex-shrink-1">
                   <p className="p-2">Name</p>
                 </div>
                 <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Genre</p>
+                  <p className="p-2">Email</p>
                 </div>
                 <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Layouts</p>
+                  <p className="p-2">Contact no</p>
                 </div>
                 <div className="w-[80px]  flex-shrink-0">
                   <p className="p-2">status</p>
@@ -124,30 +124,30 @@ const AllMovies = () => {
                     </div>
                     <div className="w-[100px] flex-shrink-0">
                       <img
-                        src={`${connectionString}/thumbnails${current.fileLocation.replace(
-                          "uploads/thumbnail",
-                          ""
-                        )}`}
+                        // src={`${connectionString}/thumbnails${current.fileLocation.replace(
+                        //   "uploads/thumbnail",
+                        //   ""
+                        // )}`}
                         className=" h-[120px] w-[100px] p-2"
                       ></img>
                     </div>
-                    <div className="w-[120px]  flex-shrink-0">
+                    <div className="w-[100%]   min-w-[120px] flex-shrink-1">
                       <p className="p-2">{current.name}</p>
                     </div>
                     <div className="w-[100%] min-w-[100px] flex-shrink-1">
                       {console.log(current, "cu---------")}
-                      <p className="p-2 break-words">
+                      <p className="p-2 break-words">{current.email}
                         {" "}
-                        {current.genre.map((currentIndex) => {
+                        {/* {current.genre.map((currentIndex) => {
                           return <span>{`${currentIndex.name} | `}</span>;
-                        })}
+                        })} */}
                       </p>
                     </div>{" "}
                     <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">
-                        {current.layouts.map((currentIndex) => {
+                      <p className="p-2 break-words">{current.contact}
+                        {/* {current.layouts.map((currentIndex) => {
                           return <span>{currentIndex.name}</span>;
-                        })}
+                        })} */}
                       </p>
                     </div>
                     <div className="w-[80px]  flex-shrink-0">
@@ -182,4 +182,4 @@ const AllMovies = () => {
   );
 };
 
-export default AllMovies;
+export default AllUsers;

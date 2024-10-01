@@ -19,6 +19,7 @@ import AllSliders from "./components/AllSliders";
 import AllGenreList from "./components/AllGenreList";
 import LanguageList from "./components/LanguageLIst";
 import EdducationQuestionGenerator from "./components/educationQuestionGenerator";
+import AllUsers from "./components/AllUSers";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -57,7 +58,7 @@ function App() {
           <Route
             path="/QuestionUploader"
             element={<EdducationQuestionGenerator />}
-          ></Route>
+          ></Route> <Route path="allUsers" element={<AllUsers/>}></Route>
           <Route path="*" element={<Maintenece />}></Route>
         </Routes>
       </div>

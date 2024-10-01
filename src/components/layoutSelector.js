@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import axios from "axios";
 
 const LayoutSelector = (props) => {
+  console.log(props,"ppp")
   const [layouts, setLayouts] = useState([]);
   const [selectedLayouts, setSelectedLayouts] = useState([]);
   const connectionString =  process.env.REACT_APP_API_URL

@@ -30,15 +30,19 @@ const EditMovies = () => {
   // let thumbNail = null;
   const freeVideosRef = useRef();
   const visibleRef = useRef();
-  const connectionString =  process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
       const response = await axios.get(
         `${connectionString}/admin/getMovie/${id}`
       );
-
-      if (response.data.movieData&&Object.values(response.data.movieData).length > 0) {
+      // console.log(response.data.movieData,".....")
+      // return
+      if (
+        response.data.movieData &&
+        Object.values(response.data.movieData).length > 0
+      ) {
         setAllData(response.data.movieData);
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")
@@ -68,7 +72,7 @@ const EditMovies = () => {
     formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
-    formdata.append("genre", genreRef.current);
+    formdata.append("genre", JSON.stringify(genreRef.current));
     formdata.append("id", AllData._id);
     try {
       const response = await axios.post(
@@ -106,7 +110,7 @@ const EditMovies = () => {
       setThumbNailUrlPreview(objectUrlCreation);
     }
   };
-  console.log(thumbnailUrlPreview);
+  // console.log(AllData.genre,"...>");
   const getVideoFilesHandler = (videoFiles) => {
     Object.values(videoFiles).forEach((current) => {
       const videoFile = current;
