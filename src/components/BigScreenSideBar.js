@@ -282,7 +282,12 @@ const BigScreenSideBar = (props) => {
         <div className="mx-4 text-white text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">USER MANAGEMENT</p>
         </div>
-        <div className=" text-white  hover:bg-[#2F374A]">
+        <div
+          className=" text-white  hover:bg-[#2F374A]"
+          onClick={() => {
+            navigate("/allUsers");
+          }}
+        >
           <div className="mx-4 h-[50px] flex items-center">
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[1rem] px-4 font-semibold">Users</p>
@@ -294,7 +299,7 @@ const BigScreenSideBar = (props) => {
           <p className="text-[.75rem]">OTHERS</p>
         </div>
         <div className=" text-white  hover:bg-[#2F374A]">
-        <div
+          <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {
               navigate("/QuestionUploader");

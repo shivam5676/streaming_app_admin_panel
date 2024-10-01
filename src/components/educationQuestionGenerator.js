@@ -78,7 +78,7 @@ const EdducationQuestionGenerator = () => {
               <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4">
                 <DragNDropVideos videoFile={getVideoFilesHandler}>
                   <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 w-[300px] min-h-[300px] h-[100%] mx-4 items-center justify-center cursor-pointer">
-                    <p className="text-xl font-semibold">Upload shorts here</p>
+                    <p className="text-xl font-semibold">Upload Videos here</p>
                   </div>
                 </DragNDropVideos>
 
