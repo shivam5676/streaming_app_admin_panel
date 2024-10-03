@@ -35,7 +35,7 @@ const AllUsers = () => {
     if (action === "DELETE") {
       deleteMovieHandler(id);
     } else if (action === "EDIT") {
-      navigate(`/allMovies/${id}`);
+      navigate(`/userDetails/${id}`);
     }
   };
   return (
