@@ -3,6 +3,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoCall } from "react-icons/io5";
 import { MdMarkEmailUnread } from "react-icons/md";
 import { TbRecordMail } from "react-icons/tb";
+import ActionCenter from "./ActionCenter";
 
 const UserDetails = () => {
   return (
@@ -72,15 +73,15 @@ const UserDetails = () => {
         </div>
         <div className="   sm:columns-3 px-4 rounded-sm">
           <div className="bg-[#2E3648] w-[100%] h-[300px] overflow-y-auto ">
-            <p className="text-white font-bold text-center p-3">
-              Daily Check-In Report
+            <p className="text-white font-bold text-center p-3  text-[1.2rem]">
+              Mints Report
             </p>
             <table className="table-fixed w-[100%]">
               <thead className="text-yellow-500">
                 <tr>
                   <th>Date</th>
                   <th>Rewards</th>
-                  <th>status</th>
+                  <th>type</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,8 +114,110 @@ const UserDetails = () => {
               </tbody>
             </table>
           </div>
-          <div className="bg-[#2E3648] w-[100%] h-20 "></div>{" "}
-          <div className="bg-[#2E3648] w-[100%] h-20 "></div>
+          <div className="bg-[#2E3648] w-[100%] ">
+            {" "}
+            <div
+              className="bg-[#2E3648] w-[100%] h-[300px] overflow-y-auto "
+              style={{ scrollbarWidth: "thin" }}
+            >
+              <p className="text-white font-bold text-center p-3 text-[1.2rem]">
+                Others Details
+              </p>
+              <div className="flex text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400  w-[220px]">
+                  Membership Type :
+                </p>
+                <p className="mx-2 px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Premium
+                </p>
+              </div>{" "}
+              <div className="flex text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400  w-[220px]">
+                  Membership purchased date :
+                </p>
+                <p className="mx-2 px-2 rounded-md bg-[#F97316] items-center my-1">
+                  02/10/2024
+                </p>
+              </div>
+              <div className="flex text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400  w-[220px]">
+                  Membership Amount :
+                </p>
+                <p className="mx-2 px-2 rounded-md bg-[#F97316] items-center my-1">
+                  5000 Rs
+                </p>
+              </div>
+              <div className="flex text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400  w-[220px]">
+                  Membership Validity :
+                </p>
+                <p className="mx-2 px-2 rounded-md bg-[#F97316] items-center my-1">
+                  1 year
+                </p>
+              </div>
+              <div className="flex text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400   w-[220px]">
+                  Membership Status :
+                </p>
+                <p className="mx-2 px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>
+              </div>
+              <div className="flex flex-wrap overflow-hidden text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400 items-center flex">
+                  Selected Language :
+                </p>
+                <p className="mx-1  font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>
+              </div>
+              <div className="flex flex-wrap overflow-hidden text-white text-sm font-semibold px-2 py-1">
+                <p className="text-[.95rem] text-yellow-400 items-center flex">
+                  Selected Genre :
+                </p>
+                <p className="mx-1  font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>{" "}
+                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
+                  Active
+                </p>
+              </div>
+            </div>
+          </div>{" "}
+         <ActionCenter/>
         </div>
       </div>
     </>
