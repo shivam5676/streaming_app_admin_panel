@@ -1,11 +1,33 @@
-import React from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { IoCall } from "react-icons/io5";
 import { MdMarkEmailUnread } from "react-icons/md";
-import { TbRecordMail } from "react-icons/tb";
-import ActionCenter from "./ActionCenter";
 
+import ActionCenter from "./ActionCenter";
+import React, { useEffect, useState } from "react";
+
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 const UserDetails = () => {
+  // const [reasonSelector, setReasonSelector] = useState(null);
+  const [userDetails, setUserDetails] = useState([]);
+  const params = useParams();
+  const connectionString = process.env.REACT_APP_API_URL;
+  useEffect(() => {
+    async function fetchDAta() {
+      try {
+        const res = await axios.post(
+          `${connectionString}/admin/getUserDetails`,
+          { id: params.uid }
+        );
+        setUserDetails(res.data.userDetails);
+        toast.success("user fetched successfully");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchDAta();
+  }, []);
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -37,7 +59,7 @@ const UserDetails = () => {
                 </div>
                 <div class="py-2 px-2 text-white">
                   <div class=" font-bold font-title  justify-center flex">
-                    <p className="text-wrap mx-2 ">Shivam Singh</p>
+                    <p className="text-wrap mx-2 ">{userDetails?.name}</p>
                     <FaRegEdit className="cursor-pointer" />
                   </div>
                   <div className="flex font-semibold justify-center  max-sm:flex-col">
@@ -45,7 +67,7 @@ const UserDetails = () => {
                     <div class="text-sm flex text-wrap text-center items-center my-2 px-2 border-e-2">
                       <MdMarkEmailUnread className="w-[20px] h-[20px] text-blue-400 " />{" "}
                       <p className="text-wrap w-[100%] mx-2 ">
-                        shivam.handler@gmail.com
+                        {userDetails?.email}
                       </p>
                       <FaRegEdit className="cursor-pointer" />
                     </div>{" "}
@@ -165,59 +187,38 @@ const UserDetails = () => {
               </div>
               <div className="flex flex-wrap overflow-hidden text-white text-sm font-semibold px-2 py-1">
                 <p className="text-[.95rem] text-yellow-400 items-center flex">
-                  Selected Language :
+                  Selected Genre :
                 </p>
-                <p className="mx-1  font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>
+                {userDetails?.selectedGenre?.length > 0 &&
+                  userDetails.selectedGenre.map((current) => (
+                    <p
+                      className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1"
+                      key={current._id}
+                    >
+                      {current.name}
+                    </p>
+                  ))}
               </div>
               <div className="flex flex-wrap overflow-hidden text-white text-sm font-semibold px-2 py-1">
                 <p className="text-[.95rem] text-yellow-400 items-center flex">
-                  Selected Genre :
+                  Selected Languages :
                 </p>
-                <p className="mx-1  font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>{" "}
-                <p className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1">
-                  Active
-                </p>
+                {userDetails?.selectedLanguages?.length > 0 &&
+                  userDetails.selectedLanguages.map((current) => (
+                    <p
+                      className="mx-1 font-normal px-2 rounded-md bg-[#F97316] items-center my-1"
+                      key={current._id}
+                    >
+                      {current.name}
+                    </p>
+                  ))}
               </div>
             </div>
           </div>{" "}
-         <ActionCenter/>
+          <ActionCenter
+            genres={userDetails.selectedGenre}
+            languages={userDetails.selectedLanguages}
+          />
         </div>
       </div>
     </>
