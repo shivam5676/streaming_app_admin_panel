@@ -55,7 +55,7 @@ function App() {
           <Route path="/allLayout/:edit" element={<EditLayout />}></Route>
           <Route path="/allSliders" element={<AllSliders />}></Route>
           <Route path="/genreslist" element={<AllGenreList />}></Route>
-          <Route path="LanguageList" element={<LanguageList />}></Route>{" "}
+          <Route path="/LanguageList" element={<LanguageList />}></Route>{" "}
           <Route
             path="/QuestionUploader"
             element={<EdducationQuestionGenerator />}

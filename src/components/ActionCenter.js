@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import GenreSelector from "./genreSelector";
+import LanguageSelector from "./LanguageSelector";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const ActionCenter = () => {
+const ActionCenter = (props) => {
   const [reasonSelector, setReasonSelector] = useState(null);
+  const [userDetails, setUserDetails] = useState([]);
+  const params = useParams();
+  const connectionString = process.env.REACT_APP_API_URL;
+  useEffect(() => {
+    async function fetchDAta() {
+      try {
+        const res = await axios.post(
+          `${connectionString}/admin/getUserDetails`,
+          { id: params.uid }
+        );
+        setUserDetails(res.data.userDetails);
+        toast.success("user fetched successfully");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchDAta();
+  }, []);
   const reasonSelectorHandler = (e) => {
     // console.log(e.target.value)
     setReasonSelector(e.target.value);
   };
+  const genreHAndler = (data) => {
+    console.log(data);
+  };
+  const selectedLanguageHandler = (data) => {
+    console.log(data);
+  };
   return (
     <div className="bg-[#2E3648] w-[100%] ">
-      <div className="bg-[#2E3648] w-[100%] h-[300px] overflow-y-auto ">
+      <div className="bg-[#2E3648] w-[100%] h-[300px] overflow-y-auto overflow-x-hidden">
         <p className="text-white font-bold text-center p-3  text-[1.2rem]">
           Action Center
         </p>
@@ -226,7 +255,7 @@ const ActionCenter = () => {
                 type="text"
               ></input>
             </div>
-           
+
             <div className="flex items-end justify-end m-4">
               <div className=" relative inline-flex items-center justify-center  px-6 py-2 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md group">
                 <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
@@ -253,7 +282,7 @@ const ActionCenter = () => {
             </div>
           </>
         )}
-         {reasonSelector === "terminate-account" && (
+        {reasonSelector === "terminate-account" && (
           <>
             <div className="flex text-sm font-semibold px-2  text-yellow-500 py-2">
               <p>
@@ -265,7 +294,73 @@ const ActionCenter = () => {
                 type="text"
               ></input>
             </div>
-           
+
+            <div className="flex items-end justify-end m-4">
+              <div className=" relative inline-flex items-center justify-center  px-6 py-2 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md group">
+                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    ></path>
+                  </svg>
+                </span>
+                <span className="absolute flex text-sm items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease">
+                  Submit
+                </span>
+                <span className="relative invisible">Submit</span>
+              </div>
+            </div>
+          </>
+        )}{" "}
+        {reasonSelector === "genre-perfernces" && (
+          <>
+            {/* write genere preferences selector here we will fetch genre regarding to that user only from login list*/}
+            <GenreSelector
+              selectedGenre={genreHAndler}
+              editGenres={props.genres}
+            />
+            <div className="flex items-end justify-end m-4">
+              <div className=" relative inline-flex items-center justify-center  px-6 py-2 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md group">
+                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    ></path>
+                  </svg>
+                </span>
+                <span className="absolute flex text-sm items-center justify-center w-full h-full text-purple-500 transition-all duration-300 transform group-hover:translate-x-full ease">
+                  Submit
+                </span>
+                <span className="relative invisible">Submit</span>
+              </div>
+            </div>
+          </>
+        )}{" "}
+        {reasonSelector === "language-preferences" && (
+          <>
+            {/* write genere preferences selector here we will fetch genre regarding to that user only from login list*/}
+            <LanguageSelector
+              selectedLanguage={selectedLanguageHandler}
+              editGenres={props.languages}
+            />
             <div className="flex items-end justify-end m-4">
               <div className=" relative inline-flex items-center justify-center  px-6 py-2 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md group">
                 <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">

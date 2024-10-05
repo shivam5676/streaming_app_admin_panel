@@ -25,7 +25,7 @@ const LanguageSelector = (props) => {
       console.log(err);
     }
   }, []);
-  console.log(language)
+  console.log(language);
   useEffect(() => {
     if (props.editLanguages) {
       const allLanguage = props.editLanguages.split(",");
