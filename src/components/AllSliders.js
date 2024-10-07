@@ -1,16 +1,27 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { sliderSliceACtion } from "../store/sliderSlice";
 
 const AllSliders = () => {
-  const connectionString = process.env.REACT_APP_API_URL
-  const [allSliders, setAllSliders] = useState([]);
+  const connectionString = process.env.REACT_APP_API_URL;
+  // const [allSliders, setAllSliders] = useState([]);
+  const dispatch = useDispatch();
+  const allSliders = useSelector((state) => state.sliderData);
+
   useEffect(() => {
     try {
       (async () => {
         const res = await axios.get(`${connectionString}/admin/allSliders`);
         console.log(res.data);
-        setAllSliders(res.data.Slider);
+        if (res.data.Slider) {
+          Object.values(res.data.Slider).forEach((current) => {
+           
+            dispatch(sliderSliceACtion.addSlider(current));
+          });
+        }
+       
       })();
     } catch (err) {
       console.log(err);
@@ -23,6 +34,7 @@ const AllSliders = () => {
       const response = await axios.delete(
         `${connectionString}/admin/deleteSlider/${id}`
       );
+      dispatch(sliderSliceACtion.deleteSlider(id));
       toast.success("movie deleted successfully");
     } catch (err) {}
   };
@@ -94,55 +106,57 @@ const AllSliders = () => {
                   <p className="p-2">status</p>
                 </div>
               </div>
-              {/* items */}
+              {console.log(allSliders)}
               {allSliders?.length > 0 &&
-                allSliders?.map((current, index) => (
-                  <div className="font-normal flex my-2  border-b border-gray-500">
-                    <div className="w-[50px] p-2  flex-shrink-0">
-                      <p className="p-2">{index + 1}</p>
-                    </div>
-                    <div className="w-[90px] text-white font-semibold flex-shrink-0">
-                      <select
-                        className="bg-[#3C445A] rounded-sm p-2"
-                        onChange={(event) => {
-                          handleSelectChange(current._id, event);
-                        }}
-                      >
-                        <option
-                          value=""
-                          // disabled
-                          className="border-b-2 border-gray-400"
+                allSliders?.map((current, index) => {
+                  return (
+                    <div className="font-normal flex my-2  border-b border-gray-500">
+                      <div className="w-[50px] p-2  flex-shrink-0">
+                        <p className="p-2">{index + 1}</p>
+                      </div>
+                      <div className="w-[90px] text-white font-semibold flex-shrink-0">
+                        <select
+                          className="bg-[#3C445A] rounded-sm p-2"
+                          onChange={(event) => {
+                            handleSelectChange(current._id, event);
+                          }}
                         >
-                          option
-                        </option>
-                        <option value="EDIT">EDIT</option>
-                        <option value="DELETE">DELETE</option>
-                      </select>
-                    </div>
-                    <div className="w-[150px]  flex-shrink-0  mx-8">
-                      <p className="p-2">{current?.type}</p>
-                    </div>
-                    <div className="w-[50%]  flex-shrink-1 mx-8">
-                      <p className="p-2">{current?.schemaName}</p>
-                    </div>
+                          <option
+                            value=""
+                            // disabled
+                            className="border-b-2 border-gray-400"
+                          >
+                            option
+                          </option>
+                          <option value="EDIT">EDIT</option>
+                          <option value="DELETE">DELETE</option>
+                        </select>
+                      </div>
+                      <div className="w-[150px]  flex-shrink-0  mx-8">
+                        <p className="p-2">{current?.type}</p>
+                      </div>
+                      <div className="w-[50%]  flex-shrink-1 mx-8">
+                        <p className="p-2">{current?.schemaName}</p>
+                      </div>
 
-                    <div className="w-[50%]  flex-shrink-1 mx-8">
-                      <p className="p-2">{current?.linkedMovie?.name}</p>
-                    </div>
+                      <div className="w-[50%]  flex-shrink-1 mx-8">
+                        <p className="p-2">{current?.linkedMovie?.name}</p>
+                      </div>
 
-                    <div className="w-[80px]  flex-shrink-0">
-                      {!current.visible ? (
-                        <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                          Not published
-                        </p>
-                      ) : (
-                        <p className="px-2 py-1 font-semibold bg-green-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                          Published
-                        </p>
-                      )}
+                      <div className="w-[80px]  flex-shrink-0">
+                        {!current.visible ? (
+                          <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
+                            Not published
+                          </p>
+                        ) : (
+                          <p className="px-2 py-1 font-semibold bg-green-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
+                            Published
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
             <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
               <p>Showing 1 to 10 of 155 entries</p>

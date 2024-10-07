@@ -204,7 +204,7 @@ const AddMovies = () => {
             </div>{" "}
             <div className="p-4 font-semibold w-[100%] ">
               <p>
-                Link Promotional Content :
+                Link Trailer Content :
                 <span className="text-red-500"> *</span>
                 <select
                   className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
@@ -214,7 +214,7 @@ const AddMovies = () => {
                     By Video Upload:
                   </option>
                   <option className="px-2 bg-[#2E3648]" value="URL">
-                    By URL (pre uploaded Image) :
+                    By URL  :
                   </option>
                 </select>
               </p>
@@ -226,7 +226,7 @@ const AddMovies = () => {
                     ref={moviesTrailerVideoRef}
                     type="file"
                   ></input>
-                )}{" "}
+                )}
                 {trailerType === "URL" && (
                   <input
                     className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"

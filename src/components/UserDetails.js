@@ -74,7 +74,7 @@ const UserDetails = () => {
                     <div class="text-sm flex text-center items-center  my-2 px-2">
                       <IoCall className="w-[20px] h-[20px] text-blue-400" />{" "}
                       <p className="text-wrap mw-[100%]  mx-2">
-                        +91 9559923286
+                      {userDetails?.mobile?userDetails?.mobile:<p className="bg-blue-500 px-2 rounded-md text-[.8rem]">not provided</p>}
                       </p>
                       <FaRegEdit className="cursor-pointer" />
                     </div>

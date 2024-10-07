@@ -8,7 +8,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 
 const EditLayout = () => {
   const params = useParams();
-  const connectionString = process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);
@@ -79,13 +79,15 @@ const EditLayout = () => {
     setLinkMovieStatus(!linkMoviesStatus);
   };
   const removeLinkedMovis = async (id) => {
-    console.log(id);
     try {
       const deleteMoviesResponse = await axios.post(
         `${connectionString}/admin/deleteLinkedMovie`,
         { movieId: id, LayoutId: AllLayoutsData._id }
       );
-    } catch (error) {}
+      toast.success("movie unlinked successfully");
+    } catch (error) {
+      toast.error("something went wrong");
+    }
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -140,38 +142,6 @@ const EditLayout = () => {
                     </div>
                   );
                 })}{" "}
-                {/* <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div>{" "}
-                <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                  <p>text 1</p>
-                  <IoMdCloseCircle className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer" />
-                </div> */}
               </div>
             </div>
             <div className="m-4 font-semibold">
