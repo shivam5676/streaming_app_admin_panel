@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MovieSelector from "./movieSelector";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddLayout = (req, res, next) => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -12,6 +13,7 @@ const AddLayout = (req, res, next) => {
   const [allMovies, setAllMovies] = useState([]);
   const [linkMoviesStatus, setLinkMovieStatus] = useState(false);
   const visibleRef = useRef();
+
   useEffect(() => {
     try {
       (async () => {
@@ -32,7 +34,7 @@ const AddLayout = (req, res, next) => {
       name: layOutNameRef.current.value,
       Description: layoutDescriptionRef.current.value,
       linkedMovies: selectedMoviesRef.current,
-      visible:visibleRef.current.value
+      visible: visibleRef.current.value,
     };
     console.log(layoutObj);
     try {

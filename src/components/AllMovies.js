@@ -2,16 +2,25 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
+import { movieSliceACtion } from "../store/movieSlice";
 const AllMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [allMovies, setAllMovies] = useState([]);
+  // const [allMovies, setAllMovies] = useState([]);
+  const dispatch = useDispatch();
+  const allMovies = useSelector((state) => state.movieData);
   useEffect(() => {
     try {
       (async () => {
         const res = await axios.get(`${connectionString}/admin/allMovies`);
-        setAllMovies(res.data.allMovies);
+        // setAllMovies(res.data.allMovies);
+        if (res.data.allMovies) {
+          Object.values(res.data.allMovies).forEach((current) => {
+            dispatch(movieSliceACtion.addMovie(current));
+          });
+        }
       })();
     } catch (err) {
       console.log(err);
@@ -24,6 +33,8 @@ const AllMovies = () => {
       const response = await axios.delete(
         `${connectionString}/admin/deleteMovie/${id}`
       );
+      dispatch(movieSliceACtion.deleteMovie(id));
+      toast.success("movie unlinked successfully");
     } catch (err) {}
   };
   const handleSelectChange = (id, event) => {

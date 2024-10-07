@@ -1,22 +1,44 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import AllMovies from "./AllMovies";
+import { layoutSliceACtion } from "../store/layoutSlice";
+import { toast } from "react-toastify";
 
 const AllLAyout = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [allMovies, setAllMovies] = useState([]);
+  // const [allMovies, setAllMovies] = useState([]);
+  const dispatch = useDispatch();
+  const allMovies = useSelector((state) => state.layOutData);
+  console.log(allMovies);
   useEffect(() => {
     try {
       (async () => {
         const res = await axios.get(`${connectionString}/admin/allLayouts`);
-        console.log(res.data);
-        setAllMovies(res.data.Layout);
+        if (res.data.Layout) {
+          Object.values(res.data.Layout).forEach((current) => {
+            console.log(current);
+            dispatch(layoutSliceACtion.addLayout(current));
+          });
+        }
       })();
     } catch (err) {
       console.log(err);
     }
   }, []);
+  const deleteLayoutHandler = async (id) => {
+    console.log(id);
+
+    try {
+      const response = await axios.delete(
+        `${connectionString}/admin/deleteLayout/${id}`
+      );
+      dispatch(layoutSliceACtion.deleteLayout(id));
+      toast.success("movie deleted successfully");
+    } catch (err) {}
+  };
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
     console.log(action);
@@ -24,7 +46,7 @@ const AllLAyout = () => {
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
     if (action === "DELETE") {
-      //   deleteMovieHandler(id);
+      deleteLayoutHandler(id);
     } else if (action === "EDIT") {
       navigate(`/allLayout/${id}`);
     }

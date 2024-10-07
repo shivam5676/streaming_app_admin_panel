@@ -8,9 +8,13 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { sliderSliceACtion } from "../store/sliderSlice";
 
 const AddSlider = () => {
+
   const connectionString = process.env.REACT_APP_API_URL;
+  const dispatch = useDispatch();  
   const [sliderType, setSliderType] = useState("Promotional");
   const [promotionalContentType, setpromotionalContentType] =
     useState("Image-upload");
@@ -20,7 +24,7 @@ const AddSlider = () => {
   const visibleRef = useRef();
   const [allMovies, setAllMovies] = useState([]);
   const promotionalImageRef = useRef();
-  const promotionalImageURLRef=useRef()
+  const promotionalImageURLRef = useRef();
   useEffect(() => {
     try {
       (async () => {
@@ -33,27 +37,6 @@ const AddSlider = () => {
     }
   }, []);
   const addSliderHandler = async () => {
-    // console.log(
-    //   // sliderNameRef.current.value,
-    //   // sliderTypeRef.current.value,
-    //   // linkedMovieIdRef.current,
-    //   sliderType,
-    //   "........................."
-    // );
-    // if (sliderNameRef.current.value.length == 0) {
-    //   toast.error("please select a valid slider name");
-    //   return;
-    // }
-    // if (sliderTypeRef.current.value.length == 0) {
-    //   toast.error("please select a valid movie type");
-    //   return;
-    // }
-    // if(!linkedMovieIdRef.current||!linkedMovieIdRef.current.value||linkedMovieIdRef.current.value.length==0){
-    //   toast.error("please select a valid movie")
-    //   return
-    // }
-    // console.log(visibleRef.current.value);
-    // return;
     const sliderObj = {
       name: sliderNameRef.current.value,
       type: sliderTypeRef.current.value,
@@ -62,18 +45,19 @@ const AddSlider = () => {
     const formdata = new FormData();
     formdata.append("name", sliderNameRef.current.value);
     formdata.append("type", sliderTypeRef.current.value);
-    formdata.append("movieId",linkedMovieIdRef.current );
+    formdata.append("movieId", linkedMovieIdRef.current);
     formdata.append("visible", visibleRef.current.value);
     if (
       promotionalContentType === "Image-upload" &&
       sliderType === "Promotional"
     ) {
-      formdata.append("promotionalImage",  promotionalImageRef.current.files[0]);
-    } if (
-      promotionalContentType === "URL" &&
-      sliderType === "Promotional"
-    ) {
-      formdata.append("PromotionalImageURL", promotionalImageURLRef.current.value);
+      formdata.append("promotionalImage", promotionalImageRef.current.files[0]);
+    }
+    if (promotionalContentType === "URL" && sliderType === "Promotional") {
+      formdata.append(
+        "PromotionalImageURL",
+        promotionalImageURLRef.current.value
+      );
     }
     // console.log(formdata);
     // formdata.forEach((current) => console.log(current));
@@ -83,7 +67,8 @@ const AddSlider = () => {
         `${connectionString}/admin/addSlider`,
         formdata
       );
-      console.log(response);
+      // console.log(response.data);
+      dispatch(sliderSliceACtion.addSlider(response.data));
       toast.success("slider added successfully");
     } catch (err) {
       console.log(err);
