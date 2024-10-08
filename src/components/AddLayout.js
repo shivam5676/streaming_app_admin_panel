@@ -4,26 +4,17 @@ import MovieSelector from "./movieSelector";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { layoutSliceACtion } from "../store/layoutSlice";
 
 const AddLayout = (req, res, next) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);
-  const [allMovies, setAllMovies] = useState([]);
+
   const [linkMoviesStatus, setLinkMovieStatus] = useState(false);
   const visibleRef = useRef();
-
-  useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allMovies`);
-        setAllMovies(res.data.allMovies);
-      })();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  const dispatch = useDispatch();
   const selectedMoviesHandler = (selectedMovies) => {
     console.log("object,", selectedMovies);
     selectedMoviesRef.current = selectedMovies;
@@ -38,12 +29,15 @@ const AddLayout = (req, res, next) => {
     };
     console.log(layoutObj);
     try {
-      const layoutResponse = await axios.post(
+      const response = await axios.post(
         `${connectionString}/admin/addLayout`,
         layoutObj
       );
-      console.log(layoutResponse);
-      toast.success("layout added successfully");
+      console.log(response.data.layoutResponse);
+      if (response.data.layoutResponse) {
+        dispatch(layoutSliceACtion.addLayout(response.data.layoutResponse));
+        toast.success("layout added successfully");
+      }
     } catch (err) {
       console.log(err);
       toast.error("something went wrong while creating layout");

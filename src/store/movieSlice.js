@@ -12,7 +12,7 @@ const movieSlice = createSlice({
     },
     deleteMovie(state, action) {
       const delId = action.payload;
-      const findId = state.find((current) => current._id === delId);
+      console.log(action.payload, "...>");
       const filterOutDeletedObject = state.filter(
         (current) => current._id != delId
       );

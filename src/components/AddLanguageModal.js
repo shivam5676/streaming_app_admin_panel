@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { languageSliceACtion } from "../store/languageSlice";
+import { useDispatch } from "react-redux";
 
 const AddLanguageModal = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const titleRef = useRef("");
+  const dispatch=useDispatch()
 //   const iconref = useRef("");
   const addlAnguageHandler = async () => {
     const formData = new FormData();
@@ -22,7 +25,12 @@ const AddLanguageModal = (props) => {
           },
         }
       );
-      toast.success("languages Added Successfully...");
+
+      if (res.data.language) {
+        dispatch(languageSliceACtion.addLanguage(res.data.language));
+        toast.success("language Added Successfully...");
+      }
+     
     } catch (err) {
       console.log(err);
     }

@@ -67,7 +67,7 @@ const AddSlider = () => {
         `${connectionString}/admin/addSlider`,
         formdata
       );
-      // console.log(response.data);
+      console.log(response.data);
       dispatch(sliderSliceACtion.addSlider(response.data));
       toast.success("slider added successfully");
     } catch (err) {

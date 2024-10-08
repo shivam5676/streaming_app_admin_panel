@@ -11,22 +11,23 @@ const AllSliders = () => {
   const allSliders = useSelector((state) => state.sliderData);
 
   useEffect(() => {
-    try {
+    if (allSliders.length === 0){
+       try {
       (async () => {
         const res = await axios.get(`${connectionString}/admin/allSliders`);
         console.log(res.data);
         if (res.data.Slider) {
           Object.values(res.data.Slider).forEach((current) => {
-           
             dispatch(sliderSliceACtion.addSlider(current));
           });
         }
-       
       })();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+    }
+   
+  }, [allSliders, dispatch]);
   const deleteSliderHandler = async (id) => {
     console.log(id);
 

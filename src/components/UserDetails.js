@@ -8,8 +8,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import UserProfileDetailsEditModal from "./UserProfileDetailsEditModal";
 const UserDetails = () => {
-  // const [reasonSelector, setReasonSelector] = useState(null);
+  const [detailsEditor, setDetailsEditor] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const params = useParams();
   const connectionString = process.env.REACT_APP_API_URL;
@@ -60,7 +61,9 @@ const UserDetails = () => {
                 <div class="py-2 px-2 text-white">
                   <div class=" font-bold font-title  justify-center flex">
                     <p className="text-wrap mx-2 ">{userDetails?.name}</p>
-                    <FaRegEdit className="cursor-pointer" />
+                    <FaRegEdit className="cursor-pointer" onClick={() => {
+                          setDetailsEditor("name");
+                        }}/>
                   </div>
                   <div className="flex font-semibold justify-center  max-sm:flex-col">
                     {" "}
@@ -69,14 +72,30 @@ const UserDetails = () => {
                       <p className="text-wrap w-[100%] mx-2 ">
                         {userDetails?.email}
                       </p>
-                      <FaRegEdit className="cursor-pointer" />
-                    </div>{" "}
+                      <FaRegEdit
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setDetailsEditor("email");
+                        }}
+                      />
+                    </div>
                     <div class="text-sm flex text-center items-center  my-2 px-2">
                       <IoCall className="w-[20px] h-[20px] text-blue-400" />{" "}
                       <p className="text-wrap mw-[100%]  mx-2">
-                      {userDetails?.mobile?userDetails?.mobile:<p className="bg-blue-500 px-2 rounded-md text-[.8rem]">not provided</p>}
+                        {userDetails?.mobile != "null" ? (
+                          userDetails?.mobile
+                        ) : (
+                          <p className="bg-blue-500 px-2 rounded-md text-[.8rem]">
+                            not provided
+                          </p>
+                        )}
                       </p>
-                      <FaRegEdit className="cursor-pointer" />
+                      <FaRegEdit
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setDetailsEditor("mobile");
+                        }}
+                      />
                     </div>
                   </div>
                   <div className="flex justify-center items-center text-sm  font-semibold ">
@@ -84,7 +103,12 @@ const UserDetails = () => {
                     <p className="border-b-2 flex items-center px-4 mx-2 h-10">
                       ***********
                     </p>
-                    <p className="text-[.75rem] bg-red-400 text-white px-2 py-1 rounded cursor-pointer">
+                    <p
+                      className="text-[.75rem] bg-red-400 text-white px-2 py-1 rounded cursor-pointer"
+                      onClick={() => {
+                        setDetailsEditor("mobile");
+                      }}
+                    >
                       Change password
                     </p>
                   </div>
@@ -221,6 +245,14 @@ const UserDetails = () => {
           />
         </div>
       </div>
+      {detailsEditor && (
+        <UserProfileDetailsEditModal
+          target={detailsEditor}
+          closeModal={() => {
+            setDetailsEditor(null);
+          }}
+        />
+      )}
     </>
   );
 };
