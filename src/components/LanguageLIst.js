@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AddGenreModal from "./AddGenreModal";
 import { toast } from "react-toastify";
 import AddLanguageModal from "./AddLanguageModal";
+import { languageSliceACtion } from "../store/languageSlice";
 // import LanguageList from './LanguageLIst';
 
 const LanguageList = () => {
@@ -16,6 +17,11 @@ const LanguageList = () => {
       (async () => {
         const res = await axios.get(`${connectionString}/admin/allLanguages`);
         console.log(res.data);
+        if (res.data.Languages) {
+          Object.values(res.data.Languages).forEach((current) => {
+            dispatch(languageSliceACtion.addLanguage(current));
+          });
+        }
         setAllLanguages(res.data.Languages);
         // setAllMovies(res.data.Layout);
       })();
@@ -47,7 +53,7 @@ const LanguageList = () => {
       navigate(`/allLayout/${id}`);
     }
   };
-  console.log(allLanguages)
+  console.log(allLanguages);
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">

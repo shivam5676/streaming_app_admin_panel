@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { GenreSliceACtion } from "../store/genreSlice";
 
 const AddGenreModal = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const titleRef = useRef("");
   const iconref = useRef("");
+  const dispatch = useDispatch();
   const addGenreHAndler = async () => {
     const formData = new FormData();
     formData.append("name", titleRef.current.value);
@@ -22,7 +25,11 @@ const AddGenreModal = (props) => {
           },
         }
       );
-      toast.success("Genre Added Successfully...");
+      console.log(res.data.genre);
+      if (res.data.genre) {
+        dispatch(GenreSliceACtion.addGenre(res.data.genre));
+        toast.success("Genre Added Successfully...");
+      }
     } catch (err) {
       console.log(err);
     }

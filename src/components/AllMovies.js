@@ -11,30 +11,33 @@ const AllMovies = () => {
   // const [allMovies, setAllMovies] = useState([]);
   const dispatch = useDispatch();
   const allMovies = useSelector((state) => state.movieData);
+  console.log(allMovies);
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allMovies`);
-        // setAllMovies(res.data.allMovies);
-        if (res.data.allMovies) {
-          Object.values(res.data.allMovies).forEach((current) => {
-            dispatch(movieSliceACtion.addMovie(current));
-          });
-        }
-      })();
-    } catch (err) {
-      console.log(err);
+    if (allMovies.length === 0) {
+      try {
+        (async () => {
+          const res = await axios.get(`${connectionString}/admin/allMovies`);
+          // setAllMovies(res.data.allMovies);
+          if (res.data.allMovies) {
+            Object.values(res.data.allMovies).forEach((current) => {
+              dispatch(movieSliceACtion.addMovie(current));
+            });
+          }
+        })();
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, []);
+  }, [allMovies, dispatch]);
   const deleteMovieHandler = async (id) => {
     console.log(id);
-    toast.success("movie deleted successfully");
+
     try {
       const response = await axios.delete(
         `${connectionString}/admin/deleteMovie/${id}`
       );
       dispatch(movieSliceACtion.deleteMovie(id));
-      toast.success("movie unlinked successfully");
+      toast.success("movie deleted successfully");
     } catch (err) {}
   };
   const handleSelectChange = (id, event) => {

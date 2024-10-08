@@ -2,32 +2,34 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AllMovies from "./AllMovies";
+// import allLayouts from "./allLayouts";
 import { layoutSliceACtion } from "../store/layoutSlice";
 import { toast } from "react-toastify";
 
 const AllLAyout = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  // const [allMovies, setAllMovies] = useState([]);
+
   const dispatch = useDispatch();
-  const allMovies = useSelector((state) => state.layOutData);
-  console.log(allMovies);
+  const allLayouts = useSelector((state) => state.layOutData);
+  console.log(allLayouts);
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allLayouts`);
-        if (res.data.Layout) {
-          Object.values(res.data.Layout).forEach((current) => {
-            console.log(current);
-            dispatch(layoutSliceACtion.addLayout(current));
-          });
-        }
-      })();
-    } catch (err) {
-      console.log(err);
+    if (allLayouts.length === 0) {
+      try {
+        (async () => {
+          const res = await axios.get(`${connectionString}/admin/allLayouts`);
+          if (res.data.Layout) {
+            Object.values(res.data.Layout).forEach((current) => {
+              console.log(current);
+              dispatch(layoutSliceACtion.addLayout(current));
+            });
+          }
+        })();
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, []);
+  }, [allLayouts, dispatch]);
   const deleteLayoutHandler = async (id) => {
     console.log(id);
 
@@ -104,8 +106,8 @@ const AllLAyout = () => {
                 </div>
               </div>
               {/* items */}
-              {allMovies?.length > 0 &&
-                allMovies.map((current, index) => (
+              {allLayouts?.length > 0 &&
+                allLayouts.map((current, index) => (
                   <div className="font-normal flex my-2  border-b border-gray-500">
                     <div className="w-[50px] p-2  flex-shrink-0">
                       <p className="p-2">{index + 1}</p>

@@ -8,6 +8,8 @@ import { FaTrash } from "react-icons/fa";
 import GenreSelector from "./genreSelector";
 import { toast } from "react-toastify";
 import LanguageSelector from "./LanguageSelector";
+import { useDispatch } from "react-redux";
+import { movieSliceACtion } from "../store/movieSlice";
 
 const AddMovies = () => {
   const titleRef = useRef();
@@ -15,7 +17,7 @@ const AddMovies = () => {
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
-  const languageRef=useRef()
+  const languageRef = useRef();
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const genre = [];
   const [trailerType, setTrailerType] = useState("Upload");
@@ -26,7 +28,7 @@ const AddMovies = () => {
   const moviesTrailerVideoRef = useRef();
   const moviesTrailerVideoLinkRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
-
+  const dispatch = useDispatch();
   const addMoviesHandler = async () => {
     console.log(layOutArrayRef.current); //array of object
     const formdata = new FormData();
@@ -36,8 +38,8 @@ const AddMovies = () => {
     formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
-    formdata.append("genre", JSON.stringify(genreRef.current))
-    formdata.append("language", JSON.stringify(languageRef.current))
+    formdata.append("genre", JSON.stringify(genreRef.current));
+    formdata.append("language", JSON.stringify(languageRef.current));
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -54,6 +56,10 @@ const AddMovies = () => {
           },
         }
       );
+      console.log(response.data.movieData);
+      if (response.data.movieData) {
+        dispatch(movieSliceACtion.addMovie(response.data.movieData));
+      }
       toast.success("movie added successfully");
     } catch (err) {}
   };
@@ -67,10 +73,10 @@ const AddMovies = () => {
     genreRef.current = value;
     // console.log(layOutArray);
   };
-  const languageHandler=(value)=>{
+  const languageHandler = (value) => {
     console.log(value);
-    languageRef.current=value
-  }
+    languageRef.current = value;
+  };
   const getThumbnail = (thumbnail) => {
     console.log(thumbnail);
     thumbnailRef.current = thumbnail;
@@ -190,7 +196,7 @@ const AddMovies = () => {
             <div className="flex sm:flex-row flex-col">
               <div className="p-4 font-semibold w-[100%]">
                 <p>Content Language:</p>
-                <LanguageSelector selectedLanguage={languageHandler}/>
+                <LanguageSelector selectedLanguage={languageHandler} />
                 {/* <GenreSelector selectedGenre={GenreHandler} /> */}
 
                 {/* we need to made a language selector like genere selector and in backend we will append languages and content id vice versa */}
@@ -204,8 +210,7 @@ const AddMovies = () => {
             </div>{" "}
             <div className="p-4 font-semibold w-[100%] ">
               <p>
-                Link Trailer Content :
-                <span className="text-red-500"> *</span>
+                Link Trailer Content :<span className="text-red-500"> *</span>
                 <select
                   className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
                   onChange={handletrailerTypeChange}
@@ -214,7 +219,7 @@ const AddMovies = () => {
                     By Video Upload:
                   </option>
                   <option className="px-2 bg-[#2E3648]" value="URL">
-                    By URL  :
+                    By URL :
                   </option>
                 </select>
               </p>
