@@ -21,6 +21,7 @@ import LanguageList from "./components/LanguageLIst";
 import EdducationQuestionGenerator from "./components/educationQuestionGenerator";
 import AllUsers from "./components/AllUSers";
 import UserDetails from "./components/UserDetails";
+import DashBoard from "./components/DashBoard";
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -61,7 +62,7 @@ function App() {
             element={<EdducationQuestionGenerator />}
           ></Route>{" "}
           <Route path="allUsers" element={<AllUsers />}></Route><Route path="/userDetails/:uid" element={<UserDetails/>}></Route>
-          <Route path="*" element={<Maintenece />}></Route>
+          <Route path="*" element={<DashBoard/>}></Route>
         </Routes>
       </div>
     </div>
