@@ -5,45 +5,49 @@ import AddGenreModal from "./AddGenreModal";
 import { toast } from "react-toastify";
 import AddLanguageModal from "./AddLanguageModal";
 import { languageSliceACtion } from "../store/languageSlice";
-// import LanguageList from './LanguageLIst';
+import { useDispatch, useSelector } from "react-redux";
+
 
 const LanguageList = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [allLanguages, setAllLanguages] = useState([]);
+  // const [allLanguages, setAllLanguages] = useState([]);
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const allLanguages = useSelector((state) => state.languageData);
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allLanguages`);
-        console.log(res.data);
-        if (res.data.Languages) {
-          Object.values(res.data.Languages).forEach((current) => {
-            dispatch(languageSliceACtion.addLanguage(current));
-          });
-        }
-        setAllLanguages(res.data.Languages);
-        // setAllMovies(res.data.Layout);
-      })();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-  const deleteGenresHandler = async (id) => {
-    console.log(id);
+    if (allLanguages.length == 0) {
+      try {
+        (async () => {
+          const res = await axios.get(`${connectionString}/admin/allLanguages`);
 
+          if (res.data.Languages) {
+            Object.values(res.data.Languages).forEach((current) => {
+              dispatch(languageSliceACtion.addLanguage(current));
+            });
+          }
+        })();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [allLanguages, dispatch]);
+  const deleteGenresHandler = async (id) => {
     try {
       const response = await axios.delete(
         `${connectionString}/admin/deleteLanguage/${id}`
       );
+      dispatch(languageSliceACtion.deleteLanguage(id));
       toast.success("Genre deleted successfully");
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
-    console.log(action);
+  
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
@@ -53,7 +57,7 @@ const LanguageList = () => {
       navigate(`/allLayout/${id}`);
     }
   };
-  console.log(allLanguages);
+
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="text-white px-2 py-4 ">

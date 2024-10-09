@@ -14,31 +14,32 @@ const AllGenreList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const allGenres = useSelector((state) => state.genreData);
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allGenres`);
-        console.log(res.data);
-        if (res.data.allGenres) {
-          Object.values(res.data.allGenres).forEach((current) => {
-            dispatch(GenreSliceACtion.addGenre(current));
-          });
-        }
+    if (allGenres.length == 0) {
+      try {
+        (async () => {
+          const res = await axios.get(`${connectionString}/admin/allGenres`);
+          console.log(res.data);
+          if (res.data.allGenres) {
+            Object.values(res.data.allGenres).forEach((current) => {
+              dispatch(GenreSliceACtion.addGenre(current));
+            });
+          }
 
-        // setAllGenres(res.data.allGenres);
-        // setAllMovies(res.data.Layout);
-      })();
-    } catch (err) {
-      console.log(err);
+     
+        })();
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, []);
+  }, [allGenres]);
   const deleteGenresHandler = async (id) => {
-    console.log(id);
+
 
     try {
       const response = await axios.delete(
         `${connectionString}/admin/deleteGenre/${id}`
       );
-      dispatch(GenreSliceACtion.deleteGenre(id))
+      dispatch(GenreSliceACtion.deleteGenre(id));
       toast.success("Genre deleted successfully");
     } catch (err) {}
   };
