@@ -5,7 +5,7 @@ import {
   NativeSelect,
   Select,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import movieIcon from "../assests/movie-animate.gif";
 import webseriesIcon from "../assests/webseriesIcon-animate.gif";
 import layoutIcon from "../assests/layout-animate.gif";
@@ -20,7 +20,20 @@ import PyramidGraph from "./PyramidGraph";
 import { VictoryPie } from "./../../node_modules/victory-pie/es/victory-pie";
 import ProductReportCard from "./dashboard/ProductReportCard";
 import DoughnutData from "./doughnutData";
+import axios from "axios";
 const DashBoard = () => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  useEffect(() => {
+    async function fetchDashboardData() {
+      try {
+        const response = await axios.get(
+          `${connectionString}/admin/getDashboard/year` //all,year,month
+        );
+        console.log(response);
+      } catch (error) {}
+    }
+    fetchDashboardData();
+  }, []);
   const allLanguages = [
     {
       _id: "66fa322b141165d54e7d2239",
@@ -142,10 +155,10 @@ const DashBoard = () => {
   ];
   const handleSelectChange = () => {};
   return (
-    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <div className="text-[1rem] font-bold flex justify-between items-center">
-          <p className="text-[1rem] font-bold">DashBoard</p>
+    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
+      <div className="text-white px-2 py-2 ">
+        <div className="text-[.9rem] font-bold flex justify-between items-center">
+          <p className="text-[1rem] font-semibold">DashBoard</p>
           <div className="border-2">
             {" "}
             <FormControl fullWidth>
@@ -187,33 +200,53 @@ const DashBoard = () => {
             </FormControl>
           </div>
         </div>
-        <p className="text-[.95rem] font-semibold text-gray-400">
+        <p className="text-[.9rem] font-semibold text-gray-400">
           <span>Welcome to Reelies Dashboard</span>
         </p>
         <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">
-          <ProductReportCard name={"Movie"} cardIcon={movieIcon} />
-          <ProductReportCard name={"WebSeries"} cardIcon={webseriesIcon} />
-          <ProductReportCard name={"Layouts"} cardIcon={layoutIcon} />
-          <ProductReportCard name={"Sliders"} cardIcon={sliderIcon} />
+          <ProductReportCard
+            name={"Movie"}
+            cardIcon={movieIcon}
+            published={"590"}
+            UnPublished={"90"}
+          />
+          <ProductReportCard
+            name={"WebSeries"}
+            cardIcon={webseriesIcon}
+            published={"190"}
+            UnPublished={"20"}
+          />
+          <ProductReportCard
+            name={"Layouts"}
+            cardIcon={layoutIcon}
+            published={"5"}
+            UnPublished={"9"}
+          />
+          <ProductReportCard
+            name={"Sliders"}
+            cardIcon={sliderIcon}
+            published={"9"}
+            // UnPublished={"0"}
+          />
         </section>
         <section className="w-[100%]   py-2 ">
           {/* <div className=""> */}
           <div className="gap-4 w-[100%] flex flex-col md:flex-row  ">
             <div className="w-[100%] md:w-[40%]  bg-[#2A3042]">
-              <p className="p-4 text-[1rem] font-semibold">
+              <p className="p-4 text-[.9rem] font-semibold">
                 Content Views <span>(All Time)</span>
               </p>
-              <div className="  h-[300px] ">
+              <div className="  h-[300px] w-[100%] min-w-[250px] overflow-x-hidden">
                 <DoughnutData />
               </div>
             </div>
 
-            <div className="  md:w-[60%]  bg-[#2A3042]">
+            <div className="   md:w-[60%]  bg-[#2A3042]">
               {" "}
-              <p className="p-4 text-[1rem] font-semibold">
+              <p className="p-4 text-[.9rem] font-semibold">
                 Top Movies & shows <span>(All Time)</span>
               </p>
-              <div className="m-4 font-normal text-[.9rem] min-w-[640px]">
+              <div className="m-4 font-normal text-[.9rem] text-[#A8B2BC]  overflow-x-auto">
                 <div className="font-semibold flex border-b pb-2 border-gray-500">
                   <div className="w-[50px] flex-shrink-0">
                     <p className="p-2">sr</p>
@@ -222,7 +255,7 @@ const DashBoard = () => {
                     <p className="p-2">action</p>
                   </div>
                   {/* <div className=" h-[120px] w-[100px] p-2"></div> */}
-                  <div className="w-[100%] flex-shrink-1 mx-8">
+                  <div className="w-[100%] flex-shrink-1 min-w-[100px] mx-8">
                     <p className="p-2">Name</p>
                   </div>
 
@@ -269,7 +302,7 @@ const DashBoard = () => {
                       )}`}
                       className=" h-[120px] w-[100px] p-2"
                     ></img> */}
-                      <div className="w-[100%]  flex-shrink-1 mx-8">
+                      <div className="w-[100%]  flex-shrink-1 min-w-[100px] mx-8">
                         <p className="p-2">{current.name}</p>
                       </div>
 
@@ -292,9 +325,11 @@ const DashBoard = () => {
           {/* </div> */}
         </section>
         {/* new users */}
-        <section className="w-[100%]   py-2 ">
-          <div className="my-4 font-normal text-[.9rem] md:min-w-[640px] bg-[#2A3042]">
-            <div className="font-semibold flex border-b pb-2 border-gray-500">
+        <section className="w-[100%]  bg-[#2A3042]  py-2 ">
+          {" "}
+          <div className="p-4 text-[.9rem] font-semibold">New Users</div>
+          <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
+            <div className="font-semibold flex border-b pb-2 text-[#A8B2BC] border-gray-500 px-2">
               <div className="w-[50px] flex-shrink-0">
                 <p className="p-2">sr</p>
               </div>
@@ -320,7 +355,7 @@ const DashBoard = () => {
             {/* items */}
             {allMovies.length > 0 &&
               allMovies.map((current, index) => (
-                <div className="font-normal flex my-2  border-b border-gray-500">
+                <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
                   <div className="w-[50px] p-2  flex-shrink-0">
                     <p className="p-2">{index + 1}</p>
                   </div>
@@ -355,7 +390,6 @@ const DashBoard = () => {
                     <p className="p-2">{current.name}</p>
                   </div>
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                    {console.log(current, "cu---------")}
                     <p className="p-2 break-words">
                       {" "}
                       {current.genre.map((currentIndex) => {

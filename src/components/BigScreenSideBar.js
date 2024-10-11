@@ -25,14 +25,14 @@ const BigScreenSideBar = (props) => {
   };
   return (
     <div
-      className={`w-[240px] z-[10000] bg-[#2A3142] h-[calc(100vh-70px)] pt-4  overflow-y-auto  ${
+      className={`w-[240px] text-[#A8B2BC] z-[10000] bg-[#2A3142] h-[calc(100vh-70px)] pt-4  overflow-y-auto  ${
         width < 992 ? "absolute flex flex-col" : "flex flex-shrink-0 flex-col"
       }`}
     >
-      <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+      <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
         <p className="text-[.75rem]">MAIN</p>
       </div>
-      <div className=" text-white  hover:bg-[#2F374A] cursor-pointer">
+      <div className=" hover:text-white  hover:bg-[#2F374A] cursor-pointer">
         <div
           className="mx-4 h-[50px] flex items-center"
           onClick={() => {
@@ -40,16 +40,16 @@ const BigScreenSideBar = (props) => {
           }}
         >
           <HiOutlineHome className="h-[20px] w-[20px]" />
-          <p className="text-[1rem] px-4 font-semibold">Dashboard</p>
+          <p className="text-[.9rem] px-4 font-semibold">Dashboard</p>
         </div>
       </div>
       <section>
-        <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">DESIGN</p>
         </div>
         <div>
           <div
-            className=" text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
             onClick={() => {
               currentMenuOpen == "Hero Section"
                 ? currentMenuHandler(null)
@@ -60,7 +60,7 @@ const BigScreenSideBar = (props) => {
               <div className="flex">
                 {" "}
                 <GrVmMaintenance className="h-[20px] w-[20px]" />
-                <p className="text-[1rem] px-4 font-semibold">Hero Section</p>
+                <p className="text-[.9rem] px-4 font-semibold">Hero Section</p>
               </div>
               {currentMenuOpen == "Hero Section" ? (
                 <MdArrowDropUp className="h-[25px] w-[25px]" />
@@ -70,7 +70,7 @@ const BigScreenSideBar = (props) => {
             </div>
           </div>
           {currentMenuOpen == "Hero Section" && (
-            <div className="font-[.8rem] text-white">
+            <div className="text-[.85rem] text-white">
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
@@ -95,7 +95,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
             onClick={() => {
               currentMenuOpen == "Layout Manager"
                 ? currentMenuHandler(null)
@@ -106,7 +106,7 @@ const BigScreenSideBar = (props) => {
               <div className="flex">
                 {" "}
                 <TfiLayoutGrid3 className="h-[20px] w-[20px]" />
-                <p className="text-[1rem] px-4 font-semibold">Layout Manager</p>
+                <p className="text-[.9rem] px-4 font-semibold">Layout Manager</p>
               </div>
               {currentMenuOpen == "Layout Manager" ? (
                 <MdArrowDropUp className="h-[25px] w-[25px]" />
@@ -116,7 +116,7 @@ const BigScreenSideBar = (props) => {
             </div>
           </div>
           {currentMenuOpen == "Layout Manager" && (
-            <div className="font-[.8rem] text-white">
+            <div className="text-[.85rem] text-white">
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
@@ -142,12 +142,12 @@ const BigScreenSideBar = (props) => {
         </div>
       </section>
       <section>
-        <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">CONTENT</p>
         </div>
         <div>
           <div
-            className=" text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
             onClick={() => {
               currentMenuOpen == "Movie Section"
                 ? currentMenuHandler(null)
@@ -158,7 +158,7 @@ const BigScreenSideBar = (props) => {
               <div className="flex">
                 {" "}
                 <BiSolidCameraMovie className="h-[20px] w-[20px]" />
-                <p className="text-[1rem] px-4 font-semibold">Movie Section</p>
+                <p className="text-[.9rem] px-4 font-semibold">Movie Section</p>
               </div>
               {currentMenuOpen == "Movie Section" ? (
                 <MdArrowDropUp className="h-[25px] w-[25px]" />
@@ -168,7 +168,7 @@ const BigScreenSideBar = (props) => {
             </div>
           </div>
           {currentMenuOpen == "Movie Section" && (
-            <div className="font-[.8rem] text-white">
+            <div className="text-[.85rem] text-white">
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
@@ -193,7 +193,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
             onClick={() => {
               currentMenuOpen == "Web-shows Section"
                 ? currentMenuHandler(null)
@@ -204,7 +204,7 @@ const BigScreenSideBar = (props) => {
               <div className="flex items-center">
                 {" "}
                 <SiWebflow className="h-[20px] w-[20px]" />
-                <p className="text-[1rem] px-4 font-semibold">
+                <p className="text-[.9rem] px-4 font-semibold">
                   Web Series Section
                 </p>
               </div>
@@ -216,7 +216,7 @@ const BigScreenSideBar = (props) => {
             </div>
           </div>
           {currentMenuOpen == "Web-shows Section" && (
-            <div className="font-[.8rem] text-white">
+            <div className="text-[.85rem] text-white">
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
@@ -237,7 +237,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
             onClick={() => {
               currentMenuOpen == "Ads Section"
                 ? currentMenuHandler(null)
@@ -248,7 +248,7 @@ const BigScreenSideBar = (props) => {
               <div className="flex">
                 {" "}
                 <RiAdvertisementFill className="h-[20px] w-[20px]" />
-                <p className="text-[1rem] px-4 font-semibold">Ads Section</p>
+                <p className="text-[.9rem] px-4 font-semibold">Ads Section</p>
               </div>
               {currentMenuOpen == "Ads Section" ? (
                 <MdArrowDropUp className="h-[25px] w-[25px]" />
@@ -258,7 +258,7 @@ const BigScreenSideBar = (props) => {
             </div>
           </div>
           {currentMenuOpen == "Ads Section" && (
-            <div className="font-[.8rem] text-white">
+            <div className="text-[.85rem] text-white">
               <div
                 className="flex h-[40px] items-center cursor-pointer ps-12"
                 onClick={() => {
@@ -279,26 +279,26 @@ const BigScreenSideBar = (props) => {
         </div>
       </section>
       <section>
-        <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">USER MANAGEMENT</p>
         </div>
         <div
-          className=" text-white  hover:bg-[#2F374A]"
+          className=" hover:text-white  hover:bg-[#2F374A]"
           onClick={() => {
             navigate("/allUsers");
           }}
         >
           <div className="mx-4 h-[50px] flex items-center">
             <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[1rem] px-4 font-semibold">Users</p>
+            <p className="text-[.9rem] px-4 font-semibold">Users</p>
           </div>
         </div>
       </section>
       <section>
-        <div className="mx-4 text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">OTHERS</p>
         </div>
-        <div className=" text-white  hover:bg-[#2F374A]">
+        <div className=" hover:text-white  hover:bg-[#2F374A]">
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {
@@ -306,7 +306,7 @@ const BigScreenSideBar = (props) => {
             }}
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[1rem] px-4 font-semibold">QUESTION GENERATOR</p>
+            <p className="text-[.9rem] px-4 font-semibold">QUESTION GENERATOR</p>
           </div>
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
@@ -315,7 +315,7 @@ const BigScreenSideBar = (props) => {
             }}
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[1rem] px-4 font-semibold">Genres</p>
+            <p className="text-[.9rem] px-4 font-semibold">Genres</p>
           </div>
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
@@ -324,7 +324,7 @@ const BigScreenSideBar = (props) => {
             }}
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[1rem] px-4 font-semibold">Languages</p>
+            <p className="text-[.9rem] px-4 font-semibold">Languages</p>
           </div>
         </div>
       </section>

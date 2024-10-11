@@ -5,6 +5,7 @@ import AddGenreModal from "./AddGenreModal";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { GenreSliceACtion } from "../store/genreSlice";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const AllGenreList = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -24,8 +25,6 @@ const AllGenreList = () => {
               dispatch(GenreSliceACtion.addGenre(current));
             });
           }
-
-     
         })();
       } catch (err) {
         console.log(err);
@@ -33,8 +32,6 @@ const AllGenreList = () => {
     }
   }, [allGenres]);
   const deleteGenresHandler = async (id) => {
-
-
     try {
       const response = await axios.delete(
         `${connectionString}/admin/deleteGenre/${id}`
@@ -59,15 +56,12 @@ const AllGenreList = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Genres</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Others</span>
-          <span className="mx-2"> &gt; </span>
-          <span>Genres</span>
-        </p>
-      </div>
+      <RoutesInfoDiv
+        mainHeading={"All Genres"}
+        websiteName={"Reelies"}
+        sectionName={"Others"}
+        currentDir={"Genres"}
+      />
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">

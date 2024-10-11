@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
 import { movieSliceACtion } from "../store/movieSlice";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 const AllMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -54,15 +55,8 @@ const AllMovies = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Movies</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Movies section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>All Movies</span>
-        </p>
-      </div>
+     
+      <RoutesInfoDiv mainHeading={"All Movies"} websiteName={"Reelies"} sectionName={"Movies section"} currentDir={"All Movies"}></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">

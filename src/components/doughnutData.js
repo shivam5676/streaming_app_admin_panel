@@ -74,7 +74,7 @@ const DoughnutData = () => {
   return (
     <div className=" h-[100%]  w-[100%] flex items-center justify-center">
       <style>{SAMPLE_CSS}</style>
-      <div className="control-section row h-[100%] w-[100%] flex items-center justify-center">
+      <div className="control-section  h-[100%] w-[100%] flex items-center justify-center">
         <AccumulationChartComponent
           id="pie-chart"
           title=""
