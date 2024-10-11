@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import LanguageSelector from "./LanguageSelector";
 import { useDispatch } from "react-redux";
 import { movieSliceACtion } from "../store/movieSlice";
+import RoutesInfoDiv from './RoutesInfoDiv';
 
 const AddMovies = () => {
   const titleRef = useRef();
@@ -143,15 +144,12 @@ const AddMovies = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">Add Movie</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Movies section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>Add Movie</span>
-        </p>
-      </div>
+     <RoutesInfoDiv
+        mainHeading={"Add Movies"}
+        websiteName={"Reelies"}
+        sectionName={"Movies section"}
+        currentDir={"Add Movies"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         <div className="flex gap-6 flex-col xl:flex-row">
           <div className="bg-[#2A3042] flex-1  rounded-md text-white">

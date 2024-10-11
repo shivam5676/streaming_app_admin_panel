@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const AllUsers = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -40,15 +41,8 @@ const AllUsers = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Users</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Users section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>All Users</span>
-        </p>
-      </div>
+     
+      <RoutesInfoDiv mainHeading={"All User"} websiteName={"Reelies"} sectionName={"Users section"} currentDir={"All Users"}></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">

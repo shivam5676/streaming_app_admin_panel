@@ -10,11 +10,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { sliderSliceACtion } from "../store/sliderSlice";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const AddSlider = () => {
-
   const connectionString = process.env.REACT_APP_API_URL;
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const [sliderType, setSliderType] = useState("Promotional");
   const [promotionalContentType, setpromotionalContentType] =
     useState("Image-upload");
@@ -88,15 +88,12 @@ const AddSlider = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">Add Slider</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Hero section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>Add Slider</span>
-        </p>
-      </div>
+      <RoutesInfoDiv
+        mainHeading={"Add Slider"}
+        websiteName={"Reelies"}
+        sectionName={"Hero section"}
+        currentDir={"Add Slider"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">

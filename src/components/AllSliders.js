@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { sliderSliceACtion } from "../store/sliderSlice";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const AllSliders = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -53,15 +54,8 @@ const AllSliders = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">All Sliders</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Hero section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>All Sliders</span>
-        </p>
-      </div>
+      
+      <RoutesInfoDiv mainHeading={"All Sliders"} websiteName={"Reelies"} sectionName={"Hero section"} currentDir={"All Sliders"}></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">

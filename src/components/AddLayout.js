@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { layoutSliceACtion } from "../store/layoutSlice";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const AddLayout = (req, res, next) => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -48,15 +49,12 @@ const AddLayout = (req, res, next) => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">Add Layout</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Layout section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>Add Layout</span>
-        </p>
-      </div>
+      <RoutesInfoDiv
+        mainHeading={"Add Layout"}
+        websiteName={"Reelies"}
+        sectionName={"Layout section"}
+        currentDir={"Add Layout"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
