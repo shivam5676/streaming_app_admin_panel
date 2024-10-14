@@ -9,6 +9,7 @@ import {
 
 const ProductReportCard = ({ published, UnPublished,name,cardIcon }) => {
   const total = (+published || 0) + (+UnPublished || 0);
+  
   return (
     <div className="bg-[#626ED4] h-[156px] flex flex-col p-4 rounded">
       <div className="flex">
