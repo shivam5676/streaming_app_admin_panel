@@ -5,34 +5,47 @@ import {
   NativeSelect,
   Select,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import movieIcon from "../assests/movie-animate.gif";
 import webseriesIcon from "../assests/webseriesIcon-animate.gif";
 import layoutIcon from "../assests/layout-animate.gif";
 import sliderIcon from "../assests/slider-card-animate.gif";
-import arrowAnimate from "../assests/upward_arrow-animate.gif";
-import {
-  FaArrowAltCircleDown,
-  FaArrowAltCircleUp,
-  FaArrowUp,
-} from "react-icons/fa";
-import PyramidGraph from "./PyramidGraph";
-import { VictoryPie } from "./../../node_modules/victory-pie/es/victory-pie";
+
 import ProductReportCard from "./dashboard/ProductReportCard";
 import DoughnutData from "./doughnutData";
 import axios from "axios";
+import firstPlace from "../assests/1-1.png";
+import secondPlace from "../assests/2nd-prize.png";
+import thirdPlace from "../assests/3rd-prize.png";
+
 const DashBoard = () => {
   const connectionString = process.env.REACT_APP_API_URL;
+  const [cardsData, setCardsData] = useState({});
+  const [contentViews, setContentViews] = useState({});
+  const [fetchingType, setFetchingType] = useState("All");
   useEffect(() => {
     async function fetchDashboardData() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/getDashboard/year` //all,year,month
+          `${connectionString}/admin/getDashboard/${fetchingType}` //all,year,month
         );
         console.log(response);
+        setCardsData(response.data);
       } catch (error) {}
     }
     fetchDashboardData();
+  }, []);
+  useEffect(() => {
+    async function fetchContentViews() {
+      try {
+        const response = await axios.get(
+          `${connectionString}/admin/getContentViews/${fetchingType}` //all,year,month
+        );
+        console.log(response);
+        setContentViews(response.data);
+      } catch (error) {}
+    }
+    fetchContentViews();
   }, []);
   const allLanguages = [
     {
@@ -153,7 +166,10 @@ const DashBoard = () => {
       __v: 1,
     },
   ];
-  const handleSelectChange = () => {};
+  const handleSelectChange = (event) => {
+    console.log(event.target.value)
+    setFetchingType(event.target.value);
+  };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
       <div className="text-white px-2 py-2 ">
@@ -163,7 +179,8 @@ const DashBoard = () => {
             {" "}
             <FormControl fullWidth>
               <Select
-                defaultValue={30}
+                value={fetchingType}
+                onChange={handleSelectChange}
                 inputProps={{
                   name: "age",
                   id: "controlled-native",
@@ -193,9 +210,9 @@ const DashBoard = () => {
                   },
                 }}
               >
-                <MenuItem value={10}>Current Month</MenuItem>
-                <MenuItem value={20}>Current Year</MenuItem>
-                <MenuItem value={30}>All Time</MenuItem>
+                <MenuItem value={"Month"}>Current Month</MenuItem>
+                <MenuItem value={"Year"}>Current Year</MenuItem>
+                <MenuItem value={"All"}>All Time</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -207,59 +224,74 @@ const DashBoard = () => {
           <ProductReportCard
             name={"Movie"}
             cardIcon={movieIcon}
-            published={"590"}
-            UnPublished={"90"}
+            published={cardsData?.movies?.visibleTrueCount || "0"}
+            UnPublished={cardsData?.movies?.visibleFalseCount || "0"}
           />
           <ProductReportCard
             name={"WebSeries"}
             cardIcon={webseriesIcon}
-            published={"190"}
-            UnPublished={"20"}
+            published={cardsData?.webSeries?.visibleTrueCount || "0"}
+            UnPublished={cardsData?.webSeries?.visibleFalseCount || "0"}
           />
           <ProductReportCard
             name={"Layouts"}
             cardIcon={layoutIcon}
-            published={"5"}
-            UnPublished={"9"}
+            published={cardsData?.layouts?.visibleTrueCount || "0"}
+            UnPublished={cardsData?.layouts?.visibleFalseCount || "0"}
           />
           <ProductReportCard
             name={"Sliders"}
             cardIcon={sliderIcon}
-            published={"9"}
-            // UnPublished={"0"}
+            published={cardsData?.sliders?.visibleTrueCount || "0"}
+            UnPublished={cardsData?.sliders?.visibleFalseCount || "0"}
           />
         </section>
         <section className="w-[100%]   py-2 ">
           {/* <div className=""> */}
           <div className="gap-4 w-[100%] flex flex-col md:flex-row  ">
             <div className="w-[100%] md:w-[40%]  bg-[#2A3042]">
-              <p className="p-4 text-[.9rem] font-semibold">
+              <p className="p-4 text-lg font-semibold">
                 Content Views <span>(All Time)</span>
               </p>
               <div className="  h-[300px] w-[100%] min-w-[250px] overflow-x-hidden">
-                <DoughnutData />
+                <DoughnutData views={contentViews}/>
               </div>
             </div>
 
             <div className="   md:w-[60%]  bg-[#2A3042]">
               {" "}
-              <p className="p-4 text-[.9rem] font-semibold">
-                Top Movies & shows <span>(All Time)</span>
+              <p className="p-4 text-lg font-semibold flex">
+                Top
+                <label class="flex items-center relative w-24 cursor-pointer select-none mx-2">
+                  <input
+                    type="checkbox"
+                    class="appearance-none transition-colors cursor-pointer w-24 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500 peer"
+                  />
+                  <span class="absolute font-medium text-xs uppercase left-8 text-white peer-checked:hidden">
+                    Movies
+                  </span>
+                  <span class="absolute font-medium text-xs uppercase right-8 text-white peer-checked:block hidden">
+                    Shows
+                  </span>
+                  <span class="w-7 h-7 left-0 absolute rounded-full transform transition-transform bg-gray-200 peer-checked:translate-x-[68px] text-center text-red-500">
+                    3
+                  </span>
+                </label>
+                <span>(All Time)</span>
               </p>
               <div className="m-4 font-normal text-[.9rem] text-[#A8B2BC]  overflow-x-auto">
-                <div className="font-semibold flex border-b pb-2 border-gray-500">
-                  <div className="w-[50px] flex-shrink-0">
-                    <p className="p-2">sr</p>
-                  </div>
-                  <div className="w-[90px]  flex-shrink-0">
-                    <p className="p-2">action</p>
-                  </div>
-                  {/* <div className=" h-[120px] w-[100px] p-2"></div> */}
-                  <div className="w-[100%] flex-shrink-1 min-w-[100px] mx-8">
-                    <p className="p-2">Name</p>
+                <div className="font-semibold flex border-b pb-2 border-gray-500 ">
+                  <div className="w-[100px] flex flex-shrink-0 items-center">
+                    <p className="px-4">Position</p>
                   </div>
 
-                  <div className="w-[80px]  flex-shrink-0">
+                  <div className="w-[100%] flex flex-shrink-1 min-w-[100px] mx-8">
+                    <p className="p-2">Name</p>
+                  </div>
+                  <div className="w-[150px] flex flex-shrink-0">
+                    <p className="p-2">Views</p>
+                  </div>
+                  <div className="w-[80px] flex flex-shrink-0">
                     <p className="p-2">status</p>
                   </div>
                 </div>
@@ -267,46 +299,31 @@ const DashBoard = () => {
                 {allLanguages?.length > 0 &&
                   allLanguages.map((current, index) => (
                     <div className="font-normal flex my-2  border-b border-gray-500">
-                      <div className="w-[50px] p-2  flex-shrink-0">
-                        <p className="p-2">{index + 1}</p>
-                      </div>
-                      <div className="w-[90px] text-white font-semibold flex-shrink-0">
-                        <select
-                          className="bg-[#3C445A] rounded-sm p-2"
-                          onChange={(event) =>
-                            handleSelectChange(current._id, event)
+                      <div className="w-[100px] px-2  flex-shrink-0">
+                        {/* <p className="p-2">{index + 1}</p> */}
+                        <img
+                          src={
+                            index == 0
+                              ? firstPlace
+                              : index == 1
+                              ? secondPlace
+                              : index == 2
+                              ? thirdPlace
+                              : ""
                           }
-                        >
-                          <option
-                            value=""
-                            // disabled
-                            className="border-b-2 border-gray-400"
-                          >
-                            option
-                          </option>
-                          <option value="EDIT">EDIT</option>
-                          <option
-                            value="DELETE"
-                            onClick={() => {
-                              // deleteGenresHandler(current._id)
-                            }}
-                          >
-                            DELETE
-                          </option>
-                        </select>
-                      </div>
-                      {/* <img
-                      src={`${connectionString}/genreeIcon/${current.icon.replace(
-                        "uploads/thumbnail",
-                        ""
-                      )}`}
-                      className=" h-[120px] w-[100px] p-2"
-                    ></img> */}
-                      <div className="w-[100%]  flex-shrink-1 min-w-[100px] mx-8">
-                        <p className="p-2">{current.name}</p>
+                          className="w-[80px] h-[60px]"
+                        ></img>
                       </div>
 
-                      <div className="w-[80px]  flex-shrink-0">
+                      <div className="w-[100%]  flex-shrink-1 min-w-[100px] flex  items-center mx-8">
+                        <p className="p-2">{current.name}</p>
+                      </div>
+                      <div className="w-[150px] flex flex-shrink-0">
+                        <p className="p-2 text-wrap whitespace-normal break-words w-[100%]">
+                          44432453254324563254632
+                        </p>
+                      </div>
+                      <div className="w-[80px]  flex-shrink-0 flex  items-center">
                         {!current.visible ? (
                           <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
                             Not published
@@ -327,7 +344,7 @@ const DashBoard = () => {
         {/* new users */}
         <section className="w-[100%]  bg-[#2A3042]  py-2 ">
           {" "}
-          <div className="p-4 text-[.9rem] font-semibold">New Users</div>
+          <div className="p-4 text-lg font-semibold">New Users</div>
           <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
             <div className="font-semibold flex border-b pb-2 text-[#A8B2BC] border-gray-500 px-2">
               <div className="w-[50px] flex-shrink-0">
