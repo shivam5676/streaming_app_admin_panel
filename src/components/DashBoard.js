@@ -23,17 +23,35 @@ const DashBoard = () => {
   const [cardsData, setCardsData] = useState({});
   const [contentViews, setContentViews] = useState({});
   const [fetchingType, setFetchingType] = useState("All");
+  const [top3data, setTop3data] = useState();
+  const [latestUsers,setLatestUsers]=useState([])
   useEffect(() => {
     async function fetchDashboardData() {
       try {
         const response = await axios.get(
           `${connectionString}/admin/getDashboard/${fetchingType}` //all,year,month
         );
-        console.log(response);
+        console.log(response,"cards....>");
         setCardsData(response.data);
       } catch (error) {}
     }
     fetchDashboardData();
+  }, []);
+  useEffect(() => {
+    async function fetchTopContentData() {
+      try {
+        const response = await axios.get(
+          `${connectionString}/admin/fetchTopMovies/${fetchingType}` //all,year,month
+        );
+        console.log(response.data.movies, "top3");
+        if(response.data.movies){
+           setTop3data(response.data.movies);
+        }
+       
+        // setTop3data
+      } catch (error) {}
+    }
+    fetchTopContentData();
   }, []);
   useEffect(() => {
     async function fetchContentViews() {
@@ -41,11 +59,27 @@ const DashBoard = () => {
         const response = await axios.get(
           `${connectionString}/admin/getContentViews/${fetchingType}` //all,year,month
         );
-        console.log(response);
-        setContentViews(response.data);
+        console.log(response.data.users);
+        if(response.data){
+          setContentViews(response.data);
+        }
+        
       } catch (error) {}
     }
     fetchContentViews();
+  }, []);
+  useEffect(() => {
+    async function fetchLAtestUSers() {
+      try {
+        const response = await axios.get(
+          `${connectionString}/admin/fetchLatestUsers/${fetchingType}` //all,year,month
+        );
+        console.log(response);
+        setLatestUsers(response.data.users)
+        // setContentViews(response.data);
+      } catch (error) {}
+    }
+    fetchLAtestUSers();
   }, []);
   const allLanguages = [
     {
@@ -167,7 +201,7 @@ const DashBoard = () => {
     },
   ];
   const handleSelectChange = (event) => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     setFetchingType(event.target.value);
   };
   return (
@@ -254,7 +288,7 @@ const DashBoard = () => {
                 Content Views <span>(All Time)</span>
               </p>
               <div className="  h-[300px] w-[100%] min-w-[250px] overflow-x-hidden">
-                <DoughnutData views={contentViews}/>
+                <DoughnutData views={contentViews} />
               </div>
             </div>
 
@@ -288,6 +322,9 @@ const DashBoard = () => {
                   <div className="w-[100%] flex flex-shrink-1 min-w-[100px] mx-8">
                     <p className="p-2">Name</p>
                   </div>
+                  <div className="w-[100px] flex flex-shrink-0 items-center">
+                    <p className="px-4">Thumbnail</p>
+                  </div>
                   <div className="w-[150px] flex flex-shrink-0">
                     <p className="p-2">Views</p>
                   </div>
@@ -296,8 +333,8 @@ const DashBoard = () => {
                   </div>
                 </div>
                 {/* items */}
-                {allLanguages?.length > 0 &&
-                  allLanguages.map((current, index) => (
+                {top3data?.length > 0 &&
+                  top3data.map((current, index) => (
                     <div className="font-normal flex my-2  border-b border-gray-500">
                       <div className="w-[100px] px-2  flex-shrink-0">
                         {/* <p className="p-2">{index + 1}</p> */}
@@ -311,16 +348,25 @@ const DashBoard = () => {
                               ? thirdPlace
                               : ""
                           }
-                          className="w-[80px] h-[60px]"
+                          className={`w-[80px] h-[80px] ${index===0?"img-animate": "img-flip-pause"}`}
                         ></img>
                       </div>
-
                       <div className="w-[100%]  flex-shrink-1 min-w-[100px] flex  items-center mx-8">
                         <p className="p-2">{current.name}</p>
+                      </div>{" "}
+                      <div className="w-[100px] px-2  flex-shrink-0">
+                        {/* <p className="p-2">{index + 1}</p> */}
+                        <img
+                          src={`${connectionString}/thumbnails${current?.fileLocation.replace(
+                            "uploads/thumbnail",
+                            ""
+                          )}`}
+                          className="w-[80px] h-[70px] "
+                        ></img>
                       </div>
                       <div className="w-[150px] flex flex-shrink-0">
                         <p className="p-2 text-wrap whitespace-normal break-words w-[100%]">
-                          44432453254324563254632
+                          {current.views}
                         </p>
                       </div>
                       <div className="w-[80px]  flex-shrink-0 flex  items-center">
@@ -350,33 +396,33 @@ const DashBoard = () => {
               <div className="w-[50px] flex-shrink-0">
                 <p className="p-2">sr</p>
               </div>
-              <div className="w-[90px]  flex-shrink-0">
+              {/* <div className="w-[90px]  flex-shrink-0">
                 <p className="p-2">action</p>
-              </div>
-              <div className="w-[100px]  flex-shrink-0">
+              </div> */}
+              {/* <div className="w-[100px]  flex-shrink-0">
                 <p className="p-2">Thumbnail</p>
-              </div>
-              <div className="w-[120px]  flex-shrink-0">
+              </div> */}
+              <div className="min-w-[120px] w-[100%]  flex-shrink-1">
                 <p className="p-2">Name</p>
               </div>
               <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                <p className="p-2">Genre</p>
+                <p className="p-2">Email</p>
               </div>
               <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                <p className="p-2">Layouts</p>
+                <p className="p-2">mobile</p>
               </div>
               <div className="w-[80px]  flex-shrink-0">
                 <p className="p-2">status</p>
               </div>
             </div>
-            {/* items */}
-            {allMovies.length > 0 &&
-              allMovies.map((current, index) => (
+          
+            {latestUsers.length > 0 &&
+              latestUsers.map((current, index) => (
                 <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
                   <div className="w-[50px] p-2  flex-shrink-0">
                     <p className="p-2">{index + 1}</p>
                   </div>
-                  <div className="w-[90px] text-white font-semibold flex-shrink-0">
+                  {/* <div className="w-[90px] text-white font-semibold flex-shrink-0">
                     <select
                       className="bg-[#3C445A] rounded-sm p-2"
                       onChange={(event) =>
@@ -393,8 +439,8 @@ const DashBoard = () => {
                       <option value="EDIT">EDIT</option>
                       <option value="DELETE">DELETE</option>
                     </select>
-                  </div>
-                  <div className="w-[100px] flex-shrink-0">
+                  </div> */}
+                  {/* <div className="w-[100px] flex-shrink-0">
                     <img
                       // src={`${connectionString}/thumbnails${current.fileLocation.replace(
                       //   "uploads/thumbnail",
@@ -402,23 +448,18 @@ const DashBoard = () => {
                       // )}`}
                       className=" h-[120px] w-[100px] p-2"
                     ></img>
-                  </div>
-                  <div className="w-[120px]  flex-shrink-0">
+                  </div> */}
+                  <div className="min-w-[120px] w-[100%]  flex-shrink-1">
                     <p className="p-2">{current.name}</p>
                   </div>
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
                     <p className="p-2 break-words">
-                      {" "}
-                      {current.genre.map((currentIndex) => {
-                        return <span>{`${currentIndex.name} | `}</span>;
-                      })}
+                    {current.email}
                     </p>
                   </div>{" "}
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
                     <p className="p-2 break-words">
-                      {current.layouts.map((currentIndex) => {
-                        return <span>{currentIndex.name}</span>;
-                      })}
+                    {current.mobile}
                     </p>
                   </div>
                   <div className="w-[80px]  flex-shrink-0">

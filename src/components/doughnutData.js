@@ -26,22 +26,29 @@ const SAMPLE_CSS = `
 
 // Dynamic Doughnut Chart Component
 const DoughnutData = (props) => {
-  console.log(props)
+  console.log(props,"props");
   // State to hold chart data
-  const moviesViews=props?.views?.movies?.totalViewss||0
-  const webSeriesViews=props?.views?.webShows?.totalViews||0
-  const totalViews=moviesViews+webSeriesViews
+  const moviesViews = props?.views?.movies?.totalViews || 0;
+  const webSeriesViews = props?.views?.webShows?.totalViews || 0;
+  const totalViews = +moviesViews + webSeriesViews;
+  console.log(totalViews,"total views");
   // const [chartData, setChartData] = useState([
   //   { x: "Movies", y: 30, text: "30%" },
   //   { x: "Miscellaneous", y: 10, text: "10%" },
 
   // ]);
-  const chartData=  [
-      { x: "Movies", text:`${Math.round(moviesViews/totalViews*100) }%`, y: moviesViews },
-      { x: "Miscellaneous", text:`${Math.round(webSeriesViews/totalViews*100) }%`, y: webSeriesViews},
-  
-    ]
-
+  const chartData = [
+    {
+      x: "Movies",
+      text: `${Math.round((moviesViews / totalViews) * 100)}%`,
+      y: moviesViews,
+    },
+    {
+      x: "Miscellaneous",
+      text: `${Math.round((webSeriesViews / totalViews) * 100)}%`,
+      y: webSeriesViews
+    },
+  ];
 
   // Method to load the chart
   const onChartLoad = (args) => {
@@ -108,8 +115,8 @@ const DoughnutData = (props) => {
           height="100%" // Takes full height of parent
           tooltip={{
             enable: true,
-            header: "<b>Budget</b>",
-            format: "${point.x}: <b>${point.y}%</b>",
+            header: "<b>Content Views</b>",
+            format: "${point.x}: <b>${point.y}</b>",
           }}
           loaded={onChartLoad.bind(this)}
           pointRender={onPointRender}
