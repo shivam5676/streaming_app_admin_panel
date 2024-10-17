@@ -37,7 +37,7 @@ const DashBoard = () => {
       } catch (error) {}
     }
     fetchDashboardData();
-  }, []);
+  }, [fetchingType]);
   useEffect(() => {
     async function fetchTopContentData() {
       try {
@@ -53,7 +53,7 @@ const DashBoard = () => {
       } catch (error) {}
     }
     fetchTopContentData();
-  }, []);
+  }, [fetchingType]);
   useEffect(() => {
     async function fetchContentViews() {
       try {
@@ -67,7 +67,7 @@ const DashBoard = () => {
       } catch (error) {}
     }
     fetchContentViews();
-  }, []);
+  }, [fetchingType]);
   useEffect(() => {
     async function fetchLAtestUSers() {
       try {
@@ -80,7 +80,7 @@ const DashBoard = () => {
       } catch (error) {}
     }
     fetchLAtestUSers();
-  }, []);
+  }, [fetchingType]);
   const allLanguages = [
     {
       _id: "66fa322b141165d54e7d2239",
