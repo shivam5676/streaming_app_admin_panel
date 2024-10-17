@@ -22,6 +22,8 @@ import EdducationQuestionGenerator from "./components/educationQuestionGenerator
 import AllUsers from "./components/AllUSers";
 import UserDetails from "./components/UserDetails";
 import DashBoard from "./components/DashBoard";
+import Login from "./components/Login";
+
 
 function App() {
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
@@ -29,14 +31,14 @@ function App() {
   console.log(width, height);
   return (
     <div className="bg-[#222736] w-[100vw] h-[100vh]">
-      <Navbar
+      {/* <Navbar
         handleSmallSideBar={() => {
           setSmallSideBarActivated(!smallSideBarActivated);
         }}
         smallSideBarActivated={smallSideBarActivated}
       ></Navbar>
       <div className="flex h-[calc(100vh-70px)]">
-        {/* {!smallSideBarActivated ? <BigScreenSideBar /> : <IconScreenSideBar />} */}
+      
         {width >= 992 && !smallSideBarActivated ? (
           <BigScreenSideBar />
         ) : width >= 992 && smallSideBarActivated ? (
@@ -61,10 +63,15 @@ function App() {
             path="/QuestionUploader"
             element={<EdducationQuestionGenerator />}
           ></Route>{" "}
-          <Route path="allUsers" element={<AllUsers />}></Route><Route path="/userDetails/:uid" element={<UserDetails/>}></Route>
-          <Route path="*" element={<DashBoard/>}></Route>
+          <Route path="allUsers" element={<AllUsers />}></Route>
+          <Route path="/userDetails/:uid" element={<UserDetails />}></Route>
+          
+          <Route path="*" element={<DashBoard />}></Route>
         </Routes>
-      </div>
+      </div> */}
+      <Routes>
+        <Route path="/login" element={<Login/>} />
+      </Routes>
     </div>
   );
 }
