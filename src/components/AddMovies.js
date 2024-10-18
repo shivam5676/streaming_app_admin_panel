@@ -206,6 +206,41 @@ const AddMovies = () => {
                 <GenreSelector selectedGenre={GenreHandler} />
               </div>
             </div>{" "}
+         
+          </div>
+          <div className="bg-[#2A3042] flex-1  rounded-md text-white">
+            <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
+              <p>Additional Info</p>
+            </div>
+            <div className="m-4 font-semibold">
+              <p>Thumbnail</p>
+              <div className="flex flex-col-reverse sm:flex-row w-[100%] py-4 md:gap-16 gap-8 items-center justify-center">
+                {" "}
+                {!thumbnailUrlPreview ? (
+                  <DragNDropImage thumbnail={getThumbnail}></DragNDropImage>
+                ) : (
+                  <div className="w-[100%] flex justify-center">
+                    <div className="w-[150px] h-[220px] rounded-md">
+                      <img
+                        src={thumbnailUrlPreview}
+                        className="border w-[100%] h-[100%] rounded-md"
+                      >
+                        {/* <img src={thumbnailUrlPreview}></img> */}
+                      </img>
+                      <div
+                        className="flex justify-center text-[.9rem] text-yellow-500 underline cursor-pointer font-semibold pt-1"
+                        onClick={() => {
+                          setThumbNailUrlPreview(null);
+                        }}
+                      >
+                        remove Image
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
+            </div>
             <div className="p-4 font-semibold w-[100%] ">
               <p>
                 Link Trailer Content :<span className="text-red-500"> *</span>
@@ -242,49 +277,15 @@ const AddMovies = () => {
               {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
             </div>
           </div>
-          <div className="bg-[#2A3042] flex-1  rounded-md text-white">
-            <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
-              <p>Additional Info</p>
-            </div>
-            <div className="m-4 font-semibold">
-              <p>Thumbnail</p>
-              <div className="flex flex-col-reverse sm:flex-row w-[100%] py-4 md:gap-16 gap-8 items-center justify-center">
-                {" "}
-                {!thumbnailUrlPreview ? (
-                  <DragNDropImage thumbnail={getThumbnail}></DragNDropImage>
-                ) : (
-                  <div className="w-[100%] flex justify-center">
-                    <div className="w-[150px] h-[220px] rounded-md">
-                      <img
-                        src={thumbnailUrlPreview}
-                        className="border w-[100%] h-[100%] rounded-md"
-                      >
-                        {/* <img src={thumbnailUrlPreview}></img> */}
-                      </img>
-                      <div
-                        className="flex justify-center text-[.9rem] text-yellow-500 underline cursor-pointer font-semibold pt-1"
-                        onClick={() => {
-                          setThumbNailUrlPreview(null);
-                        }}
-                      >
-                        remove Image
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
-            </div>
-          </div>
         </div>
-        <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4">
+        <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4 md:flex-row flex-col">
           <DragNDropVideos videoFile={getVideoFilesHandler}>
-            <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 w-[300px] min-h-[300px] h-[100%] mx-4 items-center justify-center cursor-pointer">
+            <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 md:w-[300px] w-[100%] min-h-[300px] h-[100%] md:mx-4 items-center justify-center cursor-pointer">
               <p className="text-xl font-semibold">Upload shorts here</p>
             </div>
           </DragNDropVideos>
 
-          <div className="w-[100%] border-2 flex flex-wrap p-2">
+          <div className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2">
             {videoFiles.map((current, index) => (
               <div
                 key={index}

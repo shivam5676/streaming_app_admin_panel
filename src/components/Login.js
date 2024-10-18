@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useRef } from "react";
 import logoIcon from "../assests/logo-icon.png";
 
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaUnlockAlt } from "react-icons/fa";
+import axios from "axios";
 
-const Login = () => {
+const Login = (props) => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const loginHandler = async () => {
+    try {
+      const response = await axios.post(`${connectionString}/admin/login`, {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
+      console.log(response);
+      props.loggedIn();
+      // setGenres(response.data.allGenres);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="w-full h-full">
       <div className="h-[70px] w-full "></div>
@@ -27,18 +44,28 @@ const Login = () => {
                 <input
                   className="h-[35px] bg-[#2E3648] rounded p-2 mx-2"
                   placeholder="testing@abc.com"
+                  ref={emailRef}
                 ></input>
               </div>
               <div className=" text-white text-[.9rem] font-semibold flex flex-col">
                 <label className="m-2">Password</label>
-                <input className="h-[35px] bg-[#2E3648] rounded p-2 mx-2"></input>
+                <input
+                  className="h-[35px] bg-[#2E3648] rounded p-2 mx-2"
+                  ref={passwordRef}
+                ></input>
               </div>
               <div className="flex justify-between w-[100%] mt-4">
                 <div className="m-2 text-white  text-[.9rem] py-auto">
                   <input type="checkbox"></input>
                   <label className="mx-2 font-semibold">Remember me</label>
                 </div>
-                <div className="cursor-pointer relative text-[.8rem] hover:shadow-md hover:shadow-yellow-300 inline-flex items-center justify-center  px-6 py-1 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-[#626ED4] rounded-md shadow-md group" style={{ textShadow: "2px 2px 8px #facc15" }}>
+                <div
+                  className="cursor-pointer relative text-[.8rem] hover:shadow-md hover:shadow-yellow-300 inline-flex items-center justify-center  px-6 py-1 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-[#626ED4] rounded-md shadow-md group"
+                  style={{ textShadow: "2px 2px 8px #facc15" }}
+                  onClick={() => {
+                    loginHandler();
+                  }}
+                >
                   <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#626ED4] group-hover:translate-x-0 ease">
                     <FaArrowRightLong className="w-[25px] h-[25px]" />
                   </span>
@@ -51,7 +78,7 @@ const Login = () => {
             </div>{" "}
             <div className="flex px-8 items-center">
               <FaUnlockAlt className=" text-[#7f8bf7] font-semibold mx-2" />
-              <p className=" text-[#7f8bf7] text-[.8rem] font-semibold">
+              <p className="cursor-pointer text-[#7f8bf7] text-[.8rem] font-semibold">
                 forgot your password
               </p>
             </div>
