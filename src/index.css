@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes glow {
+@keyframes glowNeon {
   0%, 100% {
     box-shadow: 0 5px 8px 0 #0A8D88; /* Narrower and more concentrated glow */
   }
@@ -11,10 +11,21 @@
   }
 }
 
-.glow-animate {
-  animation: glow 3s infinite;
+.glow-animate-neon {
+  animation: glowNeon 3s infinite;
+}
+@keyframes glowPurple {
+  0%, 100% {
+    box-shadow: 0 2px 3px 0 #5cd4c4; /* Narrower and more concentrated glow */
+  }
+  50% {
+    box-shadow: 0 5px 8px 0 #5cd4c4; /* Slightly stronger glow but still narrow */
+  }
 }
 
+.glow-animate-purple {
+  animation: glowPurple 4s infinite;
+}
 
 /* width */
 .customScrollbar::-webkit-scrollbar {
