@@ -4,34 +4,22 @@ import IconScreenSideBar from "./components/iconScreenSideBar";
 import Navbar from "./components/Navbar";
 import useWindowSize from "./customHooks/useWindowSize";
 import { NavLink, Route, Routes } from "react-router-dom";
-import DragNDropImage from "./components/DragNDropImage";
-import LayoutSelector from "./components/layoutSelector";
-import AddMovies from "./components/AddMovies";
-import AddWebSeries from "./components/AddWebSeries";
-import AddLayout from "./components/AddLayout";
-import AddSlider from "./components/AddSlider";
-import Maintenece from "./components/Maintenece";
-import AllMovies from "./components/AllMovies";
-import EditMovies from "./components/editMovie";
-import AllLAyout from "./components/AllLAyout";
-import EditLayout from "./components/EditLayout";
-import AllSliders from "./components/AllSliders";
-import AllGenreList from "./components/AllGenreList";
-import LanguageList from "./components/LanguageLIst";
-import EdducationQuestionGenerator from "./components/educationQuestionGenerator";
-import AllUsers from "./components/AllUSers";
-import UserDetails from "./components/UserDetails";
-import DashBoard from "./components/DashBoard";
+
 import Login from "./components/Login";
+import { routes } from "./routes/routes";
+import { authRoutes } from "./routes/authRoutes";
+import { useSelector } from "react-redux";
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.loginData.loggedIn);
+  // console.log(loggedIn)
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
   const { width, height } = useWindowSize();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(width, height);
-  const handleLogin=()=>{
-    setIsLoggedIn(true)
-  }
+  const handleLogin = () => {
+    // setIsLoggedIn(true);
+  };
   return (
     <div className="bg-[#222736] w-[100vw] h-[100vh]">
       {isLoggedIn ? (
@@ -53,33 +41,17 @@ function App() {
             )}
 
             <Routes>
-              <Route path="/addMovies" element={<AddMovies />}></Route>
-              <Route path="/addWebShows" element={<AddWebSeries />}></Route>
-              <Route path="/addLayout" element={<AddLayout />}></Route>
-              <Route path="/addSlider" element={<AddSlider />}></Route>
-              <Route path="/allMovies" element={<AllMovies />}></Route>
-              <Route path="/allMovies/:edit" element={<EditMovies />}></Route>
-              <Route path="/allLayouts" element={<AllLAyout />}></Route>
-              <Route path="/allLayout/:edit" element={<EditLayout />}></Route>
-              <Route path="/allSliders" element={<AllSliders />}></Route>
-              <Route path="/genreslist" element={<AllGenreList />}></Route>
-              <Route
-                path="/LanguageList"
-                element={<LanguageList />}
-              ></Route>{" "}
-              <Route
-                path="/QuestionUploader"
-                element={<EdducationQuestionGenerator />}
-              ></Route>{" "}
-              <Route path="allUsers" element={<AllUsers />}></Route>
-              <Route path="/userDetails/:uid" element={<UserDetails />}></Route>
-              <Route path="*" element={<DashBoard />}></Route>
+              {routes.map((current) => (
+                <Route path={current.path} element={current.element}></Route>
+              ))}
             </Routes>
           </div>
         </>
       ) : (
         <Routes>
-          <Route path="*" element={<Login loggedIn={handleLogin}/>} />
+          {authRoutes.map((current) => (
+            <Route path={current.path} element={current.element} />
+          ))}
         </Routes>
       )}
     </div>

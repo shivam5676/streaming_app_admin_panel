@@ -4,19 +4,23 @@ import logoIcon from "../assests/logo-icon.png";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaUnlockAlt } from "react-icons/fa";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSliceAction } from "../store/loginSlice";
 
 const Login = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const emailRef = useRef();
   const passwordRef = useRef();
+  const dispatch=useDispatch()
   const loginHandler = async () => {
     try {
       const response = await axios.post(`${connectionString}/admin/login`, {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
-      console.log(response);
-      props.loggedIn();
+      dispatch(loginSliceAction.login())
+      // console.log(response);
+      // props.loggedIn();
       // setGenres(response.data.allGenres);
     } catch (error) {
       console.error(error);
@@ -34,7 +38,7 @@ const Login = (props) => {
             </p>
           </div>
           {/* Centered Circle */}
-          <div className="text-white bg-[#2A3042] border-2 rounded-full  h-[74px] w-[74px] absolute left-1/2 top-[75px] transform -translate-x-1/2 glow-animate">
+          <div className="text-white bg-[#2A3042] border-2 rounded-full  h-[74px] w-[74px] absolute left-1/2 top-[75px] transform -translate-x-1/2 glow-animate-neon">
             <img src={logoIcon} className="p-4"></img>
           </div>
           <div className="bg-[#2A3042]  w-full h-full pt-[40px]  rounded-b-md">
@@ -42,7 +46,7 @@ const Login = (props) => {
               <div className=" text-white text-[.9rem] font-semibold flex flex-col">
                 <label className="m-2">Email</label>
                 <input
-                  className="h-[35px] bg-[#2E3648] rounded p-2 mx-2"
+                  className="h-[35px] bg-[#2E3648] rounded p-2 mx-2 glow-animate-purple outline-none"
                   placeholder="testing@abc.com"
                   ref={emailRef}
                 ></input>
@@ -50,7 +54,7 @@ const Login = (props) => {
               <div className=" text-white text-[.9rem] font-semibold flex flex-col">
                 <label className="m-2">Password</label>
                 <input
-                  className="h-[35px] bg-[#2E3648] rounded p-2 mx-2"
+                  className="h-[35px] bg-[#2E3648] rounded p-2 mx-2 glow-animate-purple outline-none"
                   ref={passwordRef}
                 ></input>
               </div>
