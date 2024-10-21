@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BigScreenSideBar from "./components/BigScreenSideBar";
 import IconScreenSideBar from "./components/iconScreenSideBar";
 import Navbar from "./components/Navbar";
@@ -8,15 +8,22 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import { routes } from "./routes/routes";
 import { authRoutes } from "./routes/authRoutes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSliceAction } from "./store/loginSlice";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.loginData.loggedIn);
+  const dispatch = useDispatch();
   // console.log(loggedIn)
   const [smallSideBarActivated, setSmallSideBarActivated] = useState(false);
   const { width, height } = useWindowSize();
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(width, height);
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loginSliceAction.login("user", true));
+    }
+  }, [isLoggedIn]);
   const handleLogin = () => {
     // setIsLoggedIn(true);
   };

@@ -393,16 +393,10 @@ const DashBoard = () => {
                             {current.views}
                           </p>
                         </div>
-                        <div className="w-[80px]  flex-shrink-0 flex  items-center">
-                          {!current.visible ? (
-                            <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                              Not published
-                            </p>
-                          ) : (
-                            <p className="px-2 py-1 font-semibold bg-green-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                              Published
-                            </p>
-                          )}
+                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center">
+                          <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                            view
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -426,7 +420,7 @@ const DashBoard = () => {
           {/* </div> */}
         </section>
         {/* new users */}
-        <section className="w-[100%]  bg-[#2A3042]  py-2 ">
+        <section className="w-[100%]  bg-[#2A3042]  py-2 my-2">
           {" "}
           {latestUsers.length > 0 ? (
             <div className="p-4 text-lg font-semibold">New Users</div>
@@ -576,15 +570,9 @@ const DashBoard = () => {
                     <p className="p-2 break-words">{current.mobile}</p>
                   </div>
                   <div className="w-[80px]  flex-shrink-0">
-                    {!current.visible ? (
-                      <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                        Not published
-                      </p>
-                    ) : (
-                      <p className="px-2 py-1 font-semibold bg-green-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                        Published
-                      </p>
-                    )}
+                    <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                      view
+                    </p>
                   </div>
                 </div>
               ))}
