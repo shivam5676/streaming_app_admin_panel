@@ -25,6 +25,7 @@ const AllLAyout = () => {
               dispatch(layoutSliceACtion.addLayout(current));
             });
           }
+          
         })();
       } catch (err) {
         console.log(err);

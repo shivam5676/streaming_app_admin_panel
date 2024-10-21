@@ -18,7 +18,8 @@ const Login = (props) => {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
-      dispatch(loginSliceAction.login())
+      dispatch(loginSliceAction.login("user",true))
+      localStorage.setItem("user",true)
       // console.log(response);
       // props.loggedIn();
       // setGenres(response.data.allGenres);
