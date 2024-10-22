@@ -393,7 +393,7 @@ const DashBoard = () => {
                             {current.views}
                           </p>
                         </div>
-                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center">
+                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center cursor-pointer">
                           <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                             view
                           </p>
@@ -569,7 +569,7 @@ const DashBoard = () => {
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
                     <p className="p-2 break-words">{current.mobile}</p>
                   </div>
-                  <div className="w-[80px]  flex-shrink-0">
+                  <div className="w-[80px]  flex-shrink-0 cursor-pointer">
                     <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                       view
                     </p>
