@@ -7,6 +7,7 @@ import AllLAyout from "../components/AllLAyout";
 import AllMovies from "../components/AllMovies";
 import AllSliders from "../components/AllSliders";
 import AllUsers from "../components/AllUSers";
+import CheckedInAllotement from "../components/CheckedInAllotement";
 import DashBoard from "../components/DashBoard";
 import EditLayout from "../components/EditLayout";
 import EditMovies from "../components/editMovie";
@@ -29,5 +30,6 @@ export const routes=[
     { path: "/QuestionUploader", element: <EdducationQuestionGenerator /> },
     { path: "/allUsers", element: <AllUsers /> },
     { path: "/userDetails/:uid", element: <UserDetails /> },
+    { path: "/CheckedPoints/", element:<CheckedInAllotement/> },
     { path: "*", element: <DashBoard /> }
   ];

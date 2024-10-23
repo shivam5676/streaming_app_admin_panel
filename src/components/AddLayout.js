@@ -34,13 +34,13 @@ const AddLayout = (req, res, next) => {
       linkedMovies: selectedMoviesRef.current,
       visible: visibleRef.current.value,
     };
-   
+
     try {
       const response = await axios.post(
         `${connectionString}/admin/addLayout`,
         layoutObj
       );
-      console.log(response,",,,.");
+      console.log(response, ",,,.");
       if (response.data.layoutResponse) {
         dispatch(layoutSliceACtion.addLayout(response.data.layoutResponse));
         setSuccessTick("success");
