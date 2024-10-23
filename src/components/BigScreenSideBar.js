@@ -106,7 +106,9 @@ const BigScreenSideBar = (props) => {
               <div className="flex">
                 {" "}
                 <TfiLayoutGrid3 className="h-[20px] w-[20px]" />
-                <p className="text-[.9rem] px-4 font-semibold">Layout Manager</p>
+                <p className="text-[.9rem] px-4 font-semibold">
+                  Layout Manager
+                </p>
               </div>
               {currentMenuOpen == "Layout Manager" ? (
                 <MdArrowDropUp className="h-[25px] w-[25px]" />
@@ -306,7 +308,9 @@ const BigScreenSideBar = (props) => {
             }}
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">QUESTION GENERATOR</p>
+            <p className="text-[.9rem] px-4 font-semibold">
+              QUESTION GENERATOR
+            </p>
           </div>
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
@@ -325,6 +329,15 @@ const BigScreenSideBar = (props) => {
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[.9rem] px-4 font-semibold">Languages</p>
+          </div>
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              navigate("/CheckedPoints");
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Checked_In Points</p>
           </div>
         </div>
       </section>

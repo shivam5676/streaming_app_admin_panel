@@ -12,6 +12,10 @@ import { registerLicense } from "@syncfusion/ej2-base";
 // Import Syncfusion CSS
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-react-grids/styles/material.css";
+import '@syncfusion/ej2-base/styles/material.css';
+import '@syncfusion/ej2-buttons/styles/material.css';
+import '@syncfusion/ej2-calendars/styles/material.css';
+
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXhdcHRVQmVeV0F3Wks="
