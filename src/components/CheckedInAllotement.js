@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RoutesInfoDiv from "./RoutesInfoDiv";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
@@ -7,8 +7,30 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "./../../node_modules/@mui/x-date-pickers/AdapterDayjs/AdapterDayjs";
 
 import CheckedInAllotementModal from "./checkedInAllotementModal";
+import axios from "axios";
 const CheckedInAllotement = () => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  const [checkedInData, setCheckedInData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    async function fetchCheckedInSlide() {
+      try {
+        const response = await axios.get(
+          `${connectionString}/admin/allCheckedInSlide`
+        );
+        console.log(response.data.checkedInData);
+        if (response.data.checkedInData) {
+          setCheckedInData(response.data.checkedInData);
+        }
+      } catch (err) {
+        console.log(err.response.data.msg);
+        //   setSuccessTick("error");
+        //   if (err.response && err.response.data.msg)
+        //     setMessage(err.response.data.msg);
+      }
+    }
+    fetchCheckedInSlide();
+  }, []);
   return (
     <>
       {" "}
@@ -19,7 +41,7 @@ const CheckedInAllotement = () => {
           sectionName={"Others"}
           currentDir={"Checked_In Points section"}
         ></RoutesInfoDiv>
-        <section className="w-[100%]">
+        <section className="w-[100%] h-fit">
           <div className="flex gap-6 flex-col xl:flex-row">
             <div className="bg-[#2A3042] flex-1  rounded-md text-gray-400 max-[690px]:overflow-auto py-2">
               <div className="m-4 text-[.9rem] font-semibold ">
@@ -55,24 +77,31 @@ const CheckedInAllotement = () => {
             </div>{" "}
           </div>
         </section>
-        <div className="w-[100%] bg-[#2A3042] my-2 flex">
-          <div className="rounded-md bg-[#333F6B] h-[200px] w-[100%] max-w-[300px] p-4">
-            <div className="w-full h-full bg-white rounded-md px-4 py-8 font-semibold flex flex-col justify-between">
-              <p className="font-bold text-[.9rem]">Day - 1</p>
-              <p className="font-bold text-[1.2rem]">Daily Check In Bonus</p>
-              <div className="flex justify-between items-center">
-                <p className="font-bold text-[.9rem]">10 Points</p>
-                <div className="">
-                  <div className="bg-[#132152] hover:hover:bg-[#415ec7] cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md">
-                    Edit
+        <div className="w-[100%] bg-[#2A3042] my-2 flex flex-wrap  justify-between">
+          {checkedInData &&
+            checkedInData.map((current) => {
+              return (
+                <div className="rounded-md bg-[#333F6B] h-[200px] w-[100%] max-w-[300px] p-4 m-2">
+                  <div className="w-full h-full bg-white rounded-md px-4 py-8 font-semibold flex flex-col justify-between">
+                    <p className="font-bold text-[.9rem]">Day - {current.Day+1}</p>
+                    <p className="font-bold text-[1.2rem]">
+                      {current.title}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="font-bold text-[.9rem]"> + {current.allocatedPoints} points</p>
+                      <div className="">
+                        <div className="bg-[#132152] hover:hover:bg-[#415ec7] cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md">
+                          Edit
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              );
+            })}
         </div>
       </div>
-     {openModal&& <CheckedInAllotementModal />}
+      {openModal && <CheckedInAllotementModal />}
     </>
   );
 };
