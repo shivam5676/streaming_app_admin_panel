@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RoutesInfoDiv from "./RoutesInfoDiv";
+import coins from "../assests/coins.gif"
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import dayjs from "dayjs";
@@ -77,18 +78,21 @@ const CheckedInAllotement = () => {
             </div>{" "}
           </div>
         </section>
-        <div className="w-[100%] bg-[#2A3042] my-2 flex flex-wrap  justify-between">
+        <div className="w-[100%] bg-[#2A3042] my-2 grid 3xl:grid-cols-5 xl:grid-cols-4   lg:grid-cols-3 sm:grid-cols-2 gap-4 ">
           {checkedInData &&
             checkedInData.map((current) => {
               return (
-                <div className="rounded-md bg-[#333F6B] h-[200px] w-[100%] max-w-[300px] p-4 m-2">
+                <div className="rounded-md bg-[#333F6B] min-h-[200px]  p-4 ">
                   <div className="w-full h-full bg-white rounded-md px-4 py-8 font-semibold flex flex-col justify-between">
-                    <p className="font-bold text-[.9rem]">Day - {current.Day+1}</p>
-                    <p className="font-bold text-[1.2rem]">
-                      {current.title}
+                    <p className="font-bold text-[.9rem]">
+                      Day - {current.Day + 1}
                     </p>
+                    <p className="font-bold text-[1.2rem]">{current.title}</p>
                     <div className="flex justify-between items-center">
-                      <p className="font-bold text-[.9rem]"> + {current.allocatedPoints} points</p>
+                      <p className="font-bold text-[.9rem] flex items-center">
+                        {" "}
+                        + {current.allocatedPoints} <img src={coins} className="w-[40px] h-[40px]"></img>
+                      </p>
                       <div className="">
                         <div className="bg-[#132152] hover:hover:bg-[#415ec7] cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md">
                           Edit
@@ -101,7 +105,12 @@ const CheckedInAllotement = () => {
             })}
         </div>
       </div>
-      {openModal && <CheckedInAllotementModal />}
+      {openModal && (
+        <CheckedInAllotementModal
+          lastIndex={checkedInData[checkedInData.length-1]}
+          closeModal={()=>setOpenModal(false)}
+        />
+      )}
     </>
   );
 };

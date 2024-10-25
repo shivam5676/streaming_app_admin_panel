@@ -4,7 +4,8 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 
 const CheckedInAllotementModal = (props) => {
-  const startDayRef = useRef(0);
+  console.log(props,"...")
+  const startDayRef = useRef(1);
   const [pointAllocationType, setpointAllocationType] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const endDayRef = useRef(null);
@@ -24,12 +25,12 @@ const CheckedInAllotementModal = (props) => {
     //     toast.error("end day should be number only....")
     //   }
     const obj = {
-      start: startDayRef.current,
-      end: endDayRef.current.value,
-      title: offerDetailsRef.current?.value || null,
-      allocatedPoints: rewardRef.current?.value || null,
-      increaseBy: increasePointRef.current?.value || null,
-      dayPattern: everyDayRef.current?.value || null,
+      start: props?.lastIndex?.Day||0,
+      end: endDayRef?.current?.value||0,
+      title: offerDetailsRef?.current?.value || null,
+      allocatedPoints: rewardRef?.current?.value || null,
+      increaseBy: increasePointRef?.current?.value || null,
+      dayPattern: everyDayRef?.current?.value || null,
       pointAllocationType: pointAllocationType,
     };
     try {
@@ -51,8 +52,8 @@ const CheckedInAllotementModal = (props) => {
   };
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={props.closeModal} // Close modal when clicking outside the modal content
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 bg-opacity-40 "
+      // onClick={props.closeModal} // Close modal when clicking outside the modal content
     >
       <div
         className="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md p-6"
@@ -61,7 +62,7 @@ const CheckedInAllotementModal = (props) => {
         <button
           type="button"
           className="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center"
-          // onClick={props.closeModal}
+          onClick={props.closeModal}
         >
           <IoMdClose className="w-[20px] h-[20px]" />
         </button>
@@ -71,8 +72,9 @@ const CheckedInAllotementModal = (props) => {
             <div className="flex max-[400px]:py-2">
               <label className="px-2">Start Day :</label>
               <input
-                className="w-[70px] border border-black"
-                defaultValue={startDayRef.current}
+                className="w-[70px] border border-black pointer-events-none"
+                defaultValue={props?.lastIndex?.Day||0}
+                readOnly
               ></input>
             </div>{" "}
             <div className="flex max-[400px]:py-2">
@@ -154,7 +156,7 @@ const CheckedInAllotementModal = (props) => {
           <button
             type="button"
             className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            //   onClick={props.closeModal}
+              onClick={props.closeModal}
           >
             Cancel
           </button>
