@@ -1,24 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.0120087d.css",
-    "main.js": "/static/js/main.8636484f.js",
+    "main.css": "/static/css/main.c167f4e3.css",
+    "main.js": "/static/js/main.b8e6cc17.js",
+    "static/media/coins.gif": "/static/media/coins.ff06be5d0372783df582.gif",
     "static/media/well-done-well-done-team.gif": "/static/media/well-done-well-done-team.3d70f330f7588a51b639.gif",
+    "static/media/broken-battery.gif": "/static/media/broken-battery.106542c3a8582b9d7c5b.gif",
     "static/media/sad.gif": "/static/media/sad.0dd8e1137d1936207219.gif",
+    "static/media/loader.gif": "/static/media/loader.12d92e88380a219cc402.gif",
     "static/media/scanner.gif": "/static/media/scanner.56eebffe6c5bada8749c.gif",
     "static/media/1-1.png": "/static/media/1-1.f8c87766609678b2965d.png",
     "static/media/3rd-prize.png": "/static/media/3rd-prize.03bdae19b21c81ed92cc.png",
     "static/media/2nd-prize.png": "/static/media/2nd-prize.40db7b6406fa4ca0387c.png",
+    "static/media/verified.gif": "/static/media/verified.bcc784578903036dec86.gif",
     "static/media/slider-card-animate.gif": "/static/media/slider-card-animate.98898aa38f1f46ba8abb.gif",
     "static/media/movie-animate.gif": "/static/media/movie-animate.9ef821d1e5c9928d2537.gif",
     "static/media/layout-animate.gif": "/static/media/layout-animate.2e1746687fc159480b24.gif",
     "static/media/webseriesIcon-animate.gif": "/static/media/webseriesIcon-animate.b9f47093efd683c3f9d1.gif",
     "static/media/logo.png": "/static/media/logo.ffb9187330fb62910c14.png",
     "index.html": "/index.html",
-    "main.0120087d.css.map": "/static/css/main.0120087d.css.map",
-    "main.8636484f.js.map": "/static/js/main.8636484f.js.map"
+    "main.c167f4e3.css.map": "/static/css/main.c167f4e3.css.map",
+    "main.b8e6cc17.js.map": "/static/js/main.b8e6cc17.js.map"
   },
   "entrypoints": [
-    "static/css/main.0120087d.css",
-    "static/js/main.8636484f.js"
+    "static/css/main.c167f4e3.css",
+    "static/js/main.b8e6cc17.js"
   ]
 }
