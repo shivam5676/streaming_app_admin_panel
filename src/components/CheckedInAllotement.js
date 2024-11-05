@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RoutesInfoDiv from "./RoutesInfoDiv";
-import coins from "../assests/coins.gif"
+import coins from "../assests/coins.gif";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import dayjs from "dayjs";
@@ -91,7 +91,8 @@ const CheckedInAllotement = () => {
                     <div className="flex justify-between items-center">
                       <p className="font-bold text-[.9rem] flex items-center">
                         {" "}
-                        + {current.allocatedPoints} <img src={coins} className="w-[40px] h-[40px]"></img>
+                        + {current.allocatedPoints}{" "}
+                        <img src={coins} className="w-[40px] h-[40px]"></img>
                       </p>
                       <div className="">
                         <div className="bg-[#132152] hover:hover:bg-[#415ec7] cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md">
@@ -107,8 +108,8 @@ const CheckedInAllotement = () => {
       </div>
       {openModal && (
         <CheckedInAllotementModal
-          lastIndex={checkedInData[checkedInData.length-1]}
-          closeModal={()=>setOpenModal(false)}
+          lastIndex={checkedInData[checkedInData.length - 1]}
+          closeModal={() => setOpenModal(false)}
         />
       )}
     </>

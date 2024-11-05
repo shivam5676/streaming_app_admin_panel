@@ -25,8 +25,8 @@ const CheckedInAllotementModal = (props) => {
     //     toast.error("end day should be number only....")
     //   }
     const obj = {
-      start: props?.lastIndex?.Day||0,
-      end: endDayRef?.current?.value||0,
+      start: props?.lastIndex?.Day||1,
+      end: endDayRef?.current?.value||1,
       title: offerDetailsRef?.current?.value || null,
       allocatedPoints: rewardRef?.current?.value || null,
       increaseBy: increasePointRef?.current?.value || null,
@@ -73,7 +73,7 @@ const CheckedInAllotementModal = (props) => {
               <label className="px-2">Start Day :</label>
               <input
                 className="w-[70px] border border-black pointer-events-none"
-                defaultValue={props?.lastIndex?.Day||0}
+                defaultValue={props?.lastIndex?.Day||1}
                 readOnly
               ></input>
             </div>{" "}
