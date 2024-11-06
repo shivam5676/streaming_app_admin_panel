@@ -319,7 +319,7 @@ const AddMovies = () => {
                 >
                   <img
                     src={videoFilesSnapshot[index]}
-                    alt={`Snapshot of ${current.name}`}
+                    alt={`Snapshot of `}
                     className="h-[100%] w-[100%] object-cover"
                   />
                   <div className="absolute top-0 left-0 right-0 bg-black bg-opacity-30 text-white text-xs p-1 text-center break-words">

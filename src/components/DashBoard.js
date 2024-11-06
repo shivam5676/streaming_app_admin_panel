@@ -18,8 +18,10 @@ import axios from "axios";
 import firstPlace from "../assests/1-1.png";
 import secondPlace from "../assests/2nd-prize.png";
 import thirdPlace from "../assests/3rd-prize.png";
+import { useNavigate } from "react-router-dom";
 
 const DashBoard = () => {
+  const navigate = useNavigate();
   const connectionString = process.env.REACT_APP_API_URL;
   const [cardsData, setCardsData] = useState({});
   const [contentViews, setContentViews] = useState({});
@@ -34,7 +36,7 @@ const DashBoard = () => {
         );
         console.log(response, "cards....>");
         setCardsData(response.data);
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchDashboardData();
   }, [fetchingType]);
@@ -50,7 +52,7 @@ const DashBoard = () => {
         }
 
         // setTop3data
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchTopContentData();
   }, [fetchingType]);
@@ -64,7 +66,7 @@ const DashBoard = () => {
         if (response.data) {
           setContentViews(response.data);
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchContentViews();
   }, [fetchingType]);
@@ -77,7 +79,7 @@ const DashBoard = () => {
         console.log(response);
         setLatestUsers(response.data.users);
         // setContentViews(response.data);
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchLAtestUSers();
   }, [fetchingType]);
@@ -365,14 +367,13 @@ const DashBoard = () => {
                               index == 0
                                 ? firstPlace
                                 : index == 1
-                                ? secondPlace
-                                : index == 2
-                                ? thirdPlace
-                                : ""
+                                  ? secondPlace
+                                  : index == 2
+                                    ? thirdPlace
+                                    : ""
                             }
-                            className={`w-[80px] h-[80px] ${
-                              index === 0 ? "img-animate" : "img-flip-pause"
-                            }`}
+                            className={`w-[80px] h-[80px] ${index === 0 ? "img-animate" : "img-flip-pause"
+                              }`}
                           ></img>
                         </div>
                         <div className="w-[100%]  flex-shrink-1 min-w-[100px] flex  items-center mx-8">
@@ -393,7 +394,9 @@ const DashBoard = () => {
                             {current.views}
                           </p>
                         </div>
-                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center cursor-pointer">
+                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center cursor-pointer" onClick={()=>{
+                           navigate(`/allMovies/${current._id}`)
+                        }}>
                           <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                             view
                           </p>
@@ -569,7 +572,9 @@ const DashBoard = () => {
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
                     <p className="p-2 break-words">{current.mobile}</p>
                   </div>
-                  <div className="w-[80px]  flex-shrink-0 cursor-pointer">
+                  <div className="w-[80px]  flex-shrink-0 cursor-pointer" onClick={() => {
+                    navigate(`/userDetails/${current._id}`);
+                  }}>
                     <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                       view
                     </p>
