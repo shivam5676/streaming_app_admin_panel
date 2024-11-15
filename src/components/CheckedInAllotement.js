@@ -85,7 +85,7 @@ const CheckedInAllotement = () => {
                 <div className="rounded-md bg-[#333F6B] min-h-[200px]  p-4 ">
                   <div className="w-full h-full bg-white rounded-md px-4 py-8 font-semibold flex flex-col justify-between">
                     <p className="font-bold text-[.9rem]">
-                      Day - {current.Day + 1}
+                      Day - {current.Day}
                     </p>
                     <p className="font-bold text-[1.2rem]">{current.title}</p>
                     <div className="flex justify-between items-center">

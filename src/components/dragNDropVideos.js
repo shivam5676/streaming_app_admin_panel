@@ -2,7 +2,7 @@ import React from "react";
 import { FileUploader } from "react-drag-drop-files";
 
 const DragNDropVideos = (props) => {
-  const acceptedFileTypes = ["mp4", "avi", "mkv", "webm", "quicktime"];
+  const acceptedFileTypes = ["mp4", "avi", "mkv", "webm", "quicktime","m4v"];
   const handleFiles = (file) => {
     console.log(file);
     props.videoFile(file)
