@@ -12,13 +12,18 @@ import { useDispatch } from "react-redux";
 import { movieSliceACtion } from "../store/movieSlice";
 import RoutesInfoDiv from "./RoutesInfoDiv";
 import SavingLoaderModal from "./savingLoaderModal";
+import { ReactSortable } from "react-sortablejs";
+import { CgMenuOreos } from "react-icons/cg";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 
 const AddMovies = () => {
+  const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
   const [successTick, setSuccessTick] = useState("pending");
   const [message, setMessage] = useState(
     " Movie creation is in progress...please wait"
   );
+
   const titleRef = useRef();
   const [videoFiles, setvideoFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
@@ -30,6 +35,7 @@ const AddMovies = () => {
   const [trailerType, setTrailerType] = useState("Upload");
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
   // let thumbNail = null;
+  const menuRef = useRef(null);
   const freeVideosRef = useRef();
   const visibleRef = useRef();
   const moviesTrailerVideoRef = useRef();
@@ -47,7 +53,7 @@ const AddMovies = () => {
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", JSON.stringify(genreRef.current));
-    formdata.append("language", JSON.stringify(languageRef.current)||[]);
+    formdata.append("language", JSON.stringify(languageRef.current) || []);
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -156,6 +162,21 @@ const AddMovies = () => {
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
   };
+  const toggleMenu = (index) => {
+    setMenuOpenIndex(menuOpenIndex === index ? null : index);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close the menu if clicked outside
+      if (!event.target.closest(".menu-item")) {
+        setMenuOpenIndex(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
       {" "}
@@ -283,7 +304,6 @@ const AddMovies = () => {
                   </select>
                 </p>
                 <div className="my-4">
-                  {" "}
                   {trailerType === "Upload" && (
                     <input
                       className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
@@ -311,31 +331,75 @@ const AddMovies = () => {
               </div>
             </DragNDropVideos>
 
-            <div className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2">
+            <ReactSortable
+              list={videoFiles}
+              setList={setvideoFiles}
+              className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2"
+            >
               {videoFiles.map((current, index) => (
                 <div
                   key={index}
-                  className="relative bg-white h-[100px] w-[150px] m-2 group"
+                  className="relative  bg-white h-[100px] w-[150px] m-2 group"
                 >
                   <img
                     src={videoFilesSnapshot[index]}
                     alt={`Snapshot of `}
-                    className="h-[100%] w-[100%] object-cover"
+                    className="h-[100%] w-[100%] object-cover select-none"
+                    draggable="false"
                   />
-                  <div className="absolute top-0 left-0 right-0 bg-black bg-opacity-30 text-white text-xs p-1 text-center break-words">
+                  <div className="absolute top-0 left-0 right-0 bg-sky-800 bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none">
                     {current.name}
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <FaTrash
-                      className="text-white text-lg cursor-pointer w-[30px] h-[30px]"
-                      onClick={() => {
-                        deleteVideoHandler(index);
-                      }}
+                  <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <CgMenuOreos
+                      className="text-white text-lg cursor-pointer w-[30px] h-[30px]  select-none"
+                      // onClick={() => {
+                      //   deleteVideoHandler(index);
+                      // }}
                     />
+                  </div>
+                  <div className="absolute bottom-0 right-0 bg-sky-800 p-3 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                    {index + 1}
+                  </div>
+                  <div className="absolute bottom-0 left-0 p-1 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                    {/* <HiOutlineDotsVertical /> */}
+                    {/*if i hovers on it then a menu will open with three option delete ,premium/ and othrs*/}
+
+                    <HiOutlineDotsVertical
+                      className="cursor-pointer"
+                      onClick={() => toggleMenu(index)}
+                    />
+                    {menuOpenIndex === index && (
+                      <div className="menu-item absolute bottom-0 left-0 mb-2 bg-white text-black text-sm shadow-lg rounded p-2 w-[120px] z-10">
+                        <ul>
+                          <li
+                            className="hover:bg-gray-200 p-1 cursor-pointer"
+                            onClick={() => {
+                              deleteVideoHandler(index);
+                              setMenuOpenIndex(null);
+                            }}
+                          >
+                            Delete
+                          </li>
+                          <li
+                            className="hover:bg-gray-200 p-1 cursor-pointer"
+                            onClick={() => console.log("Premium")}
+                          >
+                            Premium
+                          </li>
+                          <li
+                            className="hover:bg-gray-200 p-1 cursor-pointer"
+                            onClick={() => console.log("Others")}
+                          >
+                            Others
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
-            </div>
+            </ReactSortable>
           </div>
         </section>
         <div className="flex justify-end w-[100%]">
