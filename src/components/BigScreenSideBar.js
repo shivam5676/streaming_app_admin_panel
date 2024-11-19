@@ -295,6 +295,17 @@ const BigScreenSideBar = (props) => {
             <p className="text-[.9rem] px-4 font-semibold">Users</p>
           </div>
         </div>
+        <div
+          className=" hover:text-white  hover:bg-[#2F374A]"
+          onClick={() => {
+            navigate("/allAdmin");
+          }}
+        >
+          <div className="mx-4 h-[50px] flex items-center">
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Admin</p>
+          </div>
+        </div>
       </section>
       <section>
         <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
