@@ -43,6 +43,7 @@ const AddMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
   const addMoviesHandler = async () => {
+    console.log(videoFiles);
     console.log(layOutArrayRef.current); //array of object
     setUploadStatusModal(true);
     const formdata = new FormData();
@@ -84,6 +85,9 @@ const AddMovies = () => {
         setMessage(err.response.data.msg);
     }
   };
+  function addAdsInShortHandler() {
+    setvideoFiles((prev) => [...prev, { name: "Personalised Ads" }]);
+  }
   const selectionHandler = (value) => {
     // console.log(value);
     layOutArrayRef.current = value;
@@ -324,82 +328,103 @@ const AddMovies = () => {
               </div>
             </div>
           </div>
-          <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4 md:flex-row flex-col">
-            <DragNDropVideos videoFile={getVideoFilesHandler}>
-              <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 md:w-[300px] w-[100%] min-h-[300px] h-[100%] md:mx-4 items-center justify-center cursor-pointer">
-                <p className="text-xl font-semibold">Upload shorts here</p>
+          <div className="flex bg-[#2A3042] w-[100%] my-4 p-4 flex-col">
+            <div className="m-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
+              <p>Shorts Upload Section</p>
+              <div
+                onClick={() => {
+                  addAdsInShortHandler();
+                }}
+                class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-yellow-500 hover:text-white bg-gray-800 rounded-lg group border border-yellow-500"
+              >
+                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-yellow-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
+                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                <span class="relative font-bold">Add Ads</span>
               </div>
-            </DragNDropVideos>
-
-            <ReactSortable
-              list={videoFiles}
-              setList={setvideoFiles}
-              className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2"
-            >
-              {videoFiles.map((current, index) => (
-                <div
-                  key={index}
-                  className="relative  bg-white h-[100px] w-[150px] m-2 group"
-                >
-                  <img
-                    src={videoFilesSnapshot[index]}
-                    alt={`Snapshot of `}
-                    className="h-[100%] w-[100%] object-cover select-none"
-                    draggable="false"
-                  />
-                  <div className="absolute top-0 left-0 right-0 bg-sky-800 bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none">
-                    {current.name}
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <CgMenuOreos
-                      className="text-white text-lg cursor-pointer w-[30px] h-[30px]  select-none"
-                      // onClick={() => {
-                      //   deleteVideoHandler(index);
-                      // }}
-                    />
-                  </div>
-                  <div className="absolute bottom-0 right-0 bg-sky-800 p-3 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
-                    {index + 1}
-                  </div>
-                  <div className="absolute bottom-0 left-0 p-1 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
-                    {/* <HiOutlineDotsVertical /> */}
-                    {/*if i hovers on it then a menu will open with three option delete ,premium/ and othrs*/}
-
-                    <HiOutlineDotsVertical
-                      className="cursor-pointer"
-                      onClick={() => toggleMenu(index)}
-                    />
-                    {menuOpenIndex === index && (
-                      <div className="menu-item absolute bottom-0 left-0 mb-2 bg-white text-black text-sm shadow-lg rounded p-2 w-[120px] z-10">
-                        <ul>
-                          <li
-                            className="hover:bg-gray-200 p-1 cursor-pointer"
-                            onClick={() => {
-                              deleteVideoHandler(index);
-                              setMenuOpenIndex(null);
-                            }}
-                          >
-                            Delete
-                          </li>
-                          <li
-                            className="hover:bg-gray-200 p-1 cursor-pointer"
-                            onClick={() => console.log("Premium")}
-                          >
-                            Premium
-                          </li>
-                          <li
-                            className="hover:bg-gray-200 p-1 cursor-pointer"
-                            onClick={() => console.log("Others")}
-                          >
-                            Others
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+            </div>
+            <div className="flex  bg-[#2A3042] w-[100%] md:flex-row flex-col">
+              {" "}
+              <DragNDropVideos videoFile={getVideoFilesHandler}>
+                <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 md:w-[300px] w-[100%] min-h-[300px] h-[100%] md:mx-4 items-center justify-center cursor-pointer">
+                  <p className="text-xl font-semibold">Upload shorts here</p>
                 </div>
-              ))}
-            </ReactSortable>
+              </DragNDropVideos>
+              <ReactSortable
+                list={videoFiles}
+                setList={setvideoFiles}
+                className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2"
+              >
+                {videoFiles.map((current, index) => (
+                  <div
+                    key={index}
+                    className="relative  bg-white h-[100px] w-[150px] m-2 group"
+                  >
+                    <img
+                      src={videoFilesSnapshot[index]}
+                      alt={`Snapshot of `}
+                      className="h-[100%] w-[100%] object-cover select-none"
+                      draggable="false"
+                    />
+                    <div
+                      className={`absolute top-0 left-0 right-0  bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none ${
+                        current.name == "Personalised Ads"
+                          ? "bg-yellow-800"
+                          : "bg-sky-800"
+                      }`}
+                    >
+                      {current.name}
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <CgMenuOreos
+                        className="text-white text-lg cursor-pointer w-[30px] h-[30px]  select-none"
+                        // onClick={() => {
+                        //   deleteVideoHandler(index);
+                        // }}
+                      />
+                    </div>
+                    <div className="absolute bottom-0 right-0 bg-sky-800 p-3 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                      {index + 1}
+                    </div>
+                    <div className="absolute bottom-0 left-0 p-1 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                      {/* <HiOutlineDotsVertical /> */}
+                      {/*if i hovers on it then a menu will open with three option delete ,premium/ and othrs*/}
+
+                      <HiOutlineDotsVertical
+                        className="cursor-pointer"
+                        onClick={() => toggleMenu(index)}
+                      />
+                      {menuOpenIndex === index && (
+                        <div className="menu-item absolute bottom-0 left-0 mb-2 bg-white text-black text-sm shadow-lg rounded p-2 w-[120px] z-10">
+                          <ul>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => {
+                                deleteVideoHandler(index);
+                                setMenuOpenIndex(null);
+                              }}
+                            >
+                              Delete
+                            </li>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => console.log("Premium")}
+                            >
+                              Premium
+                            </li>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => console.log("Others")}
+                            >
+                              Others
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </ReactSortable>
+            </div>
           </div>
         </section>
         <div className="flex justify-end w-[100%]">
