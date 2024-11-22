@@ -15,6 +15,7 @@ import SavingLoaderModal from "./savingLoaderModal";
 import { ReactSortable } from "react-sortablejs";
 import { CgMenuOreos } from "react-icons/cg";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import personalisedAds from "../assests/personalise_Ads.jpg";
 
 const AddMovies = () => {
   const [menuOpenIndex, setMenuOpenIndex] = useState(null);
@@ -43,18 +44,30 @@ const AddMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
   const addMoviesHandler = async () => {
+    const adContent = "Personalized Ad Content"; // You can customize this
+    const adBlob = new Blob([adContent], { type: "text/plain" });
+    const adFile = new File([adBlob], "Personalised_Ad.txt", {
+      type: "text/plain",
+    });
     console.log(videoFiles);
     console.log(layOutArrayRef.current); //array of object
     setUploadStatusModal(true);
     const formdata = new FormData();
     formdata.append("thumbnail", thumbnailRef.current);
-    videoFiles.forEach((current) => formdata.append("shorts", current));
+    videoFiles.forEach((current) => {
+      console.log(current);
+      if (current.name == "Personalised Ads") {
+        return formdata.append("shorts",adFile);
+      }
+      return formdata.append("shorts", current);
+    });
     formdata.append("title", titleRef.current.value);
     formdata.append("layouts", JSON.stringify(layOutArrayRef.current));
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", JSON.stringify(genreRef.current));
     formdata.append("language", JSON.stringify(languageRef.current) || []);
+  
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -87,6 +100,7 @@ const AddMovies = () => {
   };
   function addAdsInShortHandler() {
     setvideoFiles((prev) => [...prev, { name: "Personalised Ads" }]);
+    setVideoFilesSnapshot((prev) => [...prev, personalisedAds]);
   }
   const selectionHandler = (value) => {
     // console.log(value);
@@ -181,6 +195,15 @@ const AddMovies = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSort = (newList) => {
+    const newVideoFiles = newList.map((item, index) => videoFiles[item.id]);
+    const newSnapshots = newList.map(
+      (item, index) => videoFilesSnapshot[item.id]
+    );
+    setvideoFiles(newVideoFiles);
+    setVideoFilesSnapshot(newSnapshots);
+  };
   return (
     <>
       {" "}
@@ -350,8 +373,11 @@ const AddMovies = () => {
                 </div>
               </DragNDropVideos>
               <ReactSortable
-                list={videoFiles}
-                setList={setvideoFiles}
+                list={videoFiles.map((_, index) => ({
+                  id: index,
+                  name: videoFiles[index].name,
+                }))}
+                setList={handleSort}
                 className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2"
               >
                 {videoFiles.map((current, index) => (

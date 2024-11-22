@@ -8,20 +8,21 @@ import { FaTrash } from "react-icons/fa";
 import GenreSelector from "./genreSelector";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 
 const EditMovies = () => {
   const params = useParams();
   // console.log(params);
   // return;
   const titleRef = useRef();
-  const [AllData, setAllData] = useState(null);
+  const [AllData, setAllData] = useState([]);
   const [videoFiles, setvideoFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const [thumbnailFromBackendPreview, setThumbNailFromBackendPreview] =
     useState(null);
   const [shortsPreviewFromBackend, setShortsPreviewFromBackend] =
-    useState(null);
+    useState([]);
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const genre = [];
@@ -37,7 +38,7 @@ const EditMovies = () => {
       const response = await axios.get(
         `${connectionString}/admin/getMovie/${id}`
       );
-      // console.log(response.data.movieData,".....")
+      console.log(response.data.movieData,".....")
       // return
       if (
         response.data.movieData &&
@@ -165,6 +166,7 @@ const EditMovies = () => {
     setvideoFiles(videosAfterDeletion);
   };
   console.log(shortsPreviewFromBackend);
+  console.log(AllData,"alldata")
   const deleteVideoFromBackendHandler = async (id) => {
     try {
       const response = await axios.delete(
@@ -291,7 +293,7 @@ const EditMovies = () => {
               </div>
             </div>
           </div>
-          <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4">
+          {/* <div className="flex  bg-[#2A3042] w-[100%] my-4 p-4">
             <DragNDropVideos videoFile={getVideoFilesHandler}>
               <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 w-[300px] min-h-[300px] h-[100%] mx-4 items-center justify-center cursor-pointer">
                 <p className="text-xl font-semibold">Upload shorts here</p>
@@ -346,8 +348,161 @@ const EditMovies = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </section>
+        <div className=" bg-[#2A3042] w-[100%] my-4 p-4">
+          <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
+            <p>Shorts Section</p>
+          </div>
+          <div className="bg-gray-500 w-full h-28 items-center flex justify-center">
+            upload movie here
+          </div>
+          <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
+            <div className="font-semibold flex border-b pb-2 text-[#A8B2BC] border-gray-500 px-2">
+              <div className="w-[50px] flex-shrink-0">
+                {shortsPreviewFromBackend.length > 0 ? (
+                  <p className="p-2">sr</p>
+                ) : (
+                  <div className="p-2">
+                    <Skeleton
+                      variant="rounded"
+                      animation="wave"
+                      height={"30px"}
+                      width={"100%"}
+                      sx={{
+                        bgcolor: "purple.600",
+                      }}
+                    ></Skeleton>
+                  </div>
+                )}
+              </div>
+
+              <div className="min-w-[120px] w-[100%]  flex-shrink-1">
+                {shortsPreviewFromBackend.length > 0 ? (
+                  <p className="p-2">Name</p>
+                ) : (
+                  <div className="p-2">
+                    <Skeleton
+                      variant="rounded"
+                      animation="wave"
+                      height={"30px"}
+                      width={"100%"}
+                      sx={{
+                        bgcolor: "purple.600",
+                      }}
+                    ></Skeleton>
+                  </div>
+                )}
+              </div>
+              <div className="w-[80%] min-w-[100px]  flex-shrink-1">
+                {shortsPreviewFromBackend.length > 0 ? (
+                  <p className="p-2">Views</p>
+                ) : (
+                  <div className="p-2">
+                    <Skeleton
+                      variant="rounded"
+                      animation="wave"
+                      height={"30px"}
+                      width={"100%"}
+                      sx={{
+                        bgcolor: "purple.600",
+                      }}
+                    ></Skeleton>
+                  </div>
+                )}
+              </div>
+              <div className="w-[80%] min-w-[100px]  flex-shrink-1">
+                {shortsPreviewFromBackend.length > 0 ? (
+                  <p className="p-2">Visible</p>
+                ) : (
+                  <div className="p-2">
+                    <Skeleton
+                      variant="rounded"
+                      animation="wave"
+                      height={"30px"}
+                      width={"100%"}
+                      sx={{
+                        bgcolor: "purple.600",
+                      }}
+                    ></Skeleton>
+                  </div>
+                )}
+              </div>
+              <div className="w-[80px]  flex-shrink-0">
+                {shortsPreviewFromBackend.length > 0 ? (
+                  <p className="p-2">Preview</p>
+                ) : (
+                  <div className="p-2">
+                    <Skeleton
+                      variant="rounded"
+                      animation="wave"
+                      height={"30px"}
+                      width={"100%"}
+                      sx={{
+                        bgcolor: "purple.600",
+                      }}
+                    ></Skeleton>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {shortsPreviewFromBackend.length > 0 &&
+              shortsPreviewFromBackend.map((current, index) => (
+                <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
+                  <div className="w-[50px] p-2  flex-shrink-0">
+                    <p className="p-2">{index + 1}</p>
+                  </div>
+                  {/* <div className="w-[90px] text-white font-semibold flex-shrink-0">
+                    <select
+                      className="bg-[#3C445A] rounded-sm p-2"
+                      onChange={(event) =>
+                        handleSelectChange(current._id, event)
+                      }
+                    >
+                      <option
+                        value=""
+                        // disabled
+                        className="border-b-2 border-gray-400"
+                      >
+                        option
+                      </option>
+                      <option value="EDIT">EDIT</option>
+                      <option value="DELETE">DELETE</option>
+                    </select>
+                  </div> */}
+                  {/* <div className="w-[100px] flex-shrink-0">
+                    <img
+                      // src={`${connectionString}/thumbnails${current.fileLocation.replace(
+                      //   "uploads/thumbnail",
+                      //   ""
+                      // )}`}
+                      className=" h-[120px] w-[100px] p-2"
+                    ></img>
+                  </div> */}
+                  <div className="min-w-[120px] w-[100%]  flex-shrink-1">
+                    <p className="p-2">{current.name}</p>
+                  </div>
+                  <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                    <p className="p-2 break-words">{current.views}</p>
+                  </div>{" "}
+                  <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                    <p className="p-2 break-words">{current.visible}</p>
+                  </div>
+                  <div
+                    className="w-[80px]  flex-shrink-0 cursor-pointer"
+                    onClick={() => {
+                      // navigate(`/userDetails/${current._id}`);
+                    }}
+                  >
+                    <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                      Watch
+                    </p>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
         <div className="flex justify-end w-[100%]">
           <div
             onClick={() => {
