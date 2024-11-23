@@ -7,6 +7,7 @@ import {
   FaArrowAltCircleUp,
   FaArrowUp,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductReportCard = ({
   published,
@@ -15,13 +16,31 @@ const ProductReportCard = ({
   cardIcon,
   loading,
 }) => {
+  const dispatch = useDispatch();
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const total = (+published || 0) + (+UnPublished || 0);
   console.log(loading);
   return (
-    <div className="bg-[#626ED4] h-[156px] flex flex-col p-4 rounded">
+    <div
+      className={`${
+        selectedTheme === "Yellow Majestic"
+          ? "bg-[#FEBD59] backdrop-filter backdrop-blur-lg bg-opacity-70"
+          : selectedTheme === "modern reeloid"
+          ? "bg-black/40 backdrop-blur-lg "
+          : "bg-[#626ED4]"
+      } h-[156px] flex flex-col p-4 rounded`}
+    >
       <div className="flex">
         {!loading ? (
-          <div className="p-2 bg-[#7984DA] h-fit rounded-md">
+          <div
+            className={`p-2 ${
+              selectedTheme === "Yellow Majestic"
+                ? "bg-[#FEBD59]"
+                : selectedTheme === "modern reeloid"
+                ? "bg-black/20"
+                : "bg-[#7984DA]"
+            }  h-fit rounded-md`}
+          >
             <img src={cardIcon} className="h-[50px] w-[50px]"></img>
           </div>
         ) : (

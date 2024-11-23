@@ -14,8 +14,12 @@ import { TbCopyPlusFilled } from "react-icons/tb";
 import { TfiLayoutAccordionList, TfiLayoutGrid3 } from "react-icons/tfi";
 import useWindowSize from "../customHooks/useWindowSize";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { themeSliceAction } from "../store/themeSlice";
 
 const BigScreenSideBar = (props) => {
+  const dispatch = useDispatch();
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const { width, height } = useWindowSize();
   const navigate = useNavigate();
   const [currentMenuOpen, setCurrentMEnuOpen] = useState(null);
@@ -23,13 +27,17 @@ const BigScreenSideBar = (props) => {
   const currentMenuHandler = (value) => {
     setCurrentMEnuOpen(value);
   };
+
   return (
     <div
-      className={`w-[240px] text-[#A8B2BC] z-[10000] bg-[#2A3142] h-[calc(100vh-70px)] pt-4  overflow-y-auto  ${
+      className={`w-[240px] ${selectedTheme === "Yellow Majestic" ?"text-[#FEBD59]":selectedTheme === "modern reeloid"
+          ? "bg-black/70 backdrop-blur-sm ":"text-[#A8B2BC]"} z-[10000] ${
+        selectedTheme === "Yellow Majestic" ? "bg-[#2A3142]" : "bg-[#2A3142]"
+      }  h-[calc(100vh-70px)] pt-4  overflow-y-auto customScrollbar ${
         width < 992 ? "absolute flex flex-col" : "flex flex-shrink-0 flex-col"
       }`}
     >
-      <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
+      <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
         <p className="text-[.75rem]">MAIN</p>
       </div>
       <div className=" hover:text-white  hover:bg-[#2F374A] cursor-pointer">
@@ -44,7 +52,7 @@ const BigScreenSideBar = (props) => {
         </div>
       </div>
       <section>
-        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">DESIGN</p>
         </div>
         <div>
@@ -144,7 +152,7 @@ const BigScreenSideBar = (props) => {
         </div>
       </section>
       <section>
-        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">CONTENT</p>
         </div>
         <div>
@@ -281,7 +289,7 @@ const BigScreenSideBar = (props) => {
         </div>
       </section>
       <section>
-        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">USER MANAGEMENT</p>
         </div>
         <div
@@ -308,7 +316,7 @@ const BigScreenSideBar = (props) => {
         </div>
       </section>
       <section>
-        <div className="mx-4 hover:text-white text-sm h-[30px] flex items-center">
+        <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">OTHERS</p>
         </div>
         <div className=" hover:text-white  hover:bg-[#2F374A]">
@@ -349,6 +357,16 @@ const BigScreenSideBar = (props) => {
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[.9rem] px-4 font-semibold">Checked_In Points</p>
+          </div>
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              // navigate("/CheckedPoints");
+              dispatch(themeSliceAction.themeMode());
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Theme</p>
           </div>
         </div>
       </section>

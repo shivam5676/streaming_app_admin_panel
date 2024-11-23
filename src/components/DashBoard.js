@@ -19,8 +19,11 @@ import firstPlace from "../assests/1-1.png";
 import secondPlace from "../assests/2nd-prize.png";
 import thirdPlace from "../assests/3rd-prize.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const DashBoard = () => {
+  const dispatch = useDispatch();
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const navigate = useNavigate();
   const connectionString = process.env.REACT_APP_API_URL;
   const [cardsData, setCardsData] = useState({});
@@ -36,7 +39,7 @@ const DashBoard = () => {
         );
         console.log(response, "cards....>");
         setCardsData(response.data);
-      } catch (error) { }
+      } catch (error) {}
     }
     fetchDashboardData();
   }, [fetchingType]);
@@ -52,7 +55,7 @@ const DashBoard = () => {
         }
 
         // setTop3data
-      } catch (error) { }
+      } catch (error) {}
     }
     fetchTopContentData();
   }, [fetchingType]);
@@ -66,7 +69,7 @@ const DashBoard = () => {
         if (response.data) {
           setContentViews(response.data);
         }
-      } catch (error) { }
+      } catch (error) {}
     }
     fetchContentViews();
   }, [fetchingType]);
@@ -79,7 +82,7 @@ const DashBoard = () => {
         console.log(response);
         setLatestUsers(response.data.users);
         // setContentViews(response.data);
-      } catch (error) { }
+      } catch (error) {}
     }
     fetchLAtestUSers();
   }, [fetchingType]);
@@ -208,7 +211,11 @@ const DashBoard = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
-      <div className="text-white px-2 py-2 ">
+      <div
+        className={`${
+          selectedTheme === "modern reeloid" ? "text-white" : "text-white"
+        }  px-2 py-2 `}
+      >
         <div className="text-[.9rem] font-bold flex justify-between items-center">
           <p className="text-[1rem] font-semibold">DashBoard</p>
           <div className="border-2">
@@ -253,7 +260,7 @@ const DashBoard = () => {
             </FormControl>
           </div>
         </div>
-        <p className="text-[.9rem] font-semibold text-gray-400">
+        <p className={`text-[.9rem] font-semibold ${selectedTheme==="modern reeloid"?"text-white":"text-gray-400"}`}>
           <span>Welcome to Reelies Dashboard</span>
         </p>
         <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">
@@ -291,8 +298,20 @@ const DashBoard = () => {
           {/* <div className=""> */}
           <div className="gap-4 w-[100%] flex flex-col md:flex-row  ">
             {Object.values(contentViews).length != 0 ? (
-              <div className="w-[100%] md:w-[40%]  bg-[#2A3042]">
-                <p className="p-4 text-lg font-semibold">
+              <div
+                className={`w-[100%] md:w-[40%]  ${
+                  selectedTheme === "modern reeloid"
+                    ? "bg-black/40 backdrop-blur-lg "
+                    : "bg-[#2A3042]"
+                } `}
+              >
+                <p
+                  className={`p-4 text-lg font-semibold ${
+                    selectedTheme === "Yellow Majestic"
+                      ? "text-[#FEBD59] "
+                      : "text-white"
+                  }`}
+                >
                   Content Views <span>(All Time)</span>
                 </p>
                 <div className="  h-[300px] w-[100%] min-w-[250px] overflow-x-hidden">
@@ -316,28 +335,48 @@ const DashBoard = () => {
             )}
 
             {top3data ? (
-              <div className="   md:w-[60%]  bg-[#2A3042]">
+              <div className={`   md:w-[60%]  ${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg "
+                  : "bg-[#2A3042]"
+              } `}>
                 {" "}
-                <p className="p-4 text-lg font-semibold flex">
+                <p
+                  className={`p-4 text-lg font-semibold flex ${
+                    selectedTheme === "Yellow Majestic"
+                      ? "text-[#FEBD59] "
+                      : "text-white"
+                  }`}
+                >
                   Top
                   <label class="flex items-center relative w-24 cursor-pointer select-none mx-2">
                     <input
                       type="checkbox"
-                      class="appearance-none transition-colors cursor-pointer w-24 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500 peer"
+                      class={`appearance-none transition-colors cursor-pointer w-24 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 ${
+                        selectedTheme === "Yellow Majestic"
+                          ? "bg-[#996e2d] "
+                          : "bg-red-500"
+                      } peer`}
                     />
                     <span class="absolute font-medium text-xs uppercase left-8 text-white peer-checked:hidden">
                       Movies
                     </span>
-                    <span class="absolute font-medium text-xs uppercase right-8 text-white peer-checked:block hidden">
+                    <span class="absolute font-medium text-xs uppercase right-8 text-white  peer-checked:block hidden">
                       Shows
                     </span>
-                    <span class="w-7 h-7 left-0 absolute rounded-full transform transition-transform bg-gray-200 peer-checked:translate-x-[68px] text-center text-red-500">
+                    <span
+                      class={`w-7 h-7 left-0 absolute rounded-full transform transition-transform bg-gray-200 peer-checked:translate-x-[68px] text-center ${
+                        selectedTheme === "Yellow Majestic"
+                          ? "text-[#996e2d] "
+                          : "text-red-500"
+                      }`}
+                    >
                       3
                     </span>
                   </label>
                   <span>(All Time)</span>
                 </p>
-                <div className="m-4 font-normal text-[.9rem] text-[#A8B2BC]  overflow-x-auto">
+                <div className="m-4 font-normal text-[.9rem] text-[#c3ccd4]  overflow-x-auto">
                   <div className="font-semibold flex border-b pb-2 border-gray-500 ">
                     <div className="w-[100px] flex flex-shrink-0 items-center">
                       <p className="px-4">Position</p>
@@ -359,7 +398,7 @@ const DashBoard = () => {
                   {/* items */}
                   {top3data?.length > 0 &&
                     top3data.map((current, index) => (
-                      <div className="font-normal flex my-2  border-b border-gray-500">
+                      <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500">
                         <div className="w-[100px] px-2  flex-shrink-0">
                           {/* <p className="p-2">{index + 1}</p> */}
                           <img
@@ -367,13 +406,14 @@ const DashBoard = () => {
                               index == 0
                                 ? firstPlace
                                 : index == 1
-                                  ? secondPlace
-                                  : index == 2
-                                    ? thirdPlace
-                                    : ""
+                                ? secondPlace
+                                : index == 2
+                                ? thirdPlace
+                                : ""
                             }
-                            className={`w-[80px] h-[80px] ${index === 0 ? "img-animate" : "img-flip-pause"
-                              }`}
+                            className={`w-[80px] h-[80px] ${
+                              index === 0 ? "img-animate" : "img-flip-pause"
+                            }`}
                           ></img>
                         </div>
                         <div className="w-[100%]  flex-shrink-1 min-w-[100px] flex  items-center mx-8">
@@ -394,9 +434,12 @@ const DashBoard = () => {
                             {current.views}
                           </p>
                         </div>
-                        <div className="w-[80px]  flex-shrink-0 flex  items-center justify-center cursor-pointer" onClick={()=>{
-                           navigate(`/allMovies/${current._id}`)
-                        }}>
+                        <div
+                          className="w-[80px]  flex-shrink-0 flex  items-center justify-center cursor-pointer"
+                          onClick={() => {
+                            navigate(`/allMovies/${current._id}`);
+                          }}
+                        >
                           <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                             view
                           </p>
@@ -423,10 +466,22 @@ const DashBoard = () => {
           {/* </div> */}
         </section>
         {/* new users */}
-        <section className="w-[100%]  bg-[#2A3042]  py-2 my-2">
+        <section className={`w-[100%]  bg-[#2A3042]  py-2 my-2 ${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg "
+                  : "bg-[#2A3042]"
+              }`}>
           {" "}
           {latestUsers.length > 0 ? (
-            <div className="p-4 text-lg font-semibold">New Users</div>
+            <div
+              className={`p-4 text-lg font-semibold ${
+                selectedTheme === "Yellow Majestic"
+                  ? "text-[#FEBD59] "
+                  : "text-white"
+              }`}
+            >
+              New Users
+            </div>
           ) : (
             <div className="p-2">
               <Skeleton
@@ -441,7 +496,7 @@ const DashBoard = () => {
             </div>
           )}
           <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
-            <div className="font-semibold flex border-b pb-2 text-[#A8B2BC] border-gray-500 px-2">
+            <div className="font-semibold flex border-b pb-2 text-[#c3ccd4] border-gray-500 px-2">
               <div className="w-[50px] flex-shrink-0">
                 {latestUsers.length > 0 ? (
                   <p className="p-2">sr</p>
@@ -532,7 +587,7 @@ const DashBoard = () => {
 
             {latestUsers.length > 0 &&
               latestUsers.map((current, index) => (
-                <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
+                <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500 px-2">
                   <div className="w-[50px] p-2  flex-shrink-0">
                     <p className="p-2">{index + 1}</p>
                   </div>
@@ -572,9 +627,12 @@ const DashBoard = () => {
                   <div className="w-[100%] min-w-[100px] flex-shrink-1">
                     <p className="p-2 break-words">{current.mobile}</p>
                   </div>
-                  <div className="w-[80px]  flex-shrink-0 cursor-pointer" onClick={() => {
-                    navigate(`/userDetails/${current._id}`);
-                  }}>
+                  <div
+                    className="w-[80px]  flex-shrink-0 cursor-pointer"
+                    onClick={() => {
+                      navigate(`/userDetails/${current._id}`);
+                    }}
+                  >
                     <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                       view
                     </p>

@@ -10,8 +10,10 @@ import { routes } from "./routes/routes";
 import { authRoutes } from "./routes/authRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSliceAction } from "./store/loginSlice";
-
+// import bgImg from "./assests/blue-bg.jpg"
+import bgImg from "./assests/blur-bg.jpg"
 function App() {
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const isLoggedIn = useSelector((state) => state.loginData.loggedIn);
   const dispatch = useDispatch();
   // console.log(loggedIn)
@@ -28,7 +30,16 @@ function App() {
     // setIsLoggedIn(true);
   };
   return (
-    <div className="bg-[#222736] w-[100vw] h-[100vh]">
+    <div
+      className={` w-[100vw] h-[100vh] ${
+        selectedTheme === "modern reeloid" ? "bgImg" : "bg-[#222736]"
+      }`}
+      style={
+        selectedTheme === "modern reeloid"
+          ? { backgroundImage: `url(${bgImg})` }
+          : undefined
+      }
+    >
       {isLoggedIn ? (
         <>
           {" "}

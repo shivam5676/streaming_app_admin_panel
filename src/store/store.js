@@ -5,6 +5,7 @@ import movieSliceReducer from "./movieSlice";
 import GenreSliceReducer from "./genreSlice";
 import languageSliceReducer from "./languageSlice";
 import loginSliceReducer from "./loginSlice";
+import themeSliceReducer from "./themeSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,8 +13,9 @@ const store = configureStore({
     layOutData: layoutSliceReducer,
     movieData: movieSliceReducer,
     genreData: GenreSliceReducer,
-    languageData:languageSliceReducer,
-    loginData:loginSliceReducer
+    languageData: languageSliceReducer,
+    loginData: loginSliceReducer,
+    theme: themeSliceReducer,
   },
 });
 export default store;
