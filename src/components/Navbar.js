@@ -11,7 +11,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import useWindowSize from "./../customHooks/useWindowSize";
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const Navbar = (props) => {
   const dispatch=useDispatch()
   const smallSideBArActivated = props.smallSideBarActivated;
@@ -19,7 +19,7 @@ const Navbar = (props) => {
   const { width, height } = useWindowSize();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
@@ -40,9 +40,9 @@ const Navbar = (props) => {
     };
   }, []);
   return (
-    <div className="bg-[#36394C] w-[100vw] h-[70px] flex">
+    <div className="bg-[#36394C]/70 backdrop-blur-sm w-[100vw] h-[70px] flex">
       {!smallSideBArActivated && width >= 992 ? (
-        <div className="flex flex-shrink-0 w-[240px]  bg-[#2A3142] text-white  h-[100%] items-center justify-center">
+        <div className={`flex flex-shrink-0 w-[240px] ${selectedTheme==="modern reeloid"?"bg-[#2A3142]/60 backdrop-blur-lg":"bg-[#2A3142]"} bg-[#2A3142] text-white  h-[100%] items-center justify-center`}>
           <img src={logo} className="mt-3 w-[150px] h-[75%]"></img>
          
         </div>

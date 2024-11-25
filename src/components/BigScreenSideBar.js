@@ -30,8 +30,13 @@ const BigScreenSideBar = (props) => {
 
   return (
     <div
-      className={`w-[240px] ${selectedTheme === "Yellow Majestic" ?"text-[#FEBD59]":selectedTheme === "modern reeloid"
-          ? "bg-black/70 backdrop-blur-sm ":"text-[#A8B2BC]"} z-[10000] ${
+      className={`w-[240px] ${
+        selectedTheme === "Yellow Majestic"
+          ? "text-[#FEBD59]"
+          : selectedTheme === "modern reeloid"
+          ? "bg-black/70 backdrop-blur-sm text-[#FEBD59]"
+          : "text-[#A8B2BC]"
+      } z-[10000] ${
         selectedTheme === "Yellow Majestic" ? "bg-[#2A3142]" : "bg-[#2A3142]"
       }  h-[calc(100vh-70px)] pt-4  overflow-y-auto customScrollbar ${
         width < 992 ? "absolute flex flex-col" : "flex flex-shrink-0 flex-col"
@@ -40,7 +45,7 @@ const BigScreenSideBar = (props) => {
       <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
         <p className="text-[.75rem]">MAIN</p>
       </div>
-      <div className=" hover:text-white  hover:bg-[#2F374A] cursor-pointer">
+      <div className={` hover:text-white   ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" } cursor-pointer`}>
         <div
           className="mx-4 h-[50px] flex items-center"
           onClick={() => {
@@ -57,7 +62,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
+              className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Hero Section"
                 ? currentMenuHandler(null)
@@ -103,7 +108,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
+            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Layout Manager"
                 ? currentMenuHandler(null)
@@ -157,7 +162,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
+             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Movie Section"
                 ? currentMenuHandler(null)
@@ -203,7 +208,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
+             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Web-shows Section"
                 ? currentMenuHandler(null)
@@ -247,7 +252,7 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className=" hover:text-white  hover:bg-[#2F374A]  cursor-pointer"
+             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Ads Section"
                 ? currentMenuHandler(null)
@@ -293,7 +298,7 @@ const BigScreenSideBar = (props) => {
           <p className="text-[.75rem]">USER MANAGEMENT</p>
         </div>
         <div
-          className=" hover:text-white  hover:bg-[#2F374A]"
+            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
           onClick={() => {
             navigate("/allUsers");
           }}
@@ -304,7 +309,7 @@ const BigScreenSideBar = (props) => {
           </div>
         </div>
         <div
-          className=" hover:text-white  hover:bg-[#2F374A]"
+            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
           onClick={() => {
             navigate("/allAdmin");
           }}
@@ -319,7 +324,7 @@ const BigScreenSideBar = (props) => {
         <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">OTHERS</p>
         </div>
-        <div className=" hover:text-white  hover:bg-[#2F374A]">
+        <div   className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}>
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {

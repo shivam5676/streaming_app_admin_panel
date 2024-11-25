@@ -260,7 +260,11 @@ const DashBoard = () => {
             </FormControl>
           </div>
         </div>
-        <p className={`text-[.9rem] font-semibold ${selectedTheme==="modern reeloid"?"text-white":"text-gray-400"}`}>
+        <p
+          className={`text-[.9rem] font-semibold ${
+            selectedTheme === "modern reeloid" ? "text-white" : "text-gray-400"
+          }`}
+        >
           <span>Welcome to Reelies Dashboard</span>
         </p>
         <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">
@@ -335,11 +339,13 @@ const DashBoard = () => {
             )}
 
             {top3data ? (
-              <div className={`   md:w-[60%]  ${
-                selectedTheme === "modern reeloid"
-                  ? "bg-black/40 backdrop-blur-lg "
-                  : "bg-[#2A3042]"
-              } `}>
+              <div
+                className={`   md:w-[60%]  ${
+                  selectedTheme === "modern reeloid"
+                    ? "bg-black/40 backdrop-blur-lg "
+                    : "bg-[#2A3042]"
+                } `}
+              >
                 {" "}
                 <p
                   className={`p-4 text-lg font-semibold flex ${
@@ -398,7 +404,7 @@ const DashBoard = () => {
                   {/* items */}
                   {top3data?.length > 0 &&
                     top3data.map((current, index) => (
-                      <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500">
+                      <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500  shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
                         <div className="w-[100px] px-2  flex-shrink-0">
                           {/* <p className="p-2">{index + 1}</p> */}
                           <img
@@ -466,11 +472,13 @@ const DashBoard = () => {
           {/* </div> */}
         </section>
         {/* new users */}
-        <section className={`w-[100%]  bg-[#2A3042]  py-2 my-2 ${
-                selectedTheme === "modern reeloid"
-                  ? "bg-black/40 backdrop-blur-lg "
-                  : "bg-[#2A3042]"
-              }`}>
+        <section
+          className={`w-[100%]  bg-[#2A3042]  py-2 my-2 ${
+            selectedTheme === "modern reeloid"
+              ? "bg-black/40 backdrop-blur-lg "
+              : "bg-[#2A3042]"
+          }`}
+        >
           {" "}
           {latestUsers.length > 0 ? (
             <div
@@ -587,7 +595,7 @@ const DashBoard = () => {
 
             {latestUsers.length > 0 &&
               latestUsers.map((current, index) => (
-                <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500 px-2">
+                <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500 px-2 shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
                   <div className="w-[50px] p-2  flex-shrink-0">
                     <p className="p-2">{index + 1}</p>
                   </div>
