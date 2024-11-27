@@ -6,8 +6,9 @@ import { MdOutlineMovie } from "react-icons/md";
 import { RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TfiLayoutGrid3 } from "react-icons/tfi";
+import { useSelector } from "react-redux";
 
-const IconScreenSideBar = () => {
+const IconScreenSideBar = () => {  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const [hoveredItem, setHoveredItem] = useState(null);
   const item = ["menu item", "close item"];
   const menuItems = [
@@ -58,7 +59,13 @@ const IconScreenSideBar = () => {
   ];
 
   return (
-    <div className="w-[70px] h-[100%] bg-[#2A3142]  pt-4 flex flex-col flex-shrink-0 items-center">
+    <div className={`w-[70px] h-[100%]  z-[100000] ${
+      selectedTheme === "Yellow Majestic"
+        ? "text-[#FEBD59]"
+        : selectedTheme === "modern reeloid"
+        ? "bg-black/70 backdrop-blur-sm text-[#FEBD59]"
+        : "text-[#A8B2BC]"
+    }  pt-4 flex flex-col flex-shrink-0 items-center`}>
       {menuItems?.map((item, index) => (
         <div
           key={index}

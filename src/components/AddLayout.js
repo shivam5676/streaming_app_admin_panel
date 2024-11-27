@@ -9,6 +9,7 @@ import RoutesInfoDiv from "./RoutesInfoDiv";
 import SavingLoaderModal from "./savingLoaderModal";
 
 const AddLayout = (req, res, next) => {
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
@@ -83,7 +84,7 @@ const AddLayout = (req, res, next) => {
         <section className="w-[100%]">
           {" "}
           <div className="flex gap-6 flex-col xl:flex-row">
-            <div className="bg-[#2A3042] flex-1  rounded-md text-white">
+          <div className={`${selectedTheme==="modern reeloid"?"bg-black/40 backdrop-blur-lg":"bg-[#2A3042]"} flex-1  rounded-md text-white`}>
               <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
                 <p>Layout Info</p>
               </div>

@@ -31,7 +31,7 @@ const AddSlider = () => {
   const [allMovies, setAllMovies] = useState([]);
   const promotionalImageRef = useRef();
   const promotionalImageURLRef = useRef();
-
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   useEffect(() => {
     try {
       (async () => {
@@ -122,7 +122,7 @@ const AddSlider = () => {
         <section className="w-[100%]">
           {" "}
           <div className="flex gap-6 flex-col xl:flex-row">
-            <div className="bg-[#2A3042] flex-1  rounded-md text-white">
+            <div className={`${selectedTheme==="modern reeloid"?"bg-black/40 backdrop-blur-lg":"bg-[#2A3042]"} flex-1  rounded-md text-white`}>
               <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
                 <p>Layout Info</p>
               </div>

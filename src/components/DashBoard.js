@@ -86,125 +86,7 @@ const DashBoard = () => {
     }
     fetchLAtestUSers();
   }, [fetchingType]);
-  const allLanguages = [
-    {
-      _id: "66fa322b141165d54e7d2239",
-      name: "english",
-      __v: 0,
-    },
-    {
-      _id: "66fa3231141165d54e7d223b",
-      name: "Hindi",
-      __v: 0,
-    },
-    {
-      _id: "66fa3237141165d54e7d223d",
-      name: "Sanskrit",
-      __v: 0,
-    },
-  ];
-  const allMovies = [
-    {
-      _id: "6704c9a3bc9132b974ccedb6",
-      name: "trollerz",
-      genre: [
-        {
-          _id: "66fa3269141165d54e7d2241",
-          name: "Action",
-        },
-        {
-          _id: "66fa3284141165d54e7d2243",
-          name: "Mythological",
-        },
-        {
-          _id: "66fa890e05ed98c8b4e1db34",
-          name: "Comedy",
-        },
-        {
-          _id: "66fbaf3875c7dcc4c65f9510",
-          name: "Thriller",
-        },
-      ],
-      freeVideos: 0,
-      visible: true,
-      fileLocation: "uploads/thumbnail/trollerz-thumbnail_1728367011895.jpeg",
-      shorts: [
-        "6704c9a3bc9132b974ccedb8",
-        "6704c9a3bc9132b974ccedb9",
-        "6704c9a3bc9132b974ccedba",
-      ],
-      layouts: [
-        {
-          _id: "670660b78bf3e3def3649c89",
-          name: "Latest Movies",
-        },
-      ],
-      language: [
-        "66fa322b141165d54e7d2239",
-        "66fa3231141165d54e7d223b",
-        "66fa3237141165d54e7d223d",
-      ],
-      trailerUrl:
-        "https://1326678901.vod-qcloud.com/941b074bvodtranssgp1326678901/fbee42ae1397757891053795120/v.f101303.mp4",
-      parts: 3,
-      views: 4,
-      __v: 3,
-    },
-    {
-      _id: "67051f25bf18ddd8b52aa608",
-      name: "inception",
-      genre: [
-        {
-          _id: "66fa3269141165d54e7d2241",
-          name: "Action",
-        },
-        {
-          _id: "66fa3284141165d54e7d2243",
-          name: "Mythological",
-        },
-        {
-          _id: "66fa890e05ed98c8b4e1db34",
-          name: "Comedy",
-        },
-      ],
-      freeVideos: 0,
-      visible: true,
-      fileLocation: "uploads/thumbnail/inception-thumbnail_1728388901826.jpeg",
-      shorts: [
-        "67051f25bf18ddd8b52aa60e",
-        "67051f25bf18ddd8b52aa60f",
-        "67051f26bf18ddd8b52aa610",
-      ],
-      layouts: [],
-      language: [
-        "66fa322b141165d54e7d2239",
-        "66fa3231141165d54e7d223b",
-        "66fa3237141165d54e7d223d",
-      ],
-      trailerUrl:
-        "https://1326678901.vod-qcloud.com/e4004eb4vodtranshk1326678901/fbb7fd531397757891053765218/v.f101302.mp4",
-      parts: 3,
-      views: 7,
-      __v: 1,
-    },
-    {
-      _id: "67052210f4aeae2b11cfc15a",
-      name: "ChildrenStory 3",
-      genre: [],
-      freeVideos: 0,
-      visible: true,
-      fileLocation:
-        "uploads/thumbnail/ChildrenStory 3-thumbnail_1728389648582.jpeg",
-      shorts: ["67052210f4aeae2b11cfc15e", "67052210f4aeae2b11cfc15f"],
-      layouts: [],
-      language: ["66fa3231141165d54e7d223b"],
-      trailerUrl:
-        "https://1326678901.vod-qcloud.com/941b074bvodtranssgp1326678901/fbee42ae1397757891053795120/v.f101303.mp4",
-      parts: 2,
-      views: 4,
-      __v: 1,
-    },
-  ];
+  
   const handleSelectChange = (event) => {
     console.log(event.target.value);
     setFetchingType(event.target.value);
@@ -382,7 +264,7 @@ const DashBoard = () => {
                   </label>
                   <span>(All Time)</span>
                 </p>
-                <div className="m-4 font-normal text-[.9rem] text-[#c3ccd4]  overflow-x-auto">
+                <div className="m-4 font-normal text-[.9rem] text-gray-200  overflow-x-auto">
                   <div className="font-semibold flex border-b pb-2 border-gray-500 ">
                     <div className="w-[100px] flex flex-shrink-0 items-center">
                       <p className="px-4">Position</p>
@@ -404,7 +286,7 @@ const DashBoard = () => {
                   {/* items */}
                   {top3data?.length > 0 &&
                     top3data.map((current, index) => (
-                      <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500  shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
+                      <div className="font-normal flex my-2 text-gray-200 border-b border-gray-500  shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
                         <div className="w-[100px] px-2  flex-shrink-0">
                           {/* <p className="p-2">{index + 1}</p> */}
                           <img
@@ -504,7 +386,7 @@ const DashBoard = () => {
             </div>
           )}
           <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
-            <div className="font-semibold flex border-b pb-2 text-[#c3ccd4] border-gray-500 px-2">
+            <div className="font-semibold flex border-b pb-2 text-gray-200 border-gray-500 px-2">
               <div className="w-[50px] flex-shrink-0">
                 {latestUsers.length > 0 ? (
                   <p className="p-2">sr</p>
@@ -595,7 +477,7 @@ const DashBoard = () => {
 
             {latestUsers.length > 0 &&
               latestUsers.map((current, index) => (
-                <div className="font-normal flex my-2 text-[#c3ccd4] border-b border-gray-500 px-2 shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
+                <div className="font-normal flex my-2 text-gray-200 border-b border-gray-500 px-2 shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
                   <div className="w-[50px] p-2  flex-shrink-0">
                     <p className="p-2">{index + 1}</p>
                   </div>

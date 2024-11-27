@@ -59,7 +59,7 @@ const AllSliders = () => {
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-          <div className={`${ selectedTheme === "modern reeloid"
+          <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
           ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">

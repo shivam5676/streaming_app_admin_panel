@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 const LanguageList = () => {
+  const selectedTheme = useSelector((state) => state.theme.selectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   // const [allLanguages, setAllLanguages] = useState([]);
@@ -72,7 +73,8 @@ const LanguageList = () => {
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-          <div className="bg-[#2A3042] flex-1  rounded-md text-gray-400 max-[690px]:overflow-auto py-2">
+        <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
+          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">

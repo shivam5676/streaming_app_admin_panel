@@ -9,7 +9,10 @@ import { AdapterDayjs } from "./../../node_modules/@mui/x-date-pickers/AdapterDa
 
 import CheckedInAllotementModal from "./checkedInAllotementModal";
 import axios from "axios";
+import { useSelector } from "react-redux";
 const CheckedInAllotement = () => {
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+
   const connectionString = process.env.REACT_APP_API_URL;
   const [checkedInData, setCheckedInData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -44,7 +47,13 @@ const CheckedInAllotement = () => {
         ></RoutesInfoDiv>
         <section className="w-[100%] h-fit">
           <div className="flex gap-6 flex-col xl:flex-row">
-            <div className="bg-[#2A3042] flex-1  rounded-md text-gray-400 max-[690px]:overflow-auto py-2">
+            <div
+              className={`max-[690px]:overflow-auto ${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg "
+                  : "bg-[#2A3042] "
+              } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+            >
               <div className="m-4 text-[.9rem] font-semibold ">
                 <div className="flex justify-between text-white">
                   <div className="flex items-center">
@@ -78,11 +87,23 @@ const CheckedInAllotement = () => {
             </div>{" "}
           </div>
         </section>
-        <div className="w-[100%] bg-[#2A3042] my-2 grid 3xl:grid-cols-5 xl:grid-cols-4   lg:grid-cols-3 sm:grid-cols-2 gap-4 ">
+        <div
+          className={`w-[100%] ${
+            selectedTheme === "modern reeloid"
+              ? "bg-blacks/40 backdrop-blur-lg "
+              : "bg-[#2A3042] "
+          } my-2 grid 3xl:grid-cols-5 xl:grid-cols-4   lg:grid-cols-3 sm:grid-cols-2 gap-4 `}
+        >
           {checkedInData &&
             checkedInData.map((current) => {
               return (
-                <div className="rounded-md bg-[#333F6B] min-h-[200px]  p-4 ">
+                <div
+                  className={`rounded-md ${
+                    selectedTheme === "modern reeloid"
+                      ? "bg-black/40 backdrop-blur-lg"
+                      : "bg-[#333F6B]"
+                  }  min-h-[200px]  p-4 `}
+                >
                   <div className="w-full h-full bg-white rounded-md px-4 py-8 font-semibold flex flex-col justify-between">
                     <p className="font-bold text-[.9rem]">
                       Day - {current.Day}
@@ -95,7 +116,13 @@ const CheckedInAllotement = () => {
                         <img src={coins} className="w-[40px] h-[40px]"></img>
                       </p>
                       <div className="">
-                        <div className="bg-[#132152] hover:hover:bg-[#415ec7] cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md">
+                        <div
+                          className={`${
+                            selectedTheme === "modern reeloid"
+                              ? "bg-black/40 backdrop-blur-lg hover:bg-[#e69142]/60"
+                              : "bg-[#132152] hover:bg-[#415ec7]"
+                          } cursor-pointer text-white text-[.8rem] py-2 px-4 rounded-md`}
+                        >
                           Edit
                         </div>
                       </div>

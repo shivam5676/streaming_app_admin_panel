@@ -8,7 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import GenreSelector from "./genreSelector";
 import { toast } from "react-toastify";
 import LanguageSelector from "./LanguageSelector";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { movieSliceACtion } from "../store/movieSlice";
 import RoutesInfoDiv from "./RoutesInfoDiv";
 import SavingLoaderModal from "./savingLoaderModal";
@@ -24,7 +24,7 @@ const AddMovies = () => {
   const [message, setMessage] = useState(
     " Movie creation is in progress...please wait"
   );
-
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const titleRef = useRef();
   const [videoFiles, setvideoFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
@@ -57,7 +57,7 @@ const AddMovies = () => {
     videoFiles.forEach((current) => {
       console.log(current);
       if (current.name == "Personalised Ads") {
-        return formdata.append("shorts",adFile);
+        return formdata.append("shorts", adFile);
       }
       return formdata.append("shorts", current);
     });
@@ -67,7 +67,7 @@ const AddMovies = () => {
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", JSON.stringify(genreRef.current));
     formdata.append("language", JSON.stringify(languageRef.current) || []);
-  
+
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -227,7 +227,13 @@ const AddMovies = () => {
         ></RoutesInfoDiv>
         <section className="w-[100%]">
           <div className="flex gap-6 flex-col xl:flex-row">
-            <div className="bg-[#2A3042] flex-1  rounded-md text-white">
+            <div
+              className={`${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg"
+                  : "bg-[#2A3042]"
+              } flex-1  rounded-md text-white`}
+            >
               <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
                 <p>Movie Info</p>
               </div>
@@ -282,7 +288,13 @@ const AddMovies = () => {
                 </div>
               </div>{" "}
             </div>
-            <div className="bg-[#2A3042] flex-1  rounded-md text-white">
+            <div
+              className={`${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg"
+                  : "bg-[#2A3042]"
+              } flex-1  rounded-md text-white`}
+            >
               <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
                 <p>Additional Info</p>
               </div>
@@ -351,7 +363,13 @@ const AddMovies = () => {
               </div>
             </div>
           </div>
-          <div className="flex bg-[#2A3042] w-[100%] my-4 p-4 flex-col">
+          <div
+            className={`flex ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg"
+                : "bg-[#2A3042]"
+            }  w-[100%] my-4 p-4 flex-col`}
+          >
             <div className="m-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
               <p>Shorts Upload Section</p>
               <div
@@ -365,7 +383,7 @@ const AddMovies = () => {
                 <span class="relative font-bold">Add Ads</span>
               </div>
             </div>
-            <div className="flex  bg-[#2A3042] w-[100%] md:flex-row flex-col">
+            <div className="flex   w-[100%] md:flex-row flex-col">
               {" "}
               <DragNDropVideos videoFile={getVideoFilesHandler}>
                 <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 md:w-[300px] w-[100%] min-h-[300px] h-[100%] md:mx-4 items-center justify-center cursor-pointer">
