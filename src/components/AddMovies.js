@@ -383,11 +383,12 @@ const AddMovies = () => {
                 <span class="relative font-bold">Add Ads</span>
               </div>
             </div>
-            <div className="flex   w-[100%] md:flex-row flex-col">
+            <div className="flex   w-[100%]  flex-col">
               {" "}
+              
               <DragNDropVideos videoFile={getVideoFilesHandler}>
-                <div className="flex flex-shrink-0 border-dashed text-white border-white border-2 md:w-[300px] w-[100%] min-h-[300px] h-[100%] md:mx-4 items-center justify-center cursor-pointer">
-                  <p className="text-xl font-semibold">Upload shorts here</p>
+                <div className="bg-gray-500 w-full h-28 items-center flex justify-center text-center text-white font-bold text-lg rounded-md">
+                  Drag and Drop or upload movie here
                 </div>
               </DragNDropVideos>
               <ReactSortable
@@ -396,17 +397,17 @@ const AddMovies = () => {
                   name: videoFiles[index].name,
                 }))}
                 setList={handleSort}
-                className="w-[100%] border-2 flex flex-wrap p-2 max-md:my-2"
+                className="w-[100%] border-2 border-gray-500 grid  grid-cols-1 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 p-2 my-2"
               >
                 {videoFiles.map((current, index) => (
                   <div
                     key={index}
-                    className="relative  bg-white h-[100px] w-[150px] m-2 group"
+                    className="relative  bg-white h-[100px] m-2 group"
                   >
                     <img
                       src={videoFilesSnapshot[index]}
                       alt={`Snapshot of `}
-                      className="h-[100%] w-[100%] object-cover select-none"
+                      className="h-[100%] w-[100%] object-cover select-none text-sm"
                       draggable="false"
                     />
                     <div
