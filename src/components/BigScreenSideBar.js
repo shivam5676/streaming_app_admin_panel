@@ -373,6 +373,16 @@ const BigScreenSideBar = (props) => {
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[.9rem] px-4 font-semibold">Theme</p>
           </div>
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              navigate("/Analytics");
+              
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Analytics</p>
+          </div>
         </div>
       </section>
     </div>

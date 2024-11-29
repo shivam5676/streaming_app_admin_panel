@@ -8,6 +8,7 @@ import AllLAyout from "../components/AllLAyout";
 import AllMovies from "../components/AllMovies";
 import AllSliders from "../components/AllSliders";
 import AllUsers from "../components/AllUSers";
+import Analytics from "../components/Analytics/Analytics";
 import CheckedInAllotement from "../components/CheckedInAllotement";
 import CreateAdmin from "../components/CreateAdmin";
 
@@ -36,6 +37,6 @@ export const routes = [
   { path: "/CheckedPoints/", element: <CheckedInAllotement /> },
   { path: "/allAdmin/", element: <AllAdmin /> },
   { path: "/createAdmin/", element: <CreateAdmin /> },
-
+  { path: "/Analytics/", element: <Analytics /> },
   { path: "*", element: <DashBoard /> },
 ];
