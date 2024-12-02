@@ -2,6 +2,9 @@ import React from "react";
 import RoutesInfoDiv from "../RoutesInfoDiv";
 import ProductReportCard from "../dashboard/ProductReportCard";
 import AnalyticsCard from "./AnalyticsCard";
+// import GenreWiseDataLineGraph from "./GenreWiseDataLineGraph";
+import DataLineGraph from "./DataLineGraph";
+import AnalyticsUserRetitionGraph from "./AnalyticsUserRetitionGraph";
 
 const Analytics = () => {
   return (
@@ -16,19 +19,66 @@ const Analytics = () => {
         <div className="flex flex-col h-[600px]  max-[1100px]:w-[100%] w-[70%]">
           <div className="w-[100%] flex gap-6 overflow-x-auto">
             {" "}
-            <AnalyticsCard cardName={"Users"} data={"+852"}/>
-            <AnalyticsCard cardName={"Total watch time"} data={"2400 hrs"}/>
-            <AnalyticsCard cardName={"Avg. Session Duration"} data={"15min"}/>
+            <AnalyticsCard cardName={"Users"} data={"+852"} id={1} />
+            <AnalyticsCard
+              cardName={"Total watch time"}
+              data={"2400 hrs"}
+              id={2}
+            />
+            <AnalyticsCard
+              cardName={"Avg. Session Duration"}
+              data={"15min"}
+              id={3}
+            />
           </div>
-          <div className="bg-[#3d3f58] h-[400px] mt-6 rounded-lg p-2">
-            <p className="text-white text-bold text-lg">User insights</p>
+          <div className="bg-[#3d3f58] h-[350px] w-[100%] mt-6 rounded-lg p-2">
+            <p className="text-white font-bold text-lg">User Retetion</p>
             {/* here we will use graph what old user likes vs what new user likes like genre diffrent and different language ratio new vs old */}
+            <AnalyticsUserRetitionGraph/>
           </div>
         </div>
         <div className="flex flex-col max-[1100px]:w-[100%] w-[30%]  h-[600px] gap-6 min-[1100px]:ms-6 max-[1100px]:mt-6 ">
-          {" "}
-          <div className="flex w-[100%] h-[330px] bg-[#3d3f58] rounded-lg p-2 text-white font-semibold text-lg"><p>Genre Wise data</p></div>
-          <div className="flex w-[100%] h-[270px] bg-[#3d3f58] rounded-lg p-2 text-white font-semibold text-lg">Language wise Data</div>
+          <div className="flex flex-col w-full h-[330px] bg-[#3d3f58] rounded-lg p-2 text-white font-semibold text-lg relative">
+            {" "}
+            <DataLineGraph
+              headingName={"Genre Wise Views"}
+              categoryName={"Genre"}
+              data={[
+                { type: "Action", data: { oldUser: "2400", newUser: "700" } },
+                { type: "Adventure", data: { oldUser: "500", newUser: "600" } },
+                { type: "Comedy", data: { oldUser: "1200", newUser: "600" } },
+                { type: "Romance", data: { oldUser: "1200", newUser: "1200" } },
+                { type: "Thriller", data: { oldUser: "2400", newUser: "700" } },{
+                  type: "Suspense",
+                  data: { oldUser: "1400", newUser: "1700" },
+                },
+                {
+                  type: "Motivational",
+                  data: { oldUser: "2400", newUser: "700" },
+                },
+                
+              ]}
+            />
+          </div>
+          <div className="flex flex-col w-full h-[calc(270px-24px)] bg-[#3d3f58] rounded-lg p-2 text-white font-semibold text-lg relative">
+            <DataLineGraph
+              headingName={"Language Wise Views"}
+              categoryName={"Language"}
+              data={[
+                { type: "Kannada", data: { oldUser: "1200", newUser: "1200" } },
+              
+                { type: "Hindi", data: { oldUser: "2400", newUser: "700" } },
+                { type: "English", data: { oldUser: "500", newUser: "600" } },
+                { type: "Tamil", data: { oldUser: "1200", newUser: "600" } },
+
+                {
+                  type: "TElgu",
+                  data: { oldUser: "2400", newUser: "700" },
+                },
+              
+              ]}
+            ></DataLineGraph>
+          </div>
         </div>
       </section>
     </div>

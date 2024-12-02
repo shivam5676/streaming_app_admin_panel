@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import AnalyticsCardGraph from "./AnalyticsCardGraph";
 
-const AnalyticsCard = ({cardName,data}) => {
+const AnalyticsCard = ({cardName,data,id}) => {
   const dispatch = useDispatch();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   return (
@@ -12,7 +13,7 @@ const AnalyticsCard = ({cardName,data}) => {
           : selectedTheme === "modern reeloid"
           ? "bg-black/40 backdrop-blur-lg "
           : "bg-[#3d3f58]"
-      }  flex flex-col p-4 rounded-lg w-[100%]  max-md:min-w-[300px] h-[100%]`}
+      }  flex flex-col p-4 rounded-lg w-[100%]  max-md:min-w-[300px] h-[100%] overflow-hidden`}
     >
       <div className=" flex">
         <div className="bg-[#2F3040] rounded-md">
@@ -23,7 +24,7 @@ const AnalyticsCard = ({cardName,data}) => {
           <p className="text-gray-400 text-sm">Date Range :</p>
         </div>
       </div>
-      <div className="h-[100px]  text-gray-400 ">graph will show here</div>
+      <div className="h-[100px]  text-gray-400 "><AnalyticsCardGraph id={id}/></div>
       <p className="text-2xl text-white p-2 font-semibold" >{data}</p>
     </div>
   );
