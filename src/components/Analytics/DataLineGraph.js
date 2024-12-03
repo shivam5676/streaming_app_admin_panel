@@ -75,7 +75,10 @@ const DataLineGraph = ({data, lineData, headingName,categoryName }) => {
 
               <div className="flex flex-col w-full gap-1 justify-center">
                 <p
-                  style={{ width: `${oldUserPercentage}%` }}
+                  style={{
+                    width: `${oldUserPercentage}%`, // Dynamic calculated width
+                    animation: "fillAnimation 1.5s ease-in-out", // Animation applied
+                  }}
                   className="border-4 border-red-500"
                   onMouseEnter={(e) =>
                     handleMouseEnter(e, OldUserTooltipText ,current.type)
@@ -83,7 +86,10 @@ const DataLineGraph = ({data, lineData, headingName,categoryName }) => {
                   onMouseLeave={handleMouseLeave}
                 ></p>
                 <p
-                  style={{ width: `${newUserPercentage}%` }}
+                  style={{
+                    width: `${newUserPercentage}%`, // Dynamic calculated width
+                    animation: "fillAnimation 1.5s ease-in-out", // Animation applied
+                  }}
                   className="border-4 border-green-500"
                   onMouseEnter={(e) =>
                     handleMouseEnter(e, NewUserTooltipText, current.type)

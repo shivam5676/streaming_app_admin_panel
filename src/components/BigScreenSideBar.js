@@ -16,6 +16,8 @@ import useWindowSize from "../customHooks/useWindowSize";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { themeSliceAction } from "../store/themeSlice";
+import { loginSliceAction } from "../store/loginSlice";
+import { Logout } from "@mui/icons-material";
 
 const BigScreenSideBar = (props) => {
   const dispatch = useDispatch();
@@ -382,6 +384,16 @@ const BigScreenSideBar = (props) => {
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
             <p className="text-[.9rem] px-4 font-semibold">Analytics</p>
+          </div>
+          <div
+            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            onClick={() => {
+              localStorage.removeItem("user")
+              dispatch(loginSliceAction.logOut());
+            }}
+          >
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Logout</p>
           </div>
         </div>
       </section>

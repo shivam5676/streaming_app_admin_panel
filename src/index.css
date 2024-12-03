@@ -100,7 +100,19 @@
     animation: flip-pause 4s ease-in-out infinite; /* 5s for 2s flip + 3s pause */
   }
   
+  @keyframes fillAnimation {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
   
+  .fill-bar {
+    width: 0;
+    animation: fillAnimation 1.5s ease-in-out forwards;
+  }
   
   
   

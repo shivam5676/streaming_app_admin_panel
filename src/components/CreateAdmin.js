@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useRef } from "react";
 import RoutesInfoDiv from "./RoutesInfoDiv";
 import { IoMdClose } from "react-icons/io";
+import axios from "axios";
 
 const CreateAdmin = () => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  const titleRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+  const addAdminHandler = async () => {
+    try {
+      const response = await axios.post(
+        `${connectionString}/admin/registerAdmin`,
+        {
+          name: titleRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          confirmPassword: confirmPasswordRef.current.value,
+        }
+      );
+    } catch (err) {}
+  };
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -27,25 +46,38 @@ const CreateAdmin = () => {
             <label className="w-[100px]">Name :</label>
             <input
               className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
-              // ref={titleRef}
+              ref={titleRef}
             ></input>
           </div>
           <div className="w-[100%] flex justify-start text-[.9rem] font-semibold p-2">
             <label className="w-[100px]">Email :</label>
             <input
               className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
-              // ref={titleRef}
+              ref={emailRef}
+            ></input>
+          </div>
+          <div className="w-[100%] flex justify-start text-[.9rem] font-semibold p-2">
+            <label className="w-[100px]">Password :</label>
+            <input
+              className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
+              ref={passwordRef}
+            ></input>
+          </div>
+          <div className="w-[100%] flex justify-start text-[.9rem] font-semibold p-2">
+            <label className="w-[100px]">confirm Password :</label>
+            <input
+              className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
+              ref={confirmPasswordRef}
             ></input>
           </div>
           <button
             type="button"
             className="text-white mt-4 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            // onClick={addGenreHAndler}
+            onClick={addAdminHandler}
           >
             Create Admin
           </button>
           {/*when admin will create new admin then it will send the email verification to user with a confirmation link and when the user will click on this then he need to input confirm password password and validate id(which he will get from the admin and admin will get the validate id when he registered the user*/}
-          
         </div>
       </div>
     </div>

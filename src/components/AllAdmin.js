@@ -10,7 +10,7 @@ const AllAdmin = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
   const [allAdmin, setAllAdmin] = useState([]);
-  const[openCreateAdmin,setOpenCreateAdmin]=useState(false)
+  const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
   const dispatch = useDispatch();
   //   const allSliders = useSelector((state) => state.sliderData);
 
@@ -65,7 +65,9 @@ const AllAdmin = () => {
         ></RoutesInfoDiv>
 
         <div
-         onClick={()=>{setOpenCreateAdmin(!openCreateAdmin)}}
+          onClick={() => {
+            setOpenCreateAdmin(!openCreateAdmin);
+          }}
           class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-blue-500 hover:text-white bg-gray-800 rounded-lg group border border-blue-500"
         >
           <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-blue-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
@@ -77,8 +79,13 @@ const AllAdmin = () => {
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-        <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
-          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
+          <div
+            className={`max-[690px]:overflow-auto ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg "
+                : "bg-[#2A3042] "
+            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+          >
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">
@@ -205,7 +212,7 @@ const AllAdmin = () => {
           </div>
         </div>
       </section>
-      {openCreateAdmin&&<CreateAdmin/>}
+      {openCreateAdmin && <CreateAdmin />}
     </div>
   );
 };

@@ -60,7 +60,7 @@ const AnalyticsCardGraph = ({id}) => {
           yName="y"
           startAngle={270}
           endAngle={90}
-          radius={Browser.isDevice ? "85%" : "100%"}
+          radius={Browser.isDevice ? "100%" : "100%"}
           innerRadius="70%"
           pointColorMapping="color"
           // dataLabel={{
