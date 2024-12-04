@@ -16,7 +16,11 @@ const LanguageSelector = (props) => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get(`${connectionString}/admin/allLanguages`);
+        const res = await axios.get(`${connectionString}/admin/allLanguages`,{
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
         console.log(res.data);
         setLanguage(res.data.Languages);
         // setAllMovies(res.data.Layout);

@@ -18,7 +18,11 @@ const AllMovies = () => {
     if (allMovies.length === 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allMovies`);
+          const res = await axios.get(`${connectionString}/admin/allMovies`, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          });
           // setAllMovies(res.data.allMovies);
           if (res.data.allMovies) {
             Object.values(res.data.allMovies).forEach((current) => {
@@ -36,7 +40,12 @@ const AllMovies = () => {
 
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteMovie/${id}`
+        `${connectionString}/admin/deleteMovie/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(movieSliceACtion.deleteMovie(id));
       toast.success("movie deleted successfully");
@@ -56,13 +65,22 @@ const AllMovies = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-     
-      <RoutesInfoDiv mainHeading={"All Movies"} websiteName={"Reelies"} sectionName={"Movies section"} currentDir={"All Movies"}></RoutesInfoDiv>
+      <RoutesInfoDiv
+        mainHeading={"All Movies"}
+        websiteName={"Reelies"}
+        sectionName={"Movies section"}
+        currentDir={"All Movies"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-        <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
-          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
+          <div
+            className={`max-[690px]:overflow-auto ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg "
+                : "bg-[#2A3042] "
+            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+          >
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">

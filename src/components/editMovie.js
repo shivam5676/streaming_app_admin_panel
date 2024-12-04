@@ -36,7 +36,11 @@ const EditMovies = () => {
     const id = params.edit;
     async function fetchMovie() {
       const response = await axios.get(
-        `${connectionString}/admin/getMovie/${id}`
+        `${connectionString}/admin/getMovie/${id}`,{
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       console.log(response.data.movieData, ".....");
       // return
@@ -171,7 +175,11 @@ const EditMovies = () => {
   const deleteVideoFromBackendHandler = async (id) => {
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteShort/${id}`
+        `${connectionString}/admin/deleteShort/${id}`,{
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       toast.success("file deleted successfully");
     } catch (error) {

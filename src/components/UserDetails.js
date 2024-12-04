@@ -19,7 +19,11 @@ const UserDetails = () => {
       try {
         const res = await axios.post(
           `${connectionString}/admin/getUserDetails`,
-          { id: params.uid }
+          { id: params.uid },{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
         );
         setUserDetails(res.data.userDetails);
         toast.success("user fetched successfully");

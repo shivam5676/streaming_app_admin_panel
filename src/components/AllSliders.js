@@ -12,29 +12,37 @@ const AllSliders = () => {
   const allSliders = useSelector((state) => state.sliderData);
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   useEffect(() => {
-    if (allSliders.length === 0){
-       try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allSliders`);
-        console.log(res.data);
-        if (res.data.Slider) {
-          Object.values(res.data.Slider).forEach((current) => {
-            dispatch(sliderSliceACtion.addSlider(current));
+    if (allSliders.length === 0) {
+      try {
+        (async () => {
+          const res = await axios.get(`${connectionString}/admin/allSliders`,{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
           });
-        }
-      })();
-    } catch (err) {
-      console.log(err);
+          console.log(res.data);
+          if (res.data.Slider) {
+            Object.values(res.data.Slider).forEach((current) => {
+              dispatch(sliderSliceACtion.addSlider(current));
+            });
+          }
+        })();
+      } catch (err) {
+        console.log(err);
+      }
     }
-    }
-   
   }, [allSliders, dispatch]);
   const deleteSliderHandler = async (id) => {
     console.log(id);
 
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteSlider/${id}`
+        `${connectionString}/admin/deleteSlider/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(sliderSliceACtion.deleteSlider(id));
       toast.success("movie deleted successfully");
@@ -54,18 +62,33 @@ const AllSliders = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
-      
-      <RoutesInfoDiv mainHeading={"All Sliders"} websiteName={"Reelies"} sectionName={"Hero section"} currentDir={"All Sliders"}></RoutesInfoDiv>
+      <RoutesInfoDiv
+        mainHeading={"All Sliders"}
+        websiteName={"Reelies"}
+        sectionName={"Hero section"}
+        currentDir={"All Sliders"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-          <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
-          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
+          <div
+            className={`max-[690px]:overflow-auto ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg "
+                : "bg-[#2A3042] "
+            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+          >
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">
                   <p>Show </p>
-                  <select className={`${selectedTheme==="modern reeloid"?"bg-[#2E3648]/70 rounded backdrop-blur-md":"bg-[#2E3648]"} text-[#959db6] mx-2 px-4 py-1  font-normal`}>
+                  <select
+                    className={`${
+                      selectedTheme === "modern reeloid"
+                        ? "bg-[#2E3648]/70 rounded backdrop-blur-md"
+                        : "bg-[#2E3648]"
+                    } text-[#959db6] mx-2 px-4 py-1  font-normal`}
+                  >
                     <option>10</option>
                     <option>10</option>
                     <option>10</option>
@@ -75,7 +98,11 @@ const AllSliders = () => {
                 <div className="flex items-center">
                   <p>search : </p>
                   <input
-                    className={`w-[150px] ${selectedTheme==="modern reeloid"?"bg-[#2E3648]/70 rounded":"bg-[#2E3648]"} mx-2 p-2`}
+                    className={`w-[150px] ${
+                      selectedTheme === "modern reeloid"
+                        ? "bg-[#2E3648]/70 rounded"
+                        : "bg-[#2E3648]"
+                    } mx-2 p-2`}
                     placeholder="search here..."
                   ></input>
                 </div>
@@ -112,7 +139,11 @@ const AllSliders = () => {
                       </div>
                       <div className="w-[90px] text-white font-semibold flex-shrink-0">
                         <select
-                          className={`${selectedTheme==="modern reeloid"?"bg-[#3C445A]/70 backdrop-blur-sm rounded":"bg-[#3C445A]"} rounded-sm p-2`}
+                          className={`${
+                            selectedTheme === "modern reeloid"
+                              ? "bg-[#3C445A]/70 backdrop-blur-sm rounded"
+                              : "bg-[#3C445A]"
+                          } rounded-sm p-2`}
                           onChange={(event) => {
                             handleSelectChange(current._id, event);
                           }}

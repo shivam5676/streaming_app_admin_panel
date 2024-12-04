@@ -20,6 +20,7 @@ const Login = (props) => {
       });
       dispatch(loginSliceAction.login("user",true))
       localStorage.setItem("user",true)
+      localStorage.setItem("token",response.data.token)
       // console.log(response);
       // props.loggedIn();
       // setGenres(response.data.allGenres);

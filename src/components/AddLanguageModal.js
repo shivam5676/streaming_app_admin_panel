@@ -21,6 +21,7 @@ const AddLanguageModal = (props) => {
         formData,
         {
           headers: {
+            Authorization: localStorage.getItem("token"),
             "Content-Type": "multipart/form-data", // Important for file uploads
           },
         }

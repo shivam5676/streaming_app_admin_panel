@@ -35,7 +35,11 @@ const DashBoard = () => {
     async function fetchDashboardData() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/getDashboard/${fetchingType}` //all,year,month
+          `${connectionString}/admin/getDashboard/${fetchingType}` ,{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }//all,year,month
         );
         console.log(response, "cards....>");
         setCardsData(response.data);
@@ -47,7 +51,12 @@ const DashBoard = () => {
     async function fetchTopContentData() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/fetchTopMovies/${fetchingType}` //all,year,month
+          `${connectionString}/admin/fetchTopMovies/${fetchingType}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          } //all,year,month
         );
         console.log(response.data.movies, "top3");
         if (response.data.movies) {
@@ -63,7 +72,11 @@ const DashBoard = () => {
     async function fetchContentViews() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/getContentViews/${fetchingType}` //all,year,month
+          `${connectionString}/admin/getContentViews/${fetchingType}`, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }//all,year,month
         );
         console.log(response.data.users);
         if (response.data) {
@@ -77,7 +90,11 @@ const DashBoard = () => {
     async function fetchLAtestUSers() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/fetchLatestUsers/${fetchingType}` //all,year,month
+          `${connectionString}/admin/fetchLatestUsers/${fetchingType}`,{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }//all,year,month
         );
         console.log(response);
         setLatestUsers(response.data.users);
@@ -86,7 +103,7 @@ const DashBoard = () => {
     }
     fetchLAtestUSers();
   }, [fetchingType]);
-  
+
   const handleSelectChange = (event) => {
     console.log(event.target.value);
     setFetchingType(event.target.value);

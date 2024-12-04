@@ -1,13 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.616ee1e9.css",
-    "main.js": "/static/js/main.aee49be5.js",
+    "main.css": "/static/css/main.e9c6c7b5.css",
+    "main.js": "/static/js/main.91733320.js",
     "static/media/coins.gif": "/static/media/coins.ff06be5d0372783df582.gif",
     "static/media/well-done-well-done-team.gif": "/static/media/well-done-well-done-team.3d70f330f7588a51b639.gif",
     "static/media/broken-battery.gif": "/static/media/broken-battery.106542c3a8582b9d7c5b.gif",
     "static/media/sad.gif": "/static/media/sad.0dd8e1137d1936207219.gif",
     "static/media/blur-bg.jpg": "/static/media/blur-bg.e6dd62e4f457de20d476.jpg",
+    "static/media/session-time.gif": "/static/media/session-time.5ba5f633da995ab9f254.gif",
+    "static/media/clock.gif": "/static/media/clock.45d08156019e254ee550.gif",
     "static/media/loader.gif": "/static/media/loader.12d92e88380a219cc402.gif",
+    "static/media/user.gif": "/static/media/user.fe8ab627a399113a72e6.gif",
     "static/media/scanner.gif": "/static/media/scanner.56eebffe6c5bada8749c.gif",
     "static/media/1-1.png": "/static/media/1-1.f8c87766609678b2965d.png",
     "static/media/3rd-prize.png": "/static/media/3rd-prize.03bdae19b21c81ed92cc.png",
@@ -21,11 +24,11 @@
     "static/media/mobile.png": "/static/media/mobile.21da32982242a608c03d.png",
     "static/media/logo.png": "/static/media/logo.ffb9187330fb62910c14.png",
     "index.html": "/index.html",
-    "main.616ee1e9.css.map": "/static/css/main.616ee1e9.css.map",
-    "main.aee49be5.js.map": "/static/js/main.aee49be5.js.map"
+    "main.e9c6c7b5.css.map": "/static/css/main.e9c6c7b5.css.map",
+    "main.91733320.js.map": "/static/js/main.91733320.js.map"
   },
   "entrypoints": [
-    "static/css/main.616ee1e9.css",
-    "static/js/main.aee49be5.js"
+    "static/css/main.e9c6c7b5.css",
+    "static/js/main.91733320.js"
   ]
 }

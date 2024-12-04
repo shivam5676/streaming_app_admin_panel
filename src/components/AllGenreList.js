@@ -19,7 +19,12 @@ const AllGenreList = () => {
     if (allGenres.length == 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allGenres`);
+          const res = await axios.get(`${connectionString}/admin/allGenres`,{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            
+            },
+          });
           console.log(res.data);
           if (res.data.allGenres) {
             Object.values(res.data.allGenres).forEach((current) => {

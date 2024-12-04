@@ -13,7 +13,11 @@ const AllUsers = () => {
   useEffect(() => {
     try {
       (async () => {
-        const res = await axios.get(`${connectionString}/admin/allUsers`);
+        const res = await axios.get(`${connectionString}/admin/allUsers`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
         setAllMovies(res.data.allMovies);
       })();
     } catch (err) {
@@ -25,7 +29,12 @@ const AllUsers = () => {
     toast.success("movie deleted successfully");
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteMovie/${id}`
+        `${connectionString}/admin/deleteMovie/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
     } catch (err) {}
   };
@@ -43,13 +52,22 @@ const AllUsers = () => {
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-     
-      <RoutesInfoDiv mainHeading={"All User"} websiteName={"Reelies"} sectionName={"Users section"} currentDir={"All Users"}></RoutesInfoDiv>
+      <RoutesInfoDiv
+        mainHeading={"All User"}
+        websiteName={"Reelies"}
+        sectionName={"Users section"}
+        currentDir={"All Users"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-        <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
-          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
+          <div
+            className={`max-[690px]:overflow-auto ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg "
+                : "bg-[#2A3042] "
+            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+          >
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">
@@ -133,15 +151,16 @@ const AllUsers = () => {
                     </div>
                     <div className="w-[100%] min-w-[100px] flex-shrink-1">
                       {console.log(current, "cu---------")}
-                      <p className="p-2 break-words">{current.email}
-                        {" "}
+                      <p className="p-2 break-words">
+                        {current.email}{" "}
                         {/* {current.genre.map((currentIndex) => {
                           return <span>{`${currentIndex.name} | `}</span>;
                         })} */}
                       </p>
                     </div>{" "}
                     <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">{current.contact}
+                      <p className="p-2 break-words">
+                        {current.contact}
                         {/* {current.layouts.map((currentIndex) => {
                           return <span>{currentIndex.name}</span>;
                         })} */}

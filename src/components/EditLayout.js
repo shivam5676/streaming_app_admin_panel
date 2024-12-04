@@ -20,7 +20,12 @@ const EditLayout = () => {
     // console.log(id)
     async function fetchMovie() {
       const response = await axios.get(
-        `${connectionString}/admin/getLayout/${id}`
+        `${connectionString}/admin/getLayout/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       console.log(response.data);
       //   return;
@@ -39,7 +44,11 @@ const EditLayout = () => {
   useEffect(() => {
     try {
       async function fetchMovies() {
-        const res = await axios.get(`${connectionString}/admin/allMovies`);
+        const res = await axios.get(`${connectionString}/admin/allMovies`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
         console.log(res);
         return;
         setAllMovies(res.data.allMovies);
@@ -66,7 +75,12 @@ const EditLayout = () => {
     try {
       const layoutResponse = await axios.post(
         `${connectionString}/admin/editLayout`,
-        layoutObj
+        layoutObj,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       console.log(layoutResponse);
       toast.success("layout added successfully");

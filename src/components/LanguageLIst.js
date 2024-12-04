@@ -20,7 +20,11 @@ const LanguageList = () => {
     if (allLanguages.length == 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allLanguages`);
+          const res = await axios.get(`${connectionString}/admin/allLanguages`,{
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          });
 
           if (res.data.Languages) {
             Object.values(res.data.Languages).forEach((current) => {
@@ -36,7 +40,11 @@ const LanguageList = () => {
   const deleteGenresHandler = async (id) => {
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteLanguage/${id}`
+        `${connectionString}/admin/deleteLanguage/${id}`,{
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(languageSliceACtion.deleteLanguage(id));
       toast.success("Genre deleted successfully");

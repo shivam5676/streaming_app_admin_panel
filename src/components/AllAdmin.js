@@ -18,7 +18,11 @@ const AllAdmin = () => {
     if (allAdmin.length === 0) {
       (async () => {
         try {
-          const res = await axios.get(`${connectionString}/admin/allAdmin`);
+          const res = await axios.get(`${connectionString}/admin/allAdmin`, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          });
           console.log(res.data);
           if (res.data.Admin) {
             Object.values(res.data.Admin).forEach((current) => {
