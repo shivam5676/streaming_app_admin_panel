@@ -1,47 +1,50 @@
 import React, { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import { Box, Checkbox, Chip } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { Box, Checkbox, Chip, MenuItem, FormControl, Select } from "@mui/material";
 import axios from "axios";
 
 const GenreSelector = (props) => {
-  const [genres, setGenres] = useState([]); // To hold all fetched genres
-  const [selectedGenres, setSelectedGenres] = useState([]); // To hold selected genres
+  const [genres, setGenres] = useState([]); // All fetched genres
+  const [selectedGenres, setSelectedGenres] = useState([]); // Selected genre IDs
   const connectionString = process.env.REACT_APP_API_URL;
 
   // Fetch genres from the server
   useEffect(() => {
-    async function fetchGenres() {
+    const fetchGenres = async () => {
       try {
-        const response = await axios.get(`${connectionString}/admin/allGenres`);
+        const response = await axios.get(`${connectionString}/admin/allGenres`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
         setGenres(response.data.allGenres);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     fetchGenres();
-  }, []);
+  }, [connectionString]);
 
-  // Initialize state with props.editGenres if available
+  // Initialize selectedGenres with props.editGenres when provided
   useEffect(() => {
     if (props.editGenres) {
-      setSelectedGenres(props.editGenres.map(genre => genre._id)); // Only store IDs
+      const selectedIds = props.editGenres.map((genre) => genre._id);
+      setSelectedGenres(selectedIds);
     }
   }, [props.editGenres]);
 
-  // Handle changes to the selection
+  // Handle selection and deselection
   const handleMultiple = (event) => {
-    const { target: { value } } = event;
-    setSelectedGenres(value); // Value should be an array of IDs
+    const {
+      target: { value },
+    } = event;
+    setSelectedGenres(value); // Update the state with selected IDs
   };
 
-  // Notify parent component of selection changes
+  // Notify parent of selected genres whenever the selection changes
   useEffect(() => {
-    const selectedItems = genres.filter(genre => selectedGenres.includes(genre._id));
-    props.selectedGenre(selectedItems); // Send selected genres to the parent
-  }, [selectedGenres, genres]);
+    const selectedItems = genres.filter((genre) => selectedGenres.includes(genre._id));
+    props.selectedGenre(selectedItems); // Send selected genre objects to the parent
+  }, [selectedGenres, genres, props]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -51,17 +54,20 @@ const GenreSelector = (props) => {
           value={selectedGenres}
           onChange={handleMultiple}
           sx={{
-            borderBottom: "2px solid white", // Custom white bottom border
-            "&:before": { borderBottom: "none" }, // Remove default underline
-            "&:after": { borderBottom: "none" }, // Remove the blue focus underline
-            "&:hover:not(.Mui-disabled):before": { borderBottom: "none" }, // Ensure no underline on hover
-            "&.Mui-focused:after": { borderBottom: "none" }, // Remove focus underline (blue)
+            borderBottom: "2px solid white",
+            "&:before": { borderBottom: "none" },
+            "&:after": { borderBottom: "none" },
+            "&:hover:not(.Mui-disabled):before": { borderBottom: "none" },
+            "&.Mui-focused:after": { borderBottom: "none" },
           }}
           renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {genres.filter(genre => selectedIds.includes(genre._id)).map((selected) => (
-                <Chip key={selected._id} color="info" label={selected.name} />
-              ))}
+              {selectedIds.map((id) => {
+                const selectedGenre = genres.find((genre) => genre._id === id);
+                return selectedGenre ? (
+                  <Chip key={id} color="info" label={selectedGenre.name} />
+                ) : null;
+              })}
             </Box>
           )}
         >

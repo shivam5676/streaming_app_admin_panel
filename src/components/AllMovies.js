@@ -37,7 +37,7 @@ const AllMovies = () => {
   }, [allMovies, dispatch]);
   const deleteMovieHandler = async (id) => {
     console.log(id);
-
+    return;
     try {
       const response = await axios.delete(
         `${connectionString}/admin/deleteMovie/${id}`,

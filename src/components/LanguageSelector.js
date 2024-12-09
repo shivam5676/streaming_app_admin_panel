@@ -1,85 +1,76 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import { Box, Checkbox, Chip } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import React, { useEffect, useState } from "react";
+import { Box, Checkbox, Chip, MenuItem, FormControl, Select } from "@mui/material";
 import axios from "axios";
 
-// const language = ["hindi", "English", "kannada", "tamil", "sanskrit"];
 const LanguageSelector = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
-  const [language, setLanguage] = useState([]);
-  const [state, setState] = useState([]);
-  // console.log(state)
+  const [language, setLanguage] = useState([]); // Available languages from the API
+  const [state, setState] = useState([]); // Selected language IDs
+
+  // Fetch languages from the API
   useEffect(() => {
-    try {
-      (async () => {
-        const res = await axios.get(`${connectionString}/admin/allLanguages`,{
+    const fetchLanguages = async () => {
+      try {
+        const res = await axios.get(`${connectionString}/admin/allLanguages`, {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
         });
-        console.log(res.data);
         setLanguage(res.data.Languages);
-        // setAllMovies(res.data.Layout);
-      })();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-  console.log(language);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchLanguages();
+  }, [connectionString]);
+
+  // Initialize `state` with IDs from `props.editLanguages` when component mounts or updates
   useEffect(() => {
     if (props.editLanguages) {
-      const allLanguage = props.editLanguages.split(",");
-      setState(allLanguage);
+      const selectedIds = props.editLanguages.map((lang) => lang._id);
+      setState(selectedIds);
     }
-  }, [props.editGenres]);
+  }, [props.editLanguages]);
+
+  // Handle selection and deselection of items
   const handleMultiple = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setState(typeof value === "string" ? value.split(",") : value);
+    const { value } = e.target; // The selected language IDs
+    setState(value); // Update the selected IDs
   };
+
+  // Send selected languages back to the parent component
   useEffect(() => {
-    if (state.length > 0) {
-      props.selectedLanguage(state);
-    }
-  }, [state]);
+    const selectedLanguages = language.filter((lang) => state.includes(lang._id));
+    props.selectedLanguage(selectedLanguages);
+  }, [state, language, props]);
+
   return (
     <Box sx={{ width: "100%" }}>
       <FormControl variant="standard" size="large" sx={{ m: 1, width: "100%" }}>
         <Select
           multiple
-          value={state}
+          value={state} // Pass selected IDs to `value`
           onChange={handleMultiple}
           sx={{
-            borderBottom: "2px solid white", // Custom white bottom border
-            "&:before": {
-              borderBottom: "none", // Remove default underline
-            },
-            "&:after": {
-              borderBottom: "none", // Remove the blue focus underline
-            },
-            "&:hover:not(.Mui-disabled):before": {
-              borderBottom: "none", // Ensure no underline on hover
-            },
-            "&.Mui-focused:after": {
-              borderBottom: "none", // Remove focus underline (blue)
+            borderBottom: "2px solid white",
+            "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after": {
+              borderBottom: "none", // Remove underline styles
             },
           }}
-          renderValue={(selLang) => (
+          renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selLang.map((lang) => (
-                <Chip key={lang._id} color="info" label={lang.name} />
-              ))}
+              {selectedIds.map((id) => {
+                const selectedLang = language.find((lang) => lang._id === id);
+                return selectedLang ? (
+                  <Chip key={id} color="info" label={selectedLang.name} />
+                ) : null;
+              })}
             </Box>
           )}
         >
           {language.map((lang) => (
-            <MenuItem key={lang._id} value={lang}>
-              <Checkbox checked={state.some((s) => s._id === lang._id)} />
+            <MenuItem key={lang._id} value={lang._id}>
+              <Checkbox checked={state.includes(lang._id)} />
               {lang.name}
             </MenuItem>
           ))}

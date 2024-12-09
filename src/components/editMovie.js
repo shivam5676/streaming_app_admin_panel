@@ -9,12 +9,16 @@ import GenreSelector from "./genreSelector";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@mui/material";
-
+import LanguageSelector from "./LanguageSelector";
+import personalisedAds from "../assests/personalise_Ads.jpg";
 const EditMovies = () => {
   const params = useParams();
   // console.log(params);
   // return;
   const titleRef = useRef();
+  const moviesTrailerVideoRef = useRef();
+  const moviesTrailerVideoLinkRef = useRef();
+  const [trailerType, setTrailerType] = useState("Upload");
   const [uploadMoreMovies, setUploadMoreMovies] = useState(false);
   const [AllData, setAllData] = useState([]);
   const [videoFiles, setvideoFiles] = useState([]);
@@ -22,6 +26,8 @@ const EditMovies = () => {
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const [thumbnailFromBackendPreview, setThumbNailFromBackendPreview] =
     useState(null);
+  const languageRef = useRef();
+  const [languages, setLanguages] = useState([]);
   const [shortsPreviewFromBackend, setShortsPreviewFromBackend] = useState([]);
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
@@ -36,7 +42,8 @@ const EditMovies = () => {
     const id = params.edit;
     async function fetchMovie() {
       const response = await axios.get(
-        `${connectionString}/admin/getMovie/${id}`,{
+        `${connectionString}/admin/getMovie/${id}`,
+        {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -49,6 +56,7 @@ const EditMovies = () => {
         Object.values(response.data.movieData).length > 0
       ) {
         setAllData(response.data.movieData);
+        // setLanguages(response?.data?.movieData?.language || []);
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")
         );
@@ -59,6 +67,9 @@ const EditMovies = () => {
 
     fetchMovie();
   }, []);
+  const handletrailerTypeChange = (e) => {
+    setTrailerType(e.target.value);
+  };
   const addMoviesHandler = async () => {
     console.log(genreRef.current);
     if (!thumbnailUrlPreview && !thumbnailFromBackendPreview) {
@@ -78,6 +89,7 @@ const EditMovies = () => {
     formdata.append("freeVideos", freeVideosRef.current.value);
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", JSON.stringify(genreRef.current));
+    formdata.append("language", JSON.stringify(languageRef.current));
     formdata.append("id", AllData._id);
     try {
       const response = await axios.post(
@@ -86,6 +98,7 @@ const EditMovies = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: localStorage.getItem("token"),
           },
         }
       );
@@ -99,6 +112,7 @@ const EditMovies = () => {
     console.log(value);
     layOutArrayRef.current = value;
     // console.log(layOutArray);
+    // setLanguages((prev) => [...prev, value]);
   };
   const GenreHandler = (value) => {
     // console.log(value);
@@ -156,7 +170,12 @@ const EditMovies = () => {
     //   return
     // })
   };
-  // console.log(videoFilesSnapshot);
+  const languageHandler = (value) => {
+    console.log(value);
+    languageRef.current = value;
+    // setLanguages((prev) => [...prev, value]);
+  };
+  console.log(languages);
   const deleteVideoHandler = (id) => {
     return;
     const allVideos = [...videoFiles];
@@ -175,7 +194,8 @@ const EditMovies = () => {
   const deleteVideoFromBackendHandler = async (id) => {
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteShort/${id}`,{
+        `${connectionString}/admin/deleteShort/${id}`,
+        {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -188,7 +208,7 @@ const EditMovies = () => {
   };
   return (
     <>
-      <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
+      <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
         <div className="text-white px-2 py-4 ">
           <p className="text-lg font-bold">Edit Movie</p>
           <p className="text-[.95rem] font-semibold">
@@ -243,6 +263,18 @@ const EditMovies = () => {
                     <option value={true}>Yes, make it live</option>
                     <option value={false}>No, will make it live later</option>
                   </select>
+                </div>{" "}
+              </div>{" "}
+              <div className="flex sm:flex-row flex-col">
+                <div className="p-4 font-semibold w-[100%]">
+                  <p>Content Language:</p>
+                  <LanguageSelector
+                    selectedLanguage={languageHandler}
+                    editLanguages={AllData?.language}
+                  />
+                  {/* <GenreSelector selectedGenre={GenreHandler} /> */}
+
+                  {/* we need to made a language selector like genere selector and in backend we will append languages and content id vice versa */}
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col">
@@ -298,13 +330,67 @@ const EditMovies = () => {
                     </div>
                   )}
                 </div>
+                <div className="p-4 font-semibold w-[100%] ">
+                  <p>
+                    Link Trailer Content :
+                    <span className="text-red-500"> *</span>
+                    <select
+                      className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
+                      onChange={handletrailerTypeChange}
+                    >
+                      <option className="px-2 bg-[#2E3648]" value="Upload">
+                        By Video Upload:
+                      </option>
+                      <option className="px-2 bg-[#2E3648]" value="URL">
+                        By URL :
+                      </option>
+                    </select>
+                  </p>
+                  <div className="my-4">
+                    {trailerType === "Upload" && (
+                      <input
+                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                        ref={moviesTrailerVideoRef}
+                        type="file"
+                      ></input>
+                    )}
+                    {trailerType === "URL" && (
+                      <input
+                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                        ref={moviesTrailerVideoLinkRef}
+                        // type="file"
+                        placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                      ></input>
+                    )}
+                  </div>{" "}
+                  {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+                </div>
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>
             </div>
           </div>
           <div className=" bg-[#2A3042] w-[100%] my-4 p-4">
-            <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
+            <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between items-center">
               <p>Shorts Section</p>
+              <div
+                onClick={() => {
+                  // addAdsInShortHandler();
+                }}
+                class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-yellow-500 hover:text-white bg-gray-800 rounded-lg group border border-yellow-500"
+              >
+                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-yellow-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
+                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                <span class="relative font-bold">Add Ads</span>
+              </div>
+              <div
+                onClick={() => {
+                  // addMoviesHandler();
+                }}
+                className="relative text-[1rem] rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
+              >
+                <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                <span className="relative font-semibold">Change Sequence</span>
+              </div>
             </div>
             {/* <div className="bg-gray-500 w-full h-28 items-center flex justify-center">
             upload movie here
@@ -416,79 +502,93 @@ const EditMovies = () => {
               </div>
 
               {shortsPreviewFromBackend?.length > 0 &&
-                shortsPreviewFromBackend?.map((current, index) => (
-
-                  <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
-                    <div className="w-[50px] p-2  flex-shrink-0">
-                      <p className="p-2">{index + 1}</p>
-                    </div>
-                    <div className="w-[90px] text-white font-semibold flex-shrink-0">
-                      <select
-                        className="bg-[#3C445A] rounded-sm p-2"
-                        // onChange={(event) =>
-                        //   handleSelectChange(current._id, event)
-                        // }
-                      >
-                        <option
-                          value=""
-                          // disabled
-                          className="border-b-2 border-gray-400"
+                shortsPreviewFromBackend?.map((current, index) => {
+                  return (
+                    <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
+                      <div className="w-[50px] p-2  flex-shrink-0">
+                        <p className="p-2">{index + 1}</p>
+                      </div>
+                      <div className="w-[90px] text-white font-semibold flex-shrink-0">
+                        <select
+                          className="bg-[#3C445A] rounded-sm p-2"
+                          // onChange={(event) =>
+                          //   handleSelectChange(current._id, event)
+                          // }
                         >
-                          option
-                        </option>
-                        <option value="EDIT">EDIT</option>
-                        <option
-                          value="DELETE"
-                          onClick={() => {
-                            deleteVideoFromBackendHandler(current._id);
-                          }}
-                        >
-                          DELETE
-                        </option>
-                      </select>
+                          <option
+                            value=""
+                            // disabled
+                            className="border-b-2 border-gray-400"
+                          >
+                            option
+                          </option>
+                          <option value="EDIT">EDIT</option>
+                          <option
+                            value="DELETE"
+                            onClick={() => {
+                              deleteVideoFromBackendHandler(current._id);
+                            }}
+                          >
+                            DELETE
+                          </option>
+                        </select>
+                      </div>
+                      {current !== "Ads" ? (
+                        <>
+                          <div className="w-[80px] flex-shrink-0">
+                            <img
+                              // src={`${connectionString}/thumbnails${current.fileLocation.replace(
+                              //   "uploads/thumbnail",
+                              //   ""
+                              // )}`}
+                              className=" h-[80px] w-[100px] p-2"
+                            ></img>
+                          </div>
+                          <div className="min-w-[120px] w-[100%]  flex-shrink-1">
+                            <p className="p-2">{current?.name}</p>
+                          </div>
+                          <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                            <p className="p-2 break-words">{current?.views}</p>
+                          </div>{" "}
+                          <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                            <p className="p-2 break-words">
+                              {current?.visible ? "true" : "false"}
+                            </p>
+                          </div>
+                          <div
+                            className="w-[80px]  flex-shrink-0 cursor-pointer"
+                            onClick={() => {
+                              // navigate(`/userDetails/${current._id}`);
+                            }}
+                          >
+                            <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                              Watch
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* <img className="h-[60px] w-[220px]" src={personalisedAds}></img> */}
+                          <div
+                            className="h-[60px] w-[100%] flex items-center justify-center bg-yellow-600 mb-2 sm:text-[1.1rem] font-semibold text-white p-1"
+                            src={personalisedAds}
+                          >
+                            Personalised Ads
+                          </div>
+                        </>
+                      )}
                     </div>
-                    <div className="w-[80px] flex-shrink-0">
-                      <img
-                        // src={`${connectionString}/thumbnails${current.fileLocation.replace(
-                        //   "uploads/thumbnail",
-                        //   ""
-                        // )}`}
-                        className=" h-[80px] w-[100px] p-2"
-                      ></img>
-                    </div>
-                    <div className="min-w-[120px] w-[100%]  flex-shrink-1">
-                      <p className="p-2">{current.name}</p>
-                    </div>
-                    <div className="w-[80%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">{current.views}</p>
-                    </div>{" "}
-                    <div className="w-[80%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">
-                        {current.visible ? "true" : "false"}
-                      </p>
-                    </div>
-                    <div
-                      className="w-[80px]  flex-shrink-0 cursor-pointer"
-                      onClick={() => {
-                        // navigate(`/userDetails/${current._id}`);
-                      }}
-                    >
-                      <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
-                        Watch
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
         </section>
         {uploadMoreMovies && (
           <div className="flex flex-col bg-[#2A3042] w-[100%] my-4 p-4">
-             <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
+            <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
               <p>Add More Shorts</p>
             </div>
             <DragNDropVideos videoFile={getVideoFilesHandler}>
-           
               <div className="bg-gray-500 w-full h-28 items-center flex justify-center text-center text-white font-bold text-lg rounded-md">
                 Drag and Drop or upload movie here
               </div>

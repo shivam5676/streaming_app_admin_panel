@@ -16,7 +16,11 @@ const LayoutSelector = (props) => {
   useEffect(() => {
     async function fetchLayouts() {
       try {
-        const response = await axios.get(`${connectionString}/admin/allLayouts`);
+        const response = await axios.get(`${connectionString}/admin/allLayouts`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
         setLayouts(response.data.Layout);
       } catch (error) {
         console.error(error);

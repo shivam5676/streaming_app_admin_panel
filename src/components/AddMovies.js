@@ -219,14 +219,14 @@ const AddMovies = () => {
           message={message}
         />
       )}
-      <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
+      <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
         <RoutesInfoDiv
           mainHeading={"Add Movies"}
           websiteName={"Reelies"}
           sectionName={"Movies section"}
           currentDir={"Add Movies"}
         ></RoutesInfoDiv>
-        <section className="w-[100%]">
+        <section className="w-[100%] ">
           <div className="flex gap-6 flex-col xl:flex-row">
             <div
               className={`${
@@ -386,7 +386,6 @@ const AddMovies = () => {
             </div>
             <div className="flex   w-[100%]  flex-col">
               {" "}
-              
               <DragNDropVideos videoFile={getVideoFilesHandler}>
                 <div className="bg-gray-500 w-full h-28 items-center flex justify-center text-center text-white font-bold text-lg rounded-md">
                   Drag and Drop or upload movie here
