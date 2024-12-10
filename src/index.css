@@ -114,5 +114,17 @@
     animation: fillAnimation 1.5s ease-in-out forwards;
   }
   
+
+  .sortable-item {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .sortable-item.dragging {
+    opacity: 0.5; /* Reduce opacity when dragging */
+  }
+  
+  .sortable-item:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+  }
   
   

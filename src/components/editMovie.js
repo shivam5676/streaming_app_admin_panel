@@ -11,10 +11,14 @@ import { useParams } from "react-router-dom";
 import { Skeleton } from "@mui/material";
 import LanguageSelector from "./LanguageSelector";
 import personalisedAds from "../assests/personalise_Ads.jpg";
+import { ReactSortable } from "react-sortablejs";
+import { CgMenuOreos } from "react-icons/cg";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 const EditMovies = () => {
   const params = useParams();
   // console.log(params);
   // return;
+  const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const titleRef = useRef();
   const moviesTrailerVideoRef = useRef();
   const moviesTrailerVideoLinkRef = useRef();
@@ -60,8 +64,19 @@ const EditMovies = () => {
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")
         );
-
-        setShortsPreviewFromBackend(response.data.movieData.shorts);
+        if (response?.data?.movieData?.shorts) {
+          const dataArray = response?.data?.movieData?.shorts?.map(
+            (current) => {
+              if (current === "Ads") {
+                return { name: "Personalised Ads" };
+              } else {
+                return current;
+              }
+            }
+            // console.log(current, "current")
+          );
+          setShortsPreviewFromBackend(dataArray);
+        }
       }
     }
 
@@ -176,6 +191,13 @@ const EditMovies = () => {
     // setLanguages((prev) => [...prev, value]);
   };
   console.log(languages);
+  const handleSort = (newList) => {
+    const newVideoFiles = newList.map(
+      (item, index) => shortsPreviewFromBackend[item.id]
+    );
+
+    setShortsPreviewFromBackend(newVideoFiles);
+  };
   const deleteVideoHandler = (id) => {
     return;
     const allVideos = [...videoFiles];
@@ -206,6 +228,45 @@ const EditMovies = () => {
       toast.error("something went wrong");
     }
   };
+  async function addAdsInShortHandler() {
+    const id = params.edit;
+    try {
+      const adsResponse = await axios.post(
+        `${connectionString}/admin/addAds/`,
+        { id },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      setShortsPreviewFromBackend((prev) => [
+        ...prev,
+        { name: "Personalised Ads" },
+      ]);
+      toast.success("Ads Added successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong while adding Ads...try again ");
+    }
+
+    // setVideoFilesSnapshot((prev) => [...prev, personalisedAds]);
+  }
+  const toggleMenu = (index) => {
+    setMenuOpenIndex(menuOpenIndex === index ? null : index);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close the menu if clicked outside
+      if (!event.target.closest(".menu-item")) {
+        setMenuOpenIndex(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -374,7 +435,7 @@ const EditMovies = () => {
               <p>Shorts Section</p>
               <div
                 onClick={() => {
-                  // addAdsInShortHandler();
+                  addAdsInShortHandler();
                 }}
                 class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-yellow-500 hover:text-white bg-gray-800 rounded-lg group border border-yellow-500"
               >
@@ -500,11 +561,14 @@ const EditMovies = () => {
                   )}
                 </div>
               </div>
-
+              {/* if sequence changer is diabled then we will show this else we will show react sortable screen changer */}
               {shortsPreviewFromBackend?.length > 0 &&
                 shortsPreviewFromBackend?.map((current, index) => {
                   return (
-                    <div className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2">
+                    <div
+                      key={index}
+                      className="font-normal flex my-2 text-[#A8B2BC] border-b border-gray-500 px-2"
+                    >
                       <div className="w-[50px] p-2  flex-shrink-0">
                         <p className="p-2">{index + 1}</p>
                       </div>
@@ -533,7 +597,8 @@ const EditMovies = () => {
                           </option>
                         </select>
                       </div>
-                      {current !== "Ads" ? (
+                      {current !== "Ads" &&
+                      current?.name != "Personalised Ads" ? (
                         <>
                           <div className="w-[80px] flex-shrink-0">
                             <img
@@ -580,6 +645,90 @@ const EditMovies = () => {
                     </div>
                   );
                 })}
+
+              {/* we will show this when our sequence changer will be actibated also
+              we will display a button so that arranged video will be saved in
+              that forat using single api and pop up modal confirmation */}
+              <ReactSortable
+                list={shortsPreviewFromBackend.map((_, index) => ({
+                  id: index,
+                  name: shortsPreviewFromBackend[index]?.name,
+                }))}
+                setList={handleSort}
+                animation={300} // Animation duration in milliseconds
+                disabled={false}
+                className="w-[100%] border-2 border-gray-500 grid  grid-cols-1 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 p-2 my-2"
+              >
+                {shortsPreviewFromBackend.map((current, index) => (
+                  <div
+                    key={index}
+                    className="relative  bg-white h-[100px] m-2 group"
+                  >
+                    <img
+                      src={shortsPreviewFromBackend[index]}
+                      alt={`Snapshot of `}
+                      className="h-[100%] w-[100%] object-cover select-none text-sm"
+                      draggable="false"
+                    />
+                    <div
+                      className={`absolute top-0 left-0 right-0  bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none ${
+                        current.name == "Personalised Ads"
+                          ? "bg-yellow-800"
+                          : "bg-sky-800"
+                      }`}
+                    >
+                      {current.name}
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <CgMenuOreos
+                        className="text-white text-lg cursor-pointer w-[30px] h-[30px]  select-none"
+                        // onClick={() => {
+                        //   deleteVideoHandler(index);
+                        // }}
+                      />
+                    </div>
+                    <div className="absolute bottom-0 right-0 bg-sky-800 p-3 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                      {index + 1}
+                    </div>
+                    <div className="absolute bottom-0 left-0 p-1 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
+                      {/* <HiOutlineDotsVertical /> */}
+                      {/*if i hovers on it then a menu will open with three option delete ,premium/ and othrs*/}
+
+                      <HiOutlineDotsVertical
+                        className="cursor-pointer"
+                        onClick={() => toggleMenu(index)}
+                      />
+                      {menuOpenIndex === index && (
+                        <div className="menu-item absolute bottom-0 left-0 mb-2 bg-white text-black text-sm shadow-lg rounded p-2 w-[120px] z-10">
+                          <ul>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => {
+                                deleteVideoHandler(index);
+                                setMenuOpenIndex(null);
+                              }}
+                            >
+                              Delete
+                            </li>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => console.log("Premium")}
+                            >
+                              Premium
+                            </li>
+                            <li
+                              className="hover:bg-gray-200 p-1 cursor-pointer"
+                              onClick={() => console.log("Others")}
+                            >
+                              Others
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </ReactSortable>
             </div>
           </div>
         </section>
