@@ -213,20 +213,47 @@ const EditMovies = () => {
   };
   console.log(shortsPreviewFromBackend);
   console.log(AllData, "alldata");
-  const deleteVideoFromBackendHandler = async (id) => {
-    try {
-      const response = await axios.delete(
-        `${connectionString}/admin/deleteShort/${id}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
-      toast.success("file deleted successfully");
-    } catch (error) {
-      toast.error("something went wrong");
+  const deleteVideoFromBackendHandler = async (data) => {
+    const movieId = params.edit;
+    console.log(data);
+    if (data.name === "Ads") {
+      console.log("ads triggered");
+      const dataObj = {
+        index: data?.index,
+        movieId: movieId,
+      };
+      try {
+        const response = await axios.delete(
+          `${connectionString}/admin/deleteAds/`,
+
+          {
+            data: dataObj,
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        toast.success("Ads  deleted successfully");
+        setShortsPreviewFromBackend(prev=>prev.filter((current,idx)=>data.index!==idx))
+      } catch (error) {
+        toast.error("something went wrong");
+      }
+    } else if (data.name === "Video") {
+      try {
+        const response = await axios.delete(
+          `${connectionString}/admin/deleteShort/${data.id}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        toast.success("Video  deleted successfully");
+      } catch (error) {
+        toast.error("something went wrong");
+      }
     }
+    return;
   };
   async function addAdsInShortHandler() {
     const id = params.edit;
@@ -562,6 +589,7 @@ const EditMovies = () => {
                 </div>
               </div>
               {/* if sequence changer is diabled then we will show this else we will show react sortable screen changer */}
+
               {shortsPreviewFromBackend?.length > 0 &&
                 shortsPreviewFromBackend?.map((current, index) => {
                   return (
@@ -573,29 +601,19 @@ const EditMovies = () => {
                         <p className="p-2">{index + 1}</p>
                       </div>
                       <div className="w-[90px] text-white font-semibold flex-shrink-0">
-                        <select
-                          className="bg-[#3C445A] rounded-sm p-2"
-                          // onChange={(event) =>
-                          //   handleSelectChange(current._id, event)
-                          // }
+                        <p
+                          className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
+                          onClick={() => {
+                            console.log("hello");
+                            deleteVideoFromBackendHandler(
+                              current?.name === "Personalised Ads"
+                                ? { name: "Ads", index: index }
+                                : { name: "Video", id: current?._id }
+                            );
+                          }}
                         >
-                          <option
-                            value=""
-                            // disabled
-                            className="border-b-2 border-gray-400"
-                          >
-                            option
-                          </option>
-                          <option value="EDIT">EDIT</option>
-                          <option
-                            value="DELETE"
-                            onClick={() => {
-                              deleteVideoFromBackendHandler(current._id);
-                            }}
-                          >
-                            DELETE
-                          </option>
-                        </select>
+                          Delete
+                        </p>
                       </div>
                       {current !== "Ads" &&
                       current?.name != "Personalised Ads" ? (
@@ -672,12 +690,12 @@ const EditMovies = () => {
                     />
                     <div
                       className={`absolute top-0 left-0 right-0  bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none ${
-                        current.name == "Personalised Ads"
+                        current?.name == "Personalised Ads"
                           ? "bg-yellow-800"
                           : "bg-sky-800"
                       }`}
                     >
-                      {current.name}
+                      {current?.name}
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <CgMenuOreos
