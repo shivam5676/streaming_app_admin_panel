@@ -15,6 +15,7 @@ import { ReactSortable } from "react-sortablejs";
 
 import { CgMenuOreos } from "react-icons/cg";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { doActionTask } from "../Api/Api";
 const EditMovies = () => {
   const params = useParams();
   const [selectedIds, setSelectedIds] = useState([]);
@@ -316,19 +317,67 @@ const EditMovies = () => {
   };
   console.log(selectedIds, "selecteddIds");
   const selectedActionPerform = async (action) => {
+    const moviesId = params.edit;
     if (action === "Enable") {
-      console.log("enable");
+      // console.log("enable");
+      // console.log("disable");
+      doActionTask("/admin/enableVideo",null,selectedIds)
+      // try {
+      //   const response = await axios.post(
+      //     `${connectionString}/admin/enableVideo`,
+      //     selectedIds,
+      //     {
+      //       headers: {
+      //         Authorization: localStorage.getItem("token"),
+      //       },
+      //     }
+      //   );
+      //   console.log(response);
+      // } catch (error) {}
     } else if (action === "Disable") {
       console.log("disable");
+      doActionTask("/admin/disableVideo",null,selectedIds)
+
+      // try {
+      //   const response = await axios.post(
+      //     `${connectionString}/admin/disableVideo`,
+      //     selectedIds,
+      //     {
+      //       headers: {
+      //         Authorization: localStorage.getItem("token"),
+      //       },
+      //     }
+      //   );
+      //   console.log(response);
+      // } catch (error) {}
+    } else if (action === "Change sequence") {
+      const sequenceData = shortsPreviewFromBackend.map((current) => {
+        // console.log(current)
+        if (current?._id) {
+          return current._id;
+        } else {
+          return "Ads";
+        }
+      });
+      // const sequenceData = [
+      //   "Ads",
+      //   "672f21dd58450dad04ff8efc",
+      //   "672f21dd58450dad04ff8efc",
+      // ];
+      // console.log("change sequence", sequenceData);
+      // return;
       try {
         const response = await axios.post(
-          `${connectionString}/admin/disableVideo`,
-          selectedIds
+          `${connectionString}/admin/changeSequence`,
+          { moviesId, sequenceData: sequenceData },
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
         );
         console.log(response);
       } catch (error) {}
-    } else if (action === "Change sequence") {
-      console.log("change sequence");
     } else if (action === "Delete Shorts") {
       console.log("Delete shorts");
     }
