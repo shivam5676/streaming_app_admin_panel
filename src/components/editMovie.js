@@ -15,7 +15,11 @@ import { ReactSortable } from "react-sortablejs";
 
 import { CgMenuOreos } from "react-icons/cg";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { doActionTask } from "../Api/Api";
+import {
+  changeShortsSequence,
+  doActionTask,
+} from "../Api/EditMovies/shortsActionTask";
+
 const EditMovies = () => {
   const params = useParams();
   const [selectedIds, setSelectedIds] = useState([]);
@@ -34,6 +38,7 @@ const EditMovies = () => {
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
   const [thumbnailFromBackendPreview, setThumbNailFromBackendPreview] =
     useState(null);
+  const [trailerPresent, setTrailerPresent] = useState(false);
   const languageRef = useRef();
   const [languages, setLanguages] = useState([]);
   const [shortsPreviewFromBackend, setShortsPreviewFromBackend] = useState([]);
@@ -64,6 +69,7 @@ const EditMovies = () => {
         Object.values(response.data.movieData).length > 0
       ) {
         setAllData(response.data.movieData);
+        setTrailerPresent(response?.data?.movieData?.trailerUrl);
         // setLanguages(response?.data?.movieData?.language || []);
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")
@@ -86,7 +92,7 @@ const EditMovies = () => {
 
     fetchMovie();
   }, []);
-  console.log("render");
+  console.log("render", AllData.trailerUrl);
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
   };
@@ -203,6 +209,7 @@ const EditMovies = () => {
 
     setShortsPreviewFromBackend(newVideoFiles);
   };
+  // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
     return;
     const allVideos = [...videoFiles];
@@ -218,9 +225,11 @@ const EditMovies = () => {
   };
   console.log(shortsPreviewFromBackend);
   console.log(AllData, "alldata");
+  // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
     const movieId = params.edit;
     console.log(data);
+    return;
     if (data.name === "Ads") {
       console.log("ads triggered");
       const dataObj = {
@@ -321,7 +330,8 @@ const EditMovies = () => {
     if (action === "Enable") {
       // console.log("enable");
       // console.log("disable");
-      doActionTask("/admin/enableVideo",null,selectedIds)
+      doActionTask("/admin/enableVideo", selectedIds);
+
       // try {
       //   const response = await axios.post(
       //     `${connectionString}/admin/enableVideo`,
@@ -336,7 +346,7 @@ const EditMovies = () => {
       // } catch (error) {}
     } else if (action === "Disable") {
       console.log("disable");
-      doActionTask("/admin/disableVideo",null,selectedIds)
+      doActionTask("/admin/disableVideo", selectedIds);
 
       // try {
       //   const response = await axios.post(
@@ -352,32 +362,14 @@ const EditMovies = () => {
       // } catch (error) {}
     } else if (action === "Change sequence") {
       const sequenceData = shortsPreviewFromBackend.map((current) => {
-        // console.log(current)
         if (current?._id) {
           return current._id;
         } else {
           return "Ads";
         }
       });
-      // const sequenceData = [
-      //   "Ads",
-      //   "672f21dd58450dad04ff8efc",
-      //   "672f21dd58450dad04ff8efc",
-      // ];
-      // console.log("change sequence", sequenceData);
-      // return;
-      try {
-        const response = await axios.post(
-          `${connectionString}/admin/changeSequence`,
-          { moviesId, sequenceData: sequenceData },
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-        console.log(response);
-      } catch (error) {}
+
+      changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
     } else if (action === "Delete Shorts") {
       console.log("Delete shorts");
     }
@@ -506,41 +498,59 @@ const EditMovies = () => {
                     </div>
                   )}
                 </div>
-                <div className="p-4 font-semibold w-[100%] ">
-                  <p>
-                    Link Trailer Content :
-                    <span className="text-red-500"> *</span>
-                    <select
-                      className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
-                      onChange={handletrailerTypeChange}
+                {!trailerPresent && (
+                  <div className="p-4 font-semibold w-[100%] ">
+                    <p>
+                      Link Trailer Content :
+                      <span className="text-red-500"> *</span>
+                      <select
+                        className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
+                        onChange={handletrailerTypeChange}
+                      >
+                        <option className="px-2 bg-[#2E3648]" value="Upload">
+                          By Video Upload:
+                        </option>
+                        <option className="px-2 bg-[#2E3648]" value="URL">
+                          By URL :
+                        </option>
+                      </select>
+                    </p>
+                    <div className="my-4">
+                      {trailerType === "Upload" && (
+                        <input
+                          className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                          ref={moviesTrailerVideoRef}
+                          type="file"
+                        ></input>
+                      )}
+                      {trailerType === "URL" && (
+                        <input
+                          className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                          ref={moviesTrailerVideoLinkRef}
+                          // type="file"
+                          placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                        ></input>
+                      )}
+                    </div>{" "}
+                    {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+                  </div>
+                )}
+                {trailerPresent && (
+                  <div className=" mt-4 p-4 font-semibold w-[100%] ">
+                    <div className="flex items-center">
+                      Linked Trailer Content
+                      <span className="text-red-500"> *</span>
+                      <p className="border mx-2 p-1">Watch Now</p>
+                    </div>
+                    <div
+                      className="my-4 font-normal  w-fit text-sm border-b border-red-500 text-yellow-400 cursor-pointer"
+                      onClick={() => {}}
                     >
-                      <option className="px-2 bg-[#2E3648]" value="Upload">
-                        By Video Upload:
-                      </option>
-                      <option className="px-2 bg-[#2E3648]" value="URL">
-                        By URL :
-                      </option>
-                    </select>
-                  </p>
-                  <div className="my-4">
-                    {trailerType === "Upload" && (
-                      <input
-                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                        ref={moviesTrailerVideoRef}
-                        type="file"
-                      ></input>
-                    )}
-                    {trailerType === "URL" && (
-                      <input
-                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                        ref={moviesTrailerVideoLinkRef}
-                        // type="file"
-                        placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
-                      ></input>
-                    )}
-                  </div>{" "}
-                  {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
-                </div>
+                      I want to change trailer
+                    </div>{" "}
+                    {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+                  </div>
+                )}
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>
             </div>
@@ -562,15 +572,7 @@ const EditMovies = () => {
                   {selectedAction !== "none" ? "Save" : "Add Ads"}
                 </span>
               </div>
-              {/* <div
-                onClick={() => {
-                  // addMoviesHandler();
-                }}
-                className="relative text-[1rem] rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
-              >
-                <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                <span className="relative font-semibold">Change Sequence</span>
-              </div> */}
+
               <select
                 onChange={selectedActionHandler}
                 id="countries"
