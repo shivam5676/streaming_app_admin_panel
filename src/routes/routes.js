@@ -3,6 +3,7 @@ import AddMovies from "../components/AddMovies";
 import AddSlider from "../components/AddSlider";
 import AddWebSeries from "../components/AddWebSeries";
 import AddAds from "../components/Advertisement/AddAds";
+import AllAds from "../components/Advertisement/AllAds";
 import AllAdmin from "../components/AllAdmin";
 import AllGenreList from "../components/AllGenreList";
 import AllLAyout from "../components/AllLAyout";
@@ -39,6 +40,7 @@ export const routes = [
   { path: "/allAdmin/", element: <AllAdmin /> },
   { path: "/createAdmin/", element: <CreateAdmin /> },
   { path: "/Analytics/", element: <Analytics /> },
-  { path: "/addAds/", element: <AddAds/> },
+  { path: "/addAds/", element: <AddAds /> },
+  { path: "/allAds", element: <AllAds /> },
   { path: "*", element: <DashBoard /> },
 ];

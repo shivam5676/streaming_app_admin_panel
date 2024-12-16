@@ -275,7 +275,7 @@ const EditMovies = () => {
     const id = params.edit;
     try {
       const adsResponse = await axios.post(
-        `${connectionString}/admin/addAds/`,
+        `${connectionString}/admin/addAdsInMovie/`,
         { id },
         {
           headers: {

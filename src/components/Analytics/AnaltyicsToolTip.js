@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const AnalyticsToolTip = ({ tooltip, heading }) => {
+const AnalyticsToolTip = ({ tooltip, categoryType, text }) => {
   return (
     <div
       style={{
         position: "fixed",
-        top: tooltip.y+30,
+        top: tooltip.y + 30,
         left: tooltip.x,
         transform: "translate(-50%, -100%)",
         background: "#000",
@@ -28,9 +28,9 @@ const AnalyticsToolTip = ({ tooltip, heading }) => {
           paddingBottom: "5px",
         }}
       >
-        {`${tooltip.categoryName} views (${tooltip.categoryType})`}
+        {`${tooltip.categoryName} views (${categoryType})`}
       </p>
-      <p style={{ margin: "5px 0" }}>{tooltip.text}</p>
+      <p style={{ margin: "5px 0" }}>{text}</p>
     </div>
   );
 };

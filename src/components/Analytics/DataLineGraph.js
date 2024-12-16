@@ -104,7 +104,7 @@ const DataLineGraph = ({data, lineData, headingName,categoryName }) => {
 
       {/* Tooltip */}
       {tooltip.visible && (
-        <AnalyticsToolTip heading={"Views"} tooltip={tooltip} />
+        <AnalyticsToolTip heading={"Views"} tooltip={tooltip} categoryType={ tooltip?.categoryType} text={tooltip?.text}/>
       )}
     </>
   );
