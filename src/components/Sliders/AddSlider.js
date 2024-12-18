@@ -1,17 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  TextField,
-} from "@mui/material";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { sliderSliceACtion } from "../store/sliderSlice";
-import RoutesInfoDiv from "./RoutesInfoDiv";
-import SavingLoaderModal from "./savingLoaderModal";
+import { sliderSliceACtion } from "../../store/sliderSlice";
+import RoutesInfoDiv from "./../RoutesInfoDiv";
+import SavingLoaderModal from "./../savingLoaderModal";
+import LinkMovie from "./LinkMovie";
+import UploadData from "./uploadData";
+import { addSliderApi } from "../../Api/Slider/SliderApi";
 
 const AddSlider = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -48,6 +45,22 @@ const AddSlider = () => {
     }
   }, []);
   const addSliderHandler = async () => {
+    if (
+      promotionalContentType === "Image-upload" &&
+      sliderType === "Promotional" &&
+      !promotionalImageRef?.current?.files[0]
+    ) {
+      toast.error("plz select a promotional file");
+      return;
+    }
+    if (
+      promotionalContentType === "URL" &&
+      sliderType === "Promotional" &&
+      !promotionalImageURLRef?.current?.value
+    ) {
+      toast.error("plz enter promotional banner/video url");
+      return;
+    }
     const sliderObj = {
       name: sliderNameRef.current.value,
       type: sliderTypeRef.current.value,
@@ -70,43 +83,35 @@ const AddSlider = () => {
         promotionalImageURLRef.current.value
       );
     }
-    // console.log(formdata);
-    // formdata.forEach((current) => console.log(current));
+
     setUploadStatusModal(true);
 
     try {
-      const response = await axios.post(
-        `${connectionString}/admin/addSlider`,
-        formdata,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
-      console.log(response.data);
+      const response = await addSliderApi(formdata);
+
       dispatch(sliderSliceACtion.addSlider(response.data));
       setSuccessTick("success");
       setMessage("Slider successfully Created");
       toast.success("slider added successfully");
     } catch (err) {
-      console.log(err.response.data.msg);
+      console.log(err);
       setSuccessTick("error");
-      if (err.response && err.response.data.msg)
-        setMessage(err.response.data.msg);
+      if (err?.response && err?.response?.data?.msg) {
+        setMessage(err?.response?.data?.msg);
+      } else {
+        setMessage("Something went wrong");
+      }
     }
   };
 
-  const handleMoviesSelection = (event, value) => {
-    // console.log(value,"...>");
-    // return
+  const handleMoviesSelection = (value) => {
     linkedMovieIdRef.current = value._id;
   };
   const handleSliderTypeChange = (e) => {
     setSliderType(e.target.value);
   };
-  const handlePromotionalContentType = (e) => {
-    setpromotionalContentType(e.target.value);
+  const handlePromotionalContentType = (data) => {
+    setpromotionalContentType(data);
   };
   return (
     <>
@@ -172,115 +177,90 @@ const AddSlider = () => {
               </div>
               {/* if user select Movies_shorts then this will dropdown all movies  from backend and  thier shorts will be  linked to the slide*/}
               {sliderType == "Trailer" && (
-                <div className="p-4 font-semibold w-[100%]">
-                  <p>
-                    Link Movie and thier shorts to this Slide{" "}
-                    <span className="text-red-500"> *</span>
-                  </p>
-                  <Autocomplete
-                    onChange={handleMoviesSelection}
-                    disablePortal
-                    options={allMovies}
-                    isOptionEqualToValue={(option, value) =>
-                      option._id === value?._id
-                    }
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Movies list"
-                        InputLabelProps={{
-                          style: { color: "white" },
-                        }}
-                        InputProps={{
-                          ...params.InputProps,
-                          sx: {
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": {
-                                borderColor: "white",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "white",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            color: "white",
-                          },
-                        }}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "white",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "white",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "white",
-                            },
-                            color: "white",
-                          },
-                          "& .MuiInputBase-input": {
-                            color: "white",
-                          },
-                        }}
-                      />
-                    )}
-                    sx={{ py: 2 }}
-                  />
+                //   <div className="p-4 font-semibold w-[100%]">
+                //     <p>
+                //       Link Movie and thier shorts to this Slide{" "}
+                //       <span className="text-red-500"> *</span>
+                //     </p>
+                //     <Autocomplete
+                //       onChange={handleMoviesSelection}
+                //       disablePortal
+                //       options={allMovies}
+                //       isOptionEqualToValue={(option, value) =>
+                //         option._id === value?._id
+                //       }
+                //       getOptionLabel={(option) => option.name}
+                //       renderInput={(params) => (
+                //         <TextField
+                //           {...params}
+                //           label="Movies list"
+                //           InputLabelProps={{
+                //             style: { color: "white" },
+                //           }}
+                //           InputProps={{
+                //             ...params.InputProps,
+                //             sx: {
+                //               "& .MuiOutlinedInput-root": {
+                //                 "& fieldset": {
+                //                   borderColor: "white",
+                //                 },
+                //                 "&:hover fieldset": {
+                //                   borderColor: "white",
+                //                 },
+                //                 "&.Mui-focused fieldset": {
+                //                   borderColor: "white",
+                //                 },
+                //               },
+                //               color: "white",
+                //             },
+                //           }}
+                //           sx={{
+                //             "& .MuiOutlinedInput-root": {
+                //               "& fieldset": {
+                //                 borderColor: "white",
+                //               },
+                //               "&:hover fieldset": {
+                //                 borderColor: "white",
+                //               },
+                //               "&.Mui-focused fieldset": {
+                //                 borderColor: "white",
+                //               },
+                //               color: "white",
+                //             },
+                //             "& .MuiInputBase-input": {
+                //               color: "white",
+                //             },
+                //           }}
+                //         />
+                //       )}
+                //       sx={{ py: 2 }}
+                //     />
 
-                  {/* <select
-                className="w-full h-[40px]  py-2 px-4 bg-[#2E3648]  outline-none text-white  rounded-md my-2"
-                // ref={linkedMovieIdRef}
-              >
-                <option value={1}>tiger 3</option>
-                <option value={2}>kgf</option>
-                <option value={1}>indian 2</option>
-              </select> */}
-                </div>
+                //     {/* <select
+                //   className="w-full h-[40px]  py-2 px-4 bg-[#2E3648]  outline-none text-white  rounded-md my-2"
+                //   // ref={linkedMovieIdRef}
+                // >
+                //   <option value={1}>tiger 3</option>
+                //   <option value={2}>kgf</option>
+                //   <option value={1}>indian 2</option>
+                // </select> */}
+                //   </div>
+                <LinkMovie
+                  allMovies={allMovies}
+                  selectedMovies={handleMoviesSelection}
+                />
               )}
               {sliderType == "Promotional" && (
-                <div className="p-4 font-semibold w-[100%] ">
-                  <p>
-                    Link Promotional Content :
-                    <span className="text-red-500"> *</span>
-                    <select
-                      className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
-                      onChange={handlePromotionalContentType}
-                    >
-                      <option
-                        className="px-2 bg-[#2E3648]"
-                        value="Image-upload"
-                      >
-                        By Image Upload:
-                      </option>
-                      <option className="px-2 bg-[#2E3648]" value="URL">
-                        By URL (pre uploaded Image) :
-                      </option>
-                    </select>
-                  </p>
-                  <div className="my-4">
-                    {" "}
-                    {promotionalContentType === "Image-upload" && (
-                      <input
-                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                        ref={promotionalImageRef}
-                        type="file"
-                      ></input>
-                    )}{" "}
-                    {promotionalContentType === "URL" && (
-                      <input
-                        className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                        ref={promotionalImageURLRef}
-                        // type="file"
-                        placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
-                      ></input>
-                    )}
-                  </div>{" "}
-                  {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
-                </div>
+                <UploadData
+                  setContentType={handlePromotionalContentType}
+                  promotionalContentType={promotionalContentType}
+                  promotionalImage={(data) => {
+                    promotionalImageURLRef.current = { files: [data] };
+                  }}
+                  promotionalUrl={(data) => {
+                    promotionalImageURLRef.current = { value: data };
+                  }}
+                />
               )}{" "}
               <div className="p-4 font-semibold w-[100%]">
                 <p>Visible</p>

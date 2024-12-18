@@ -1,6 +1,6 @@
 import AddLayout from "../components/AddLayout";
 import AddMovies from "../components/AddMovies";
-import AddSlider from "../components/AddSlider";
+import AddSlider from "../components/Sliders/AddSlider";
 import AddWebSeries from "../components/AddWebSeries";
 import AddAds from "../components/Advertisement/AddAds";
 import AllAds from "../components/Advertisement/AllAds";
@@ -14,7 +14,7 @@ import Analytics from "../components/Analytics/Analytics";
 import CheckedInAllotement from "../components/CheckedInAllotement";
 import CreateAdmin from "../components/CreateAdmin";
 
-import DashBoard from "../components/DashBoard";
+import DashBoard from "../components/dashboard/DashBoard";
 import EditLayout from "../components/EditLayout";
 import EditMovies from "../components/editMovie";
 import EdducationQuestionGenerator from "../components/educationQuestionGenerator";
