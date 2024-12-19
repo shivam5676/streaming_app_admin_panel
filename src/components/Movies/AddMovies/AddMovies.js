@@ -1,24 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
-import DragNDropImage from "./DragNDropImage";
-import LayoutSelector from "./layoutSelector";
+import React, { useRef, useState } from "react";
+import DragNDropImage from "../../DragNDropImage";
+import LayoutSelector from "../../layoutSelector";
 import axios from "axios";
-import dragNDropVideos from "./dragNDropVideos";
-import DragNDropVideos from "./dragNDropVideos";
-import { FaTrash } from "react-icons/fa";
-import GenreSelector from "./genreSelector";
-import { toast } from "react-toastify";
-import LanguageSelector from "./LanguageSelector";
+
+import DragNDropVideos from "../../dragNDropVideos";
+
+import GenreSelector from "../../genreSelector";
+
+import LanguageSelector from "../../LanguageSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { movieSliceACtion } from "../store/movieSlice";
-import RoutesInfoDiv from "./RoutesInfoDiv";
-import SavingLoaderModal from "./savingLoaderModal";
-import { ReactSortable } from "react-sortablejs";
-import { CgMenuOreos } from "react-icons/cg";
-import { HiOutlineDotsVertical } from "react-icons/hi";
-import personalisedAds from "../assests/personalise_Ads.jpg";
+import { movieSliceACtion } from "../../../store/movieSlice";
+import RoutesInfoDiv from "../../RoutesInfoDiv";
+import SavingLoaderModal from "../../savingLoaderModal";
+
+import personalisedAds from "../../../assests/personalise_Ads.jpg";
+import SortableAndSelectedMoviesPrint from "./SortableAndSelectedMoviesPrint";
+
+import ThumbnailPreview from "./ThumbnailPreview";
 
 const AddMovies = () => {
-  const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
   const [successTick, setSuccessTick] = useState("pending");
   const [message, setMessage] = useState(
@@ -32,11 +32,11 @@ const AddMovies = () => {
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const languageRef = useRef();
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
-  const genre = [];
+
   const [trailerType, setTrailerType] = useState("Upload");
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
   // let thumbNail = null;
-  const menuRef = useRef(null);
+
   const freeVideosRef = useRef();
   const visibleRef = useRef();
   const moviesTrailerVideoRef = useRef();
@@ -49,13 +49,11 @@ const AddMovies = () => {
     const adFile = new File([adBlob], "Personalised_Ad.txt", {
       type: "text/plain",
     });
-    console.log(videoFiles);
-    console.log(layOutArrayRef.current); //array of object
+
     setUploadStatusModal(true);
     const formdata = new FormData();
     formdata.append("thumbnail", thumbnailRef.current);
     videoFiles.forEach((current) => {
-      console.log(current);
       if (current.name == "Personalised Ads") {
         return formdata.append("shorts", adFile);
       }
@@ -85,7 +83,7 @@ const AddMovies = () => {
           },
         }
       );
-      console.log(response.data.movieData);
+
       if (response.data.movieData) {
         dispatch(movieSliceACtion.addMovie(response.data.movieData));
       }
@@ -104,17 +102,12 @@ const AddMovies = () => {
     setVideoFilesSnapshot((prev) => [...prev, personalisedAds]);
   }
   const selectionHandler = (value) => {
-    // console.log(value);
     layOutArrayRef.current = value;
-    // console.log(layOutArray);
   };
   const GenreHandler = (value) => {
-    console.log(value);
     genreRef.current = value;
-    // console.log(layOutArray);
   };
   const languageHandler = (value) => {
-    console.log(value);
     languageRef.current = value;
   };
   const getThumbnail = (thumbnail) => {
@@ -123,11 +116,11 @@ const AddMovies = () => {
     // console.log(thumbnailRef)
     if (thumbnail != null) {
       const objectUrlCreation = URL.createObjectURL(thumbnail);
-      console.log(objectUrlCreation);
+
       setThumbNailUrlPreview(objectUrlCreation);
     }
   };
-  console.log(thumbnailUrlPreview);
+
   const getVideoFilesHandler = (videoFiles) => {
     Object.values(videoFiles).forEach((current) => {
       const videoFile = current;
@@ -156,7 +149,6 @@ const AddMovies = () => {
         setVideoFilesSnapshot((prev) => {
           return [...prev, snapshot];
         });
-        // setVideoSnapshot(snapshot);
 
         URL.revokeObjectURL(videoURL); // Clean up
       };
@@ -165,7 +157,7 @@ const AddMovies = () => {
       });
     });
   };
-  // console.log(videoFilesSnapshot);
+
   const deleteVideoHandler = (id) => {
     const allVideos = [...videoFiles];
     const allSnapshots = [...videoFilesSnapshot];
@@ -181,21 +173,6 @@ const AddMovies = () => {
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
   };
-  const toggleMenu = (index) => {
-    setMenuOpenIndex(menuOpenIndex === index ? null : index);
-  };
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Close the menu if clicked outside
-      if (!event.target.closest(".menu-item")) {
-        setMenuOpenIndex(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleSort = (newList) => {
     const newVideoFiles = newList.map((item, index) => videoFiles[item.id]);
@@ -277,9 +254,6 @@ const AddMovies = () => {
                 <div className="p-4 font-semibold w-[100%]">
                   <p>Content Language:</p>
                   <LanguageSelector selectedLanguage={languageHandler} />
-                  {/* <GenreSelector selectedGenre={GenreHandler} /> */}
-
-                  {/* we need to made a language selector like genere selector and in backend we will append languages and content id vice versa */}
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col">
@@ -306,24 +280,12 @@ const AddMovies = () => {
                   {!thumbnailUrlPreview ? (
                     <DragNDropImage thumbnail={getThumbnail}></DragNDropImage>
                   ) : (
-                    <div className="w-[100%] flex justify-center">
-                      <div className="w-[150px] h-[220px] rounded-md">
-                        <img
-                          src={thumbnailUrlPreview}
-                          className="border w-[100%] h-[100%] rounded-md"
-                        >
-                          {/* <img src={thumbnailUrlPreview}></img> */}
-                        </img>
-                        <div
-                          className="flex justify-center text-[.9rem] text-yellow-500 underline cursor-pointer font-semibold pt-1"
-                          onClick={() => {
-                            setThumbNailUrlPreview(null);
-                          }}
-                        >
-                          remove Image
-                        </div>
-                      </div>
-                    </div>
+                    <ThumbnailPreview
+                      thumbnailUrlPreview={thumbnailUrlPreview}
+                      removeThumbnailPreview={() => {
+                        setThumbNailUrlPreview(null);
+                      }}
+                    />
                   )}
                 </div>
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
@@ -391,84 +353,12 @@ const AddMovies = () => {
                   Drag and Drop or upload movie here
                 </div>
               </DragNDropVideos>
-              <ReactSortable
-                list={videoFiles.map((_, index) => ({
-                  id: index,
-                  name: videoFiles[index].name,
-                }))}
-                setList={handleSort}
-                className="w-[100%] border-2 border-gray-500 grid  grid-cols-1 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2 p-2 my-2"
-              >
-                {videoFiles.map((current, index) => (
-                  <div
-                    key={index}
-                    className="relative  bg-white h-[100px] m-2 group"
-                  >
-                    <img
-                      src={videoFilesSnapshot[index]}
-                      alt={`Snapshot of `}
-                      className="h-[100%] w-[100%] object-cover select-none text-sm"
-                      draggable="false"
-                    />
-                    <div
-                      className={`absolute top-0 left-0 right-0  bg-opacity-80 text-white text-xs p-1 font-bold text-center break-words  select-none ${
-                        current.name == "Personalised Ads"
-                          ? "bg-yellow-800"
-                          : "bg-sky-800"
-                      }`}
-                    >
-                      {current.name}
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <CgMenuOreos
-                        className="text-white text-lg cursor-pointer w-[30px] h-[30px]  select-none"
-                        // onClick={() => {
-                        //   deleteVideoHandler(index);
-                        // }}
-                      />
-                    </div>
-                    <div className="absolute bottom-0 right-0 bg-sky-800 p-3 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
-                      {index + 1}
-                    </div>
-                    <div className="absolute bottom-0 left-0 p-1 rounded-ss-2xl bg-opacity-90 text-white text-sm font-bold  text-center break-words  select-none">
-                      {/* <HiOutlineDotsVertical /> */}
-                      {/*if i hovers on it then a menu will open with three option delete ,premium/ and othrs*/}
-
-                      <HiOutlineDotsVertical
-                        className="cursor-pointer"
-                        onClick={() => toggleMenu(index)}
-                      />
-                      {menuOpenIndex === index && (
-                        <div className="menu-item absolute bottom-0 left-0 mb-2 bg-white text-black text-sm shadow-lg rounded p-2 w-[120px] z-10">
-                          <ul>
-                            <li
-                              className="hover:bg-gray-200 p-1 cursor-pointer"
-                              onClick={() => {
-                                deleteVideoHandler(index);
-                                setMenuOpenIndex(null);
-                              }}
-                            >
-                              Delete
-                            </li>
-                            <li
-                              className="hover:bg-gray-200 p-1 cursor-pointer"
-                              onClick={() => console.log("Premium")}
-                            >
-                              Premium
-                            </li>
-                            <li
-                              className="hover:bg-gray-200 p-1 cursor-pointer"
-                              onClick={() => console.log("Others")}
-                            >
-                              Others
-                            </li>
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </ReactSortable>
+              <SortableAndSelectedMoviesPrint
+                videoFiles={videoFiles}
+                videoFilesSnapshot={videoFilesSnapshot}
+                sortArray={handleSort}
+                deleteVideoHandler={deleteVideoHandler}
+              />
             </div>
           </div>
         </section>

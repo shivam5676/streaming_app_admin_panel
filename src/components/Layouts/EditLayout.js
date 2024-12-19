@@ -5,6 +5,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
+import RoutesInfoDiv from "../RoutesInfoDiv";
+import EditLAyoutPrint from "./EditLAyoutPrint";
 
 const EditLayout = () => {
   const params = useParams();
@@ -41,27 +43,9 @@ const EditLayout = () => {
     fetchMovie();
   }, []);
   // console.log(selectedMoviesRef)
-  useEffect(() => {
-    try {
-      async function fetchMovies() {
-        const res = await axios.get(`${connectionString}/admin/allMovies`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
-        console.log(res);
-        return;
-        setAllMovies(res.data.allMovies);
-      }
-      fetchMovies();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+
   const selectedMoviesHandler = (selectedMovies) => {
-    console.log("object,", selectedMovies);
     selectedMoviesRef.current = selectedMovies;
-    console.log(selectedMoviesRef);
   };
   const addLayoutHandler = async () => {
     console.log(AllLayoutsData);
@@ -92,28 +76,25 @@ const EditLayout = () => {
   const handleMovieLinking = (e) => {
     setLinkMovieStatus(!linkMoviesStatus);
   };
-  const removeLinkedMovis = async (id) => {
-    try {
-      const deleteMoviesResponse = await axios.post(
-        `${connectionString}/admin/deleteLinkedMovie`,
-        { movieId: id, LayoutId: AllLayoutsData._id }
-      );
-      toast.success("movie unlinked successfully");
-    } catch (error) {
-      toast.error("something went wrong");
-    }
-  };
+  // const removeLinkedMovies = async (id) => {
+  //   try {
+  //     const deleteMoviesResponse = await axios.post(
+  //       `${connectionString}/admin/deleteLinkedMovie`,
+  //       { movieId: id, LayoutId: AllLayoutsData._id }
+  //     );
+  //     toast.success("movie unlinked successfully");
+  //   } catch (error) {
+  //     toast.error("something went wrong");
+  //   }
+  // };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <div className="text-white px-2 py-4 ">
-        <p className="text-lg font-bold">Edit Layout</p>
-        <p className="text-[.95rem] font-semibold">
-          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
-          <span>Layout section</span>
-          <span className="mx-2"> &gt; </span>
-          <span>Edit Layout</span>
-        </p>
-      </div>
+      <RoutesInfoDiv
+        mainHeading={"Edit Layout"}
+        websiteName={"Reelies"}
+        sectionName={"Layout section"}
+        currentDir={"Edit Layout"}
+      ></RoutesInfoDiv>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
@@ -141,23 +122,8 @@ const EditLayout = () => {
               ></textarea>
             </div>
             {/* already fetched linked movie will display here with individual deleting functionality */}
-            <div className=" m-4  border-white border ">
-              <div className="flex m-2 overflow-x-none flex-wrap">
-                {AllLayoutsData?.linkedMovies?.map((current) => {
-                  return (
-                    <div className="bg-white text-gray-700 text-[.8rem] p-2 m-2 rounded flex items-center">
-                      <p>{current?.name}</p>
-                      <IoMdCloseCircle
-                        className="ms-2 h-[20px] w-[20px] text-gray-400 hover:text-gray-600 cursor-pointer"
-                        onClick={() => {
-                          removeLinkedMovis(current._id);
-                        }}
-                      />
-                    </div>
-                  );
-                })}{" "}
-              </div>
-            </div>
+
+            <EditLAyoutPrint AllLayoutsData={AllLayoutsData} />
             <div className="m-4 font-semibold">
               <FormGroup>
                 {" "}

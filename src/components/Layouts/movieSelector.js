@@ -19,7 +19,14 @@ export default function MovieSelector(props) {
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const response = await axios.get(`${connectionString}/admin/allMovies`);
+        const response = await axios.get(
+          `${connectionString}/admin/allMovies`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
         setAllMovies(response.data.allMovies);
       } catch (error) {
         console.error(error);
@@ -31,13 +38,13 @@ export default function MovieSelector(props) {
   // Initialize state with props.selectedMovies if available
   useEffect(() => {
     if (props.selectedMovies) {
-      setSelectedMovies(props.selectedMovies.map(movie => movie._id)); // Only store IDs
+      setSelectedMovies(props.selectedMovies.map((movie) => movie._id)); // Only store IDs
     }
   }, [props.selectedMovies]);
 
   // Handle changes to the selection
   const selectedMoviesHandler = (event, value) => {
-    const selectedIds = value.map(movie => movie._id); // Get movie IDs from selected options
+    const selectedIds = value.map((movie) => movie._id); // Get movie IDs from selected options
     setSelectedMovies(selectedIds);
     props.getSelectedMovies(value); // Pass the full movie objects to the parent
   };
@@ -50,7 +57,7 @@ export default function MovieSelector(props) {
       disableCloseOnSelect
       onChange={selectedMoviesHandler}
       getOptionLabel={(option) => option.name}
-      value={allMovies.filter(movie => selectedMovies.includes(movie._id))} // Set value based on IDs
+      value={allMovies.filter((movie) => selectedMovies.includes(movie._id))} // Set value based on IDs
       renderOption={(props, option, { selected }) => {
         const { key, ...optionProps } = props;
         return (

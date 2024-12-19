@@ -1,25 +1,26 @@
-import AddLayout from "../components/AddLayout";
-import AddMovies from "../components/AddMovies";
+import AddLayout from "../components/Layouts/AddLayout";
+import AddMovies from "../components/Movies/AddMovies/AddMovies";
 import AddSlider from "../components/Sliders/AddSlider";
 import AddWebSeries from "../components/AddWebSeries";
 import AddAds from "../components/Advertisement/AddAds";
 import AllAds from "../components/Advertisement/AllAds";
 import AllAdmin from "../components/AllAdmin";
 import AllGenreList from "../components/AllGenreList";
-import AllLAyout from "../components/AllLAyout";
+import AllLAyout from "../components/Layouts/AllLAyout";
 import AllMovies from "../components/AllMovies";
-import AllSliders from "../components/AllSliders";
+
 import AllUsers from "../components/AllUSers";
 import Analytics from "../components/Analytics/Analytics";
 import CheckedInAllotement from "../components/CheckedInAllotement";
 import CreateAdmin from "../components/CreateAdmin";
 
 import DashBoard from "../components/dashboard/DashBoard";
-import EditLayout from "../components/EditLayout";
+import EditLayout from "../components/Layouts/EditLayout";
 import EditMovies from "../components/editMovie";
 import EdducationQuestionGenerator from "../components/educationQuestionGenerator";
 import LanguageList from "../components/LanguageLIst";
 import UserDetails from "../components/UserDetails";
+import AllSliders from "../components/Sliders/AllSliders";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },

@@ -1,16 +1,17 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import MovieSelector from "./movieSelector";
-import axios from "axios";
+
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { layoutSliceACtion } from "../store/layoutSlice";
-import RoutesInfoDiv from "./RoutesInfoDiv";
-import SavingLoaderModal from "./savingLoaderModal";
+import { layoutSliceACtion } from "../../store/layoutSlice";
+import RoutesInfoDiv from "./../RoutesInfoDiv";
+import SavingLoaderModal from "./../savingLoaderModal";
+import { AddLayoutApi } from "../../Api/Layouts/layoutApi";
 
 const AddLayout = (req, res, next) => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
-  const connectionString = process.env.REACT_APP_API_URL;
+
   const layOutNameRef = useRef();
   const layoutDescriptionRef = useRef();
   const selectedMoviesRef = useRef([]);
@@ -37,11 +38,8 @@ const AddLayout = (req, res, next) => {
     };
 
     try {
-      const response = await axios.post(
-        `${connectionString}/admin/addLayout`,
-        layoutObj
-      );
-      console.log(response, ",,,.");
+      const response = await AddLayoutApi(layoutObj);
+
       if (response.data.layoutResponse) {
         dispatch(layoutSliceACtion.addLayout(response.data.layoutResponse));
         setSuccessTick("success");
@@ -50,10 +48,11 @@ const AddLayout = (req, res, next) => {
       }
     } catch (err) {
       console.log(err);
-
       setSuccessTick("error");
-      if (err.response && err.response.data.msg)
+      if (err.response && err.response.data.msg){
         setMessage(err.response.data.msg);
+      }
+        
       toast.error("something went wrong while creating layout");
     }
   };
@@ -84,7 +83,13 @@ const AddLayout = (req, res, next) => {
         <section className="w-[100%]">
           {" "}
           <div className="flex gap-6 flex-col xl:flex-row">
-          <div className={`${selectedTheme==="modern reeloid"?"bg-black/40 backdrop-blur-lg":"bg-[#2A3042]"} flex-1  rounded-md text-white`}>
+            <div
+              className={`${
+                selectedTheme === "modern reeloid"
+                  ? "bg-black/40 backdrop-blur-lg"
+                  : "bg-[#2A3042]"
+              } flex-1  rounded-md text-white`}
+            >
               <div className="m-4 text-[1rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3">
                 <p>Layout Info</p>
               </div>
