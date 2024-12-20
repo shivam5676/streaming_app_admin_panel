@@ -21,6 +21,7 @@ import EdducationQuestionGenerator from "../components/educationQuestionGenerato
 import LanguageList from "../components/LanguageLIst";
 import UserDetails from "../components/UserDetails";
 import AllSliders from "../components/Sliders/AllSliders";
+import AddNotification from "../components/Notification/AddNotification";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -43,5 +44,6 @@ export const routes = [
   { path: "/Analytics/", element: <Analytics /> },
   { path: "/addAds/", element: <AddAds /> },
   { path: "/allAds", element: <AllAds /> },
+  { path: "/addNotification", element: <AddNotification/> },
   { path: "*", element: <DashBoard /> },
 ];

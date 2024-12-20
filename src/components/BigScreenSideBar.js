@@ -47,7 +47,13 @@ const BigScreenSideBar = (props) => {
       <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
         <p className="text-[.75rem]">MAIN</p>
       </div>
-      <div className={` hover:text-white   ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" } cursor-pointer`}>
+      <div
+        className={` hover:text-white   ${
+          selectedTheme == "modern reeloid"
+            ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+            : "hover:bg-[#2F374A]"
+        } cursor-pointer`}
+      >
         <div
           className="mx-4 h-[50px] flex items-center"
           onClick={() => {
@@ -64,7 +70,11 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-              className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Hero Section"
                 ? currentMenuHandler(null)
@@ -110,7 +120,11 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Layout Manager"
                 ? currentMenuHandler(null)
@@ -164,7 +178,11 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Movie Section"
                 ? currentMenuHandler(null)
@@ -210,7 +228,11 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Web-shows Section"
                 ? currentMenuHandler(null)
@@ -254,7 +276,11 @@ const BigScreenSideBar = (props) => {
         </div>
         <div>
           <div
-             className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               currentMenuOpen == "Ads Section"
                 ? currentMenuHandler(null)
@@ -286,12 +312,69 @@ const BigScreenSideBar = (props) => {
                 <p>Add Ads</p>
               </div>
 
-              <div className="flex h-[40px] items-center  cursor-pointer ps-12" onClick={() => {
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
                   navigate("/allAds");
-                }}>
+                }}
+              >
                 <LuLayoutList className="mx-2" />
 
                 <p>All Ads</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+      <section>
+        {" "}
+        <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
+          <p className="text-[.75rem]">Notification & Promotion</p>
+        </div>
+        <div>
+          <div
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
+            onClick={() => {
+              currentMenuOpen == "Notification & Promotion Section"
+                ? currentMenuHandler(null)
+                : currentMenuHandler("Notification & Promotion Section");
+            }}
+          >
+            <div className="mx-4 h-[50px] flex items-center justify-between">
+              <div className="flex items-center">
+                {" "}
+                <SiWebflow className="h-[20px] w-[20px]" />
+                <p className="text-[.9rem] px-4 font-semibold">
+                  Notification Section
+                </p>
+              </div>
+              {currentMenuOpen == "Notification & Promotion Section" ? (
+                <MdArrowDropUp className="h-[25px] w-[25px]" />
+              ) : (
+                <MdArrowDropDown className="h-[25px] w-[25px]" />
+              )}
+            </div>
+          </div>
+          {currentMenuOpen == "Notification & Promotion Section" && (
+            <div className="text-[.85rem] text-white">
+              <div
+                className="flex h-[40px] items-center cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/addNotification");
+                }}
+              >
+                <MdOutlineAddToQueue className="mx-2" />
+                <p>Add Notification</p>
+              </div>
+
+              <div className="flex h-[40px] items-center  cursor-pointer ps-12">
+                <LuLayoutList className="mx-2" />
+
+                <p>All Notification</p>
               </div>
             </div>
           )}
@@ -302,7 +385,11 @@ const BigScreenSideBar = (props) => {
           <p className="text-[.75rem]">USER MANAGEMENT</p>
         </div>
         <div
-            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+          className={` hover:text-white  ${
+            selectedTheme == "modern reeloid"
+              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+              : "hover:bg-[#2F374A]"
+          }  cursor-pointer`}
           onClick={() => {
             navigate("/allUsers");
           }}
@@ -313,7 +400,11 @@ const BigScreenSideBar = (props) => {
           </div>
         </div>
         <div
-            className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}
+          className={` hover:text-white  ${
+            selectedTheme == "modern reeloid"
+              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+              : "hover:bg-[#2F374A]"
+          }  cursor-pointer`}
           onClick={() => {
             navigate("/allAdmin");
           }}
@@ -328,7 +419,13 @@ const BigScreenSideBar = (props) => {
         <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">OTHERS</p>
         </div>
-        <div   className={` hover:text-white  ${selectedTheme=="modern reeloid"?"hover:bg-[#FEBD59]/70 hover:backdrop-blur-md":"hover:bg-[#2F374A]" }  cursor-pointer`}>
+        <div
+          className={` hover:text-white  ${
+            selectedTheme == "modern reeloid"
+              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+              : "hover:bg-[#2F374A]"
+          }  cursor-pointer`}
+        >
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {
@@ -381,7 +478,6 @@ const BigScreenSideBar = (props) => {
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {
               navigate("/Analytics");
-              
             }}
           >
             <GrUserSettings className="h-[20px] w-[20px]" />
@@ -390,7 +486,7 @@ const BigScreenSideBar = (props) => {
           <div
             className="mx-4 h-[50px] flex items-center cursor-pointer"
             onClick={() => {
-              localStorage.removeItem("user")
+              localStorage.removeItem("user");
               dispatch(loginSliceAction.logOut());
             }}
           >
