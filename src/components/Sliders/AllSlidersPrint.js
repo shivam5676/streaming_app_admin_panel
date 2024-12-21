@@ -1,8 +1,34 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { sliderSliceACtion } from "../../store/sliderSlice";
+import { toast } from "react-toastify";
+import { deleteSliderApi } from "../../Api/Slider/SliderApi";
 
 const AllSlidersPrint = ({ allSliders }) => {
+  const dispatch = useDispatch();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const deleteSliderHandler = async (id) => {
+    try {
+      const response = deleteSliderApi(id);
+      dispatch(sliderSliceACtion.deleteSlider(id));
+      toast.success("movie deleted successfully");
+    } catch (err) {
+      console.log(err)
+      toast.error("something went wrong");
+    }
+  };
+  const handleSelectChange = (id, event) => {
+    const action = event.target.value;
+    console.log(action);
+    // Reset the select value after handling the event to ensure proper re-rendering
+    event.target.value = ""; // Reset the value to ensure change is recognized next time
+
+    if (action === "DELETE") {
+      deleteSliderHandler(id);
+    } else if (action === "EDIT") {
+      // navigate(`/allLayout/${id}`);
+    }
+  };
   return (
     <>
       {" "}

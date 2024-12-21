@@ -40,18 +40,18 @@ const AllSliders = () => {
       toast.error("something went wrong");
     }
   };
-  const handleSelectChange = (id, event) => {
-    const action = event.target.value;
-    console.log(action);
-    // Reset the select value after handling the event to ensure proper re-rendering
-    event.target.value = ""; // Reset the value to ensure change is recognized next time
+  // const handleSelectChange = (id, event) => {
+  //   const action = event.target.value;
+  //   console.log(action);
+  //   // Reset the select value after handling the event to ensure proper re-rendering
+  //   event.target.value = ""; // Reset the value to ensure change is recognized next time
 
-    if (action === "DELETE") {
-      deleteSliderHandler(id);
-    } else if (action === "EDIT") {
-      // navigate(`/allLayout/${id}`);
-    }
-  };
+  //   if (action === "DELETE") {
+  //     deleteSliderHandler(id);
+  //   } else if (action === "EDIT") {
+  //     // navigate(`/allLayout/${id}`);
+  //   }
+  // };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
       <RoutesInfoDiv
