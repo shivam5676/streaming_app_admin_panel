@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useRef } from "react";
 import ToolTip from "../Advertisement/ToolTip";
 import { MdSwapHorizontalCircle } from "react-icons/md";
 import RoutesInfoDiv from "../RoutesInfoDiv";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const AddNotification = () => {
+  const connectionString = process.env.REACT_APP_API_URL;
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const notificationTitleRef = useRef("");
+  const notificationTypeRef = useRef("");
+  const notificationDescriptionRef = useRef("");
+  const saveNotificationHandler = async () => {
+    try {
+      const response = await axios.post(
+        `${connectionString}/admin/saveNotification`,
+        { title: notificationTitleRef.current.value, description: notificationDescriptionRef.current.value }
+      );
+    } catch (err) {}
+  };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
       {" "}
@@ -30,11 +43,11 @@ const AddNotification = () => {
             </div>
             <div className="m-4 font-semibold">
               <p>
-                Name <span className="text-red-500"> *</span>
+                Title <span className="text-red-500"> *</span>
               </p>
               <input
                 className="w-full h-[40px] bg-[#2E3648] my-2 py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                //   ref={AdsNameRef}
+                ref={notificationTitleRef}
               ></input>
             </div>{" "}
             <div className="p-4 font-semibold w-[100%]">
@@ -45,7 +58,7 @@ const AddNotification = () => {
               <select
                 className="w-full h-[40px] bg-[#2E3648]  py-2 px-4 outline-none text-white  rounded-md my-2"
                 // onChange={handleAdsType}
-                //   ref={AdsTypeRef}
+                ref={notificationTypeRef}
               >
                 <option value={"Content-update"}>Content Update</option>
                 <option value={"Reminder "}>Reminder</option>
@@ -53,6 +66,18 @@ const AddNotification = () => {
                 <option value={"Event "}>Event</option>
                 <option value={"Trending Content "}>Trending Content</option>
               </select>
+            </div>
+            <div className="p-4 font-semibold w-[100%]">
+              {" "}
+              <p>
+                Notification Description{" "}
+                <span className="text-[.8rem]">( only 150 text )</span>
+                <span className="text-red-500"> *</span>
+              </p>
+              <input
+                className="w-full h-[40px] bg-[#2E3648]  py-2 px-4 outline-none text-white  rounded-md my-2  "
+                ref={notificationDescriptionRef}
+              ></input>
             </div>
             <div className="p-4 font-semibold w-[100%] flex gap-6 flex-col xl:flex-row">
               <div className="dd-1  w-[100%] ">
@@ -173,7 +198,7 @@ const AddNotification = () => {
         <div className="flex justify-end w-[100%]">
           <div
             onClick={() => {
-              // saveAdsHandler();
+              saveNotificationHandler();
             }}
             className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
           >
