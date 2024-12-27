@@ -15,7 +15,10 @@ const AddNotification = () => {
     try {
       const response = await axios.post(
         `${connectionString}/admin/saveNotification`,
-        { title: notificationTitleRef.current.value, description: notificationDescriptionRef.current.value }
+        {
+          title: notificationTitleRef.current.value,
+          description: notificationDescriptionRef.current.value,
+        }
       );
     } catch (err) {}
   };
@@ -93,9 +96,7 @@ const AddNotification = () => {
                 </select>
               </div>
               <div className="flex w-[100%] max-[700px]:flex-col xl:border-l px-2 text-sm ">
-                {" "}
                 <div className="bg-[#2E3648] p-2">
-                  {" "}
                   <p className="pb-2">
                     Start time{" "}
                     <ToolTip
