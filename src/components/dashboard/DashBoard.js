@@ -101,37 +101,39 @@ const DashBoard = () => {
         >
           <span>Welcome to Reelies Dashboard</span>
         </p>
-        <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">
-          <ProductReportCard
-            name={"Movie"}
-            cardIcon={movieIcon}
-            published={cardsData?.movies?.visibleTrueCount || "0"}
-            UnPublished={cardsData?.movies?.visibleFalseCount || "0"}
-            loading={Object.values(cardsData).length == 0}
-          />
+        {
+          <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">
+            <ProductReportCard
+              name={"Movie"}
+              cardIcon={movieIcon}
+              published={cardsData?.movies?.visibleTrueCount || "0"}
+              UnPublished={cardsData?.movies?.visibleFalseCount || "0"}
+              loading={cardsData && Object.values(cardsData).length == 0}
+            />
 
-          <ProductReportCard
-            name={"WebSeries"}
-            cardIcon={webseriesIcon}
-            published={cardsData?.webSeries?.visibleTrueCount || "0"}
-            UnPublished={cardsData?.webSeries?.visibleFalseCount || "0"}
-            loading={Object.values(cardsData).length == 0}
-          />
-          <ProductReportCard
-            name={"Layouts"}
-            cardIcon={layoutIcon}
-            published={cardsData?.layouts?.visibleTrueCount || "0"}
-            UnPublished={cardsData?.layouts?.visibleFalseCount || "0"}
-            loading={Object.values(cardsData).length == 0}
-          />
-          <ProductReportCard
-            name={"Sliders"}
-            cardIcon={sliderIcon}
-            published={cardsData?.sliders?.visibleTrueCount || "0"}
-            UnPublished={cardsData?.sliders?.visibleFalseCount || "0"}
-            loading={Object.values(cardsData).length == 0}
-          />
-        </section>
+            <ProductReportCard
+              name={"WebSeries"}
+              cardIcon={webseriesIcon}
+              published={cardsData?.webSeries?.visibleTrueCount || "0"}
+              UnPublished={cardsData?.webSeries?.visibleFalseCount || "0"}
+              loading={cardsData && Object.values(cardsData).length == 0}
+            />
+            <ProductReportCard
+              name={"Layouts"}
+              cardIcon={layoutIcon}
+              published={cardsData?.layouts?.visibleTrueCount || "0"}
+              UnPublished={cardsData?.layouts?.visibleFalseCount || "0"}
+              loading={cardsData && Object.values(cardsData).length == 0}
+            />
+            <ProductReportCard
+              name={"Sliders"}
+              cardIcon={sliderIcon}
+              published={cardsData?.sliders?.visibleTrueCount || "0"}
+              UnPublished={cardsData?.sliders?.visibleFalseCount || "0"}
+              loading={cardsData && Object.values(cardsData).length == 0}
+            />
+          </section>
+        }
         <section className="w-[100%]   py-2 ">
           <div className="gap-4 w-[100%] flex flex-col md:flex-row  ">
             <ViewsComparisonGraph contentViews={contentViews} />

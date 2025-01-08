@@ -15,7 +15,7 @@ export const addSliderApi = async (formdata) => {
     console.log(response);
     return response;
   } catch (err) {
-    throw new Error(err);
+    throw err;
   }
 };
 
@@ -35,7 +35,7 @@ export const deleteSliderApi = async (id) => {
     // dispatch(sliderSliceACtion.deleteSlider(id));
     // toast.success("movie deleted successfully");
   } catch (err) {
-    throw new Error(err);
+    throw err;
   }
 };
 
@@ -50,6 +50,6 @@ export const allSlidersApi = async () => {
     return res;
   } catch (err) {
     console.log(err)
-    throw new Error(err);
+    throw err;
   }
 };

@@ -18,12 +18,16 @@ const AllSliders = () => {
     if (allSliders.length === 0) {
       try {
         (async () => {
-          const res = await allSlidersApi();
+          try {
+            const res = await allSlidersApi();
 
-          if (res.data.Slider) {
-            Object.values(res.data.Slider).forEach((current) => {
-              dispatch(sliderSliceACtion.addSlider(current));
-            });
+            if (res.data.Slider) {
+              Object.values(res.data.Slider).forEach((current) => {
+                dispatch(sliderSliceACtion.addSlider(current));
+              });
+            }
+          } catch (error) {
+            console.log(error);
           }
         })();
       } catch (err) {

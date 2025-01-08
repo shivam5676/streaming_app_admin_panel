@@ -1,3 +1,4 @@
+import { CleanHands } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -14,7 +15,7 @@ const NewUSersList = ({ latestUsers }) => {
       }`}
     >
       {" "}
-      {latestUsers.length > 0 ? (
+      {latestUsers?.length > 0 ? (
         <div
           className={`p-4 text-lg font-semibold ${
             selectedTheme === "Yellow Majestic"
@@ -40,7 +41,7 @@ const NewUSersList = ({ latestUsers }) => {
       <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
         <div className="font-semibold flex border-b pb-2 text-gray-200 border-gray-500 px-2">
           <div className="w-[50px] flex-shrink-0">
-            {latestUsers.length > 0 ? (
+            {latestUsers?.length > 0 ? (
               <p className="p-2">sr</p>
             ) : (
               <div className="p-2">
@@ -58,7 +59,7 @@ const NewUSersList = ({ latestUsers }) => {
           </div>
 
           <div className="min-w-[120px] w-[100%]  flex-shrink-1">
-            {latestUsers.length > 0 ? (
+            {latestUsers?.length > 0 ? (
               <p className="p-2">Name</p>
             ) : (
               <div className="p-2">
@@ -75,7 +76,7 @@ const NewUSersList = ({ latestUsers }) => {
             )}
           </div>
           <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-            {latestUsers.length > 0 ? (
+            {latestUsers?.length > 0 ? (
               <p className="p-2">Email</p>
             ) : (
               <div className="p-2">
@@ -92,7 +93,7 @@ const NewUSersList = ({ latestUsers }) => {
             )}
           </div>
           <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-            {latestUsers.length > 0 ? (
+            {latestUsers?.length > 0 ? (
               <p className="p-2">Mobile</p>
             ) : (
               <div className="p-2">
@@ -109,7 +110,7 @@ const NewUSersList = ({ latestUsers }) => {
             )}
           </div>
           <div className="w-[80px]  flex-shrink-0">
-            {latestUsers.length > 0 ? (
+            {latestUsers?.length > 0 ? (
               <p className="p-2">status</p>
             ) : (
               <div className="p-2">
@@ -127,7 +128,7 @@ const NewUSersList = ({ latestUsers }) => {
           </div>
         </div>
 
-        {latestUsers.length > 0 &&
+        {latestUsers?.length > 0 &&
           latestUsers.map((current, index) => (
             <div className="font-normal flex my-2 text-gray-200 border-b border-gray-500 px-2 shadow-lg hover:scale-95 hover:shadow-xl transition-transform duration-200">
               <div className="w-[50px] p-2  flex-shrink-0">

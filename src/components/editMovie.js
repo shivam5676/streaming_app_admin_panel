@@ -19,6 +19,7 @@ import {
   changeShortsSequence,
   doActionTask,
 } from "../Api/EditMovies/shortsActionTask";
+import RoutesInfoDiv from "./RoutesInfoDiv";
 
 const EditMovies = () => {
   const params = useParams();
@@ -328,38 +329,14 @@ const EditMovies = () => {
   const selectedActionPerform = async (action) => {
     const moviesId = params.edit;
     if (action === "Enable") {
-      // console.log("enable");
-      // console.log("disable");
-      doActionTask("/admin/enableVideo", selectedIds);
-
-      // try {
-      //   const response = await axios.post(
-      //     `${connectionString}/admin/enableVideo`,
-      //     selectedIds,
-      //     {
-      //       headers: {
-      //         Authorization: localStorage.getItem("token"),
-      //       },
-      //     }
-      //   );
-      //   console.log(response);
-      // } catch (error) {}
+      try {
+        doActionTask("/admin/enableVideo", selectedIds);
+      } catch (error) {}
     } else if (action === "Disable") {
-      console.log("disable");
-      doActionTask("/admin/disableVideo", selectedIds);
-
-      // try {
-      //   const response = await axios.post(
-      //     `${connectionString}/admin/disableVideo`,
-      //     selectedIds,
-      //     {
-      //       headers: {
-      //         Authorization: localStorage.getItem("token"),
-      //       },
-      //     }
-      //   );
-      //   console.log(response);
-      // } catch (error) {}
+      try {
+        console.log("disable");
+        doActionTask("/admin/disableVideo", selectedIds);
+      } catch (error) {}
     } else if (action === "Change sequence") {
       const sequenceData = shortsPreviewFromBackend.map((current) => {
         if (current?._id) {
@@ -476,7 +453,7 @@ const EditMovies = () => {
                           src={
                             thumbnailUrlPreview
                               ? thumbnailUrlPreview
-                              : `${connectionString}/thumbnails/${thumbnailFromBackendPreview}`
+                              : `${connectionString}/thumbnails${thumbnailFromBackendPreview}`
                           }
                           className="border w-[100%] h-[100%] rounded-md"
                         >

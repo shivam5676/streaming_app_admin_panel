@@ -16,7 +16,9 @@ export const fetchDashboardDataApi = async (fetchingType) => {
     console.log(response, "cards....>");
     return response?.data;
     // setCardsData(response.data);
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const fetchTopContentDataApi = async (fetchingType) => {
@@ -35,7 +37,9 @@ export const fetchTopContentDataApi = async (fetchingType) => {
     }
 
     // setTop3data
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 export const fetchContentViewsApi = async (fetchingType) => {
   try {
@@ -49,7 +53,9 @@ export const fetchContentViewsApi = async (fetchingType) => {
     );
 
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 export const fetchLatestUsersApi = async (fetchingType) => {
   console.log("hello");
@@ -66,5 +72,7 @@ export const fetchLatestUsersApi = async (fetchingType) => {
     // setLatestUsers(response.data.users);
     return response.data.users;
     // setContentViews(response.data);
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };

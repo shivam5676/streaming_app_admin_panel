@@ -15,7 +15,7 @@ export const AddLayoutApi = async (data) => {
     );
     return response;
   } catch (err) {
-    throw new Error(err);
+    throw err;
   }
 };
 export const deleteLayoutsApi = async (id) => {
@@ -30,7 +30,7 @@ export const deleteLayoutsApi = async (id) => {
     );
     return id;
   } catch (err) {}
-  throw new Error(err);
+  throw err;
 };
 export const allLayoutsApi = async () => {
   try {
@@ -42,7 +42,7 @@ export const allLayoutsApi = async () => {
     return res;
   } catch (err) {
     // console.log(err);
-    throw new Error(err);
+    throw err;
   }
 };
 export const deleteLinkedMoviesApi = async (movieId, layoutId) => {
@@ -57,6 +57,6 @@ export const deleteLinkedMoviesApi = async (movieId, layoutId) => {
     );
     return true;
   } catch (err) {
-    throw new Error(err);
+    throw err;
   }
 };

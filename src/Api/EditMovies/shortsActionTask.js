@@ -18,7 +18,9 @@ export const doActionTask = async (apiEndpoint, data) => {
     console.log(response);
     toast.success("data updated successully");
     return true;
-  } catch (error) {}
+  } catch (error) {
+     throw error
+  }
 };
 // api for changing sequnce of shorts section videos
 export const changeShortsSequence = async (apiEndpoint, movieId, data) => {
@@ -35,5 +37,7 @@ export const changeShortsSequence = async (apiEndpoint, movieId, data) => {
     toast.success("Sequence changed for selected Shorts");
     return true;
     console.log(response);
-  } catch (error) {}
+  } catch (error) {
+     throw error
+  }
 };
