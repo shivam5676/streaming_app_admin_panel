@@ -22,6 +22,7 @@ import LanguageList from "../components/LanguageLIst";
 import UserDetails from "../components/UserDetails";
 import AllSliders from "../components/Sliders/AllSliders";
 import AddNotification from "../components/Notification/AddNotification";
+import AllNotification from "../components/Notification/AllNotification";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -44,6 +45,7 @@ export const routes = [
   { path: "/Analytics/", element: <Analytics /> },
   { path: "/addAds/", element: <AddAds /> },
   { path: "/allAds", element: <AllAds /> },
-  { path: "/addNotification", element: <AddNotification/> },
+  { path: "/addNotification", element: <AddNotification /> },
+  { path: "/allNotification", element: <AllNotification /> },
   { path: "*", element: <DashBoard /> },
 ];

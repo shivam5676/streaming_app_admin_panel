@@ -20,7 +20,12 @@ const CheckedInAllotement = () => {
     async function fetchCheckedInSlide() {
       try {
         const response = await axios.get(
-          `${connectionString}/admin/allCheckedInSlide`
+          `${connectionString}/admin/allCheckedInSlide`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
         );
         console.log(response.data.checkedInData);
         if (response.data.checkedInData) {

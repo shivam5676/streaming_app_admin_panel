@@ -4,6 +4,7 @@ import { MdSwapHorizontalCircle } from "react-icons/md";
 import RoutesInfoDiv from "../RoutesInfoDiv";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddNotification = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -11,20 +12,40 @@ const AddNotification = () => {
   const notificationTitleRef = useRef("");
   const notificationTypeRef = useRef("");
   const notificationDescriptionRef = useRef("");
+  const startDateRef = useRef("");
+  const endDateRef = useRef("");
+  const startTimeRef = useRef("");
+  const endTimeRef = useRef("");
   const saveNotificationHandler = async () => {
+    console.log(
+      startDateRef.current.value,
+      endDateRef.current.value,
+      startTimeRef.current.value,
+      endTimeRef.current.value
+    );
     try {
       const response = await axios.post(
         `${connectionString}/admin/saveNotification`,
         {
           title: notificationTitleRef.current.value,
           description: notificationDescriptionRef.current.value,
+          startTime: startTimeRef.current.value,
+          endTime: endTimeRef.current.value,
+          startDate: startDateRef.current.value,
+          endDate: endDateRef.current.value,
         }
       );
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+      if (err.response && err.response.data.msg) {
+        toast.error(err.response.data.msg);
+      } else {
+        toast.error("something went wrong while adding notifications");
+      }
+    }
   };
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
-      {" "}
       <RoutesInfoDiv
         mainHeading={"Add Notification"}
         websiteName={"Reelies"}
@@ -114,10 +135,12 @@ const AddNotification = () => {
                     <input
                       type="date"
                       className="bg-transparent  border h-[25px] p-2"
+                      ref={startDateRef}
                     ></input>
                     <input
                       type="time"
                       className="bg-transparent border h-[25px] p-2"
+                      ref={startTimeRef}
                     ></input>
                   </div>
                 </div>
@@ -143,54 +166,17 @@ const AddNotification = () => {
                     <input
                       type="date"
                       className="bg-transparent  border h-[25px] p-2"
+                      ref={endDateRef}
                     ></input>
                     <input
                       type="time"
                       className="bg-transparent border h-[25px] p-2"
+                      ref={endTimeRef}
                     ></input>
                   </div>
                 </div>
               </div>
             </div>{" "}
-            <div className="p-4 font-semibold w-[100%] ">
-              <div className="flex flex-col ">
-                <p className="flex w-[100%]">
-                  {" "}
-                  Ads Position :<span className="text-red-500"> *</span>
-                </p>
-                <div className="flex gap-4">
-                  {" "}
-                  <select
-                    className=" h-[40px] bg-[#2E3648] w-[50%]  py-2 px-4 outline-none text-white  rounded-md my-2"
-                    // onChange={handleSliderTypeChange}
-                    //   ref={AdsPositionSessionTypeRef}
-                  >
-                    <option value={"firstTime"}>
-                      {" "}
-                      when user opens (first time in that session)
-                    </option>
-                    {/*this will not click any things this willl only take and image of promotional conttnt*/}
-                    <option value={"eachTime"}>
-                      when user opens (each time in that session)
-                    </option>
-                    {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
-                    {/* <option value={"Redirection"}>Redirection(app section)</option>{" "} */}
-                    {/*this will  take an image and also a link for redirection to app and othger things*/}
-                  </select>
-                  <select
-                    className=" h-[40px] bg-[#2E3648] w-[50%]  py-2 px-4 outline-none text-white  rounded-md my-2"
-                    // onChange={handleSliderTypeChange}
-                    //   ref={AdsPositionRef}
-                  >
-                    <option value={"/homepage"}> HomePage</option>
-                    <option value={"/wallet"}>Wallet section</option>
-                    <option value={"/movies"}>Movies Section</option>{" "}
-                    <option value={"/bookmarks"}>Bookmarks section</option>{" "}
-                    {/* we will later add section dynamically we will fetch the apps section dynamically and aetr we will us ethier urls  */}
-                  </select>{" "}
-                </div>
-              </div>
-            </div>
           </div>
         </div>{" "}
       </section>

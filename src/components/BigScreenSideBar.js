@@ -371,7 +371,12 @@ const BigScreenSideBar = (props) => {
                 <p>Add Notification</p>
               </div>
 
-              <div className="flex h-[40px] items-center  cursor-pointer ps-12">
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/allNotification");
+                }}
+              >
                 <LuLayoutList className="mx-2" />
 
                 <p>All Notification</p>

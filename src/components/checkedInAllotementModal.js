@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 
 const CheckedInAllotementModal = (props) => {
-  console.log(props,"...")
+  console.log(props, "...");
   const startDayRef = useRef(1);
   const [pointAllocationType, setpointAllocationType] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -25,8 +25,8 @@ const CheckedInAllotementModal = (props) => {
     //     toast.error("end day should be number only....")
     //   }
     const obj = {
-      start: props?.lastIndex?.Day||1,
-      end: endDayRef?.current?.value||1,
+      start: props?.lastIndex?.Day || 1,
+      end: endDayRef?.current?.value || 1,
       title: offerDetailsRef?.current?.value || null,
       allocatedPoints: rewardRef?.current?.value || null,
       increaseBy: increasePointRef?.current?.value || null,
@@ -36,13 +36,18 @@ const CheckedInAllotementModal = (props) => {
     try {
       const response = await axios.post(
         `${connectionString}/admin/addPointSlide`,
-        obj
+        obj,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       console.log(response.data);
       // dispatch(sliderSliceACtion.addSlider(response.data));
       // setSuccessTick("success");
       // setMessage("Slider successfully Created");
-      toast.success("slider added successfully");
+      toast.success("check In Sliders  added successfully");
     } catch (err) {
       console.log(err.response.data.msg);
       //   setSuccessTick("error");
@@ -73,7 +78,7 @@ const CheckedInAllotementModal = (props) => {
               <label className="px-2">Start Day :</label>
               <input
                 className="w-[70px] border border-black pointer-events-none"
-                defaultValue={props?.lastIndex?.Day||1}
+                defaultValue={props?.lastIndex?.Day || 1}
                 readOnly
               ></input>
             </div>{" "}
@@ -156,7 +161,7 @@ const CheckedInAllotementModal = (props) => {
           <button
             type="button"
             className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-              onClick={props.closeModal}
+            onClick={props.closeModal}
           >
             Cancel
           </button>
