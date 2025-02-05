@@ -23,6 +23,7 @@ import UserDetails from "../components/UserDetails";
 import AllSliders from "../components/Sliders/AllSliders";
 import AddNotification from "../components/Notification/AddNotification";
 import AllNotification from "../components/Notification/AllNotification";
+import AddSubscriptionPlan from "../components/subscription/AddSubscriptionPlan";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -47,5 +48,6 @@ export const routes = [
   { path: "/allAds", element: <AllAds /> },
   { path: "/addNotification", element: <AddNotification /> },
   { path: "/allNotification", element: <AllNotification /> },
+  { path: "/addPackage", element: <AddSubscriptionPlan/> },
   { path: "*", element: <DashBoard /> },
 ];

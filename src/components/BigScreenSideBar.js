@@ -419,6 +419,21 @@ const BigScreenSideBar = (props) => {
             <p className="text-[.9rem] px-4 font-semibold">Admin</p>
           </div>
         </div>
+        <div
+          className={` hover:text-white  ${
+            selectedTheme == "modern reeloid"
+              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+              : "hover:bg-[#2F374A]"
+          }  cursor-pointer`}
+          onClick={() => {
+            navigate("/addPackage");
+          }}
+        >
+          <div className="mx-4 h-[50px] flex items-center">
+            <GrUserSettings className="h-[20px] w-[20px]" />
+            <p className="text-[.9rem] px-4 font-semibold">Package Plan</p>
+          </div>
+        </div>
       </section>
       <section>
         <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
