@@ -1,7 +1,6 @@
 import axios from "axios";
-  const connectionString = process.env.REACT_APP_API_URL;
+const connectionString = process.env.REACT_APP_API_URL;
 export const addSliderApi = async (formdata) => {
-
   try {
     const response = await axios.post(
       `${connectionString}/admin/addSlider`,
@@ -39,17 +38,20 @@ export const deleteSliderApi = async (id) => {
   }
 };
 
-export const allSlidersApi = async () => {
-  console.log(connectionString)
+export const allSlidersApi = async (start, limit) => {
+  console.log(connectionString);
   try {
-    const res = await axios.get(`${connectionString}/admin/allSliders`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
+    const res = await axios.get(
+      `${connectionString}/admin/allSliders/${start}/${limit}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
     return res;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw err;
   }
 };

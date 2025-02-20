@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import firstPlace from "../../assests/1-1.png";
 import secondPlace from "../../assests/2nd-prize.png";
 import thirdPlace from "../../assests/3rd-prize.png";
-const Top3MovieANdWebseries = ({top3data}) => {
-    const connectionString = process.env.REACT_APP_API_URL;
-    const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+import { useNavigate } from "react-router-dom";
+const Top3MovieANdWebseries = ({ top3data }) => {
+  const connectionString = process.env.REACT_APP_API_URL;
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const navigate = useNavigate();
   return (
     <>
       {top3data ? (

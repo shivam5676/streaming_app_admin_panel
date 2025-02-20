@@ -2,9 +2,11 @@ import { CleanHands } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const NewUSersList = ({ latestUsers }) => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const navigate=useNavigate()
   // const connectionString = process.env.REACT_APP_API_URL;
   return (
     <section

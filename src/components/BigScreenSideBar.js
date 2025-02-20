@@ -7,8 +7,10 @@ import {
   MdArrowDropDown,
   MdArrowDropUp,
   MdOutlineAddToQueue,
+  MdOutlineNotificationAdd,
+  MdOutlineSubscriptions,
 } from "react-icons/md";
-import { RiAdvertisementFill } from "react-icons/ri";
+import { RiAdminLine, RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TbCopyPlusFilled } from "react-icons/tb";
 import { TfiLayoutAccordionList, TfiLayoutGrid3 } from "react-icons/tfi";
@@ -18,6 +20,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { themeSliceAction } from "../store/themeSlice";
 import { loginSliceAction } from "../store/loginSlice";
 import { Logout } from "@mui/icons-material";
+import { AiFillNotification } from "react-icons/ai";
+import { IoLanguage, IoLogOutOutline } from "react-icons/io5";
+import { PiSealCheckThin } from "react-icons/pi";
+import { FaAffiliatetheme } from "react-icons/fa6";
+import { IoMdAnalytics } from "react-icons/io";
+import { CiSliderVertical } from "react-icons/ci";
 
 const BigScreenSideBar = (props) => {
   const dispatch = useDispatch();
@@ -347,7 +355,7 @@ const BigScreenSideBar = (props) => {
             <div className="mx-4 h-[50px] flex items-center justify-between">
               <div className="flex items-center">
                 {" "}
-                <SiWebflow className="h-[20px] w-[20px]" />
+                <AiFillNotification className="h-[20px] w-[20px]" />
                 <p className="text-[.9rem] px-4 font-semibold">
                   Notification Section
                 </p>
@@ -367,7 +375,9 @@ const BigScreenSideBar = (props) => {
                   navigate("/addNotification");
                 }}
               >
-                <MdOutlineAddToQueue className="mx-2" />
+                <MdOutlineNotificationAdd className="mx-2" />
+
+                {/* <MdOutlineAddToQueue /> */}
                 <p>Add Notification</p>
               </div>
 
@@ -415,7 +425,8 @@ const BigScreenSideBar = (props) => {
           }}
         >
           <div className="mx-4 h-[50px] flex items-center">
-            <GrUserSettings className="h-[20px] w-[20px]" />
+            <RiAdminLine className="h-[20px] w-[20px]" />
+
             <p className="text-[.9rem] px-4 font-semibold">Admin</p>
           </div>
         </div>
@@ -430,7 +441,9 @@ const BigScreenSideBar = (props) => {
           }}
         >
           <div className="mx-4 h-[50px] flex items-center">
-            <GrUserSettings className="h-[20px] w-[20px]" />
+            {/* <GrUserSettings className="h-[20px] w-[20px]" /> */}
+            <MdOutlineSubscriptions className="h-[20px] w-[20px]" />
+
             <p className="text-[.9rem] px-4 font-semibold">Package Plan</p>
           </div>
         </div>
@@ -439,79 +452,126 @@ const BigScreenSideBar = (props) => {
         <div className="mx-4 text-[#A8B2BC] text-sm h-[30px] flex items-center">
           <p className="text-[.75rem]">OTHERS</p>
         </div>
-        <div
-          className={` hover:text-white  ${
-            selectedTheme == "modern reeloid"
-              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
-              : "hover:bg-[#2F374A]"
-          }  cursor-pointer`}
-        >
+        <div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               navigate("/QuestionUploader");
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">
-              QUESTION GENERATOR
-            </p>
+            <div className="mx-4 h-[50px] flex items-center">
+              <GrUserSettings className="h-[20px] w-[20px]" />
+              <p className="text-[.9rem] px-4 font-semibold">
+                QUESTION GENERATOR
+              </p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               navigate("/GenresList");
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Genres</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              <CiSliderVertical className="h-[20px] w-[20px]" />
+
+              <p className="text-[.9rem] px-4 font-semibold">Genres</p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               navigate("/LanguageList");
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Languages</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              <IoLanguage className="h-[20px] w-[20px]" />
+
+              <p className="text-[.9rem] px-4 font-semibold">Languages</p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               navigate("/CheckedPoints");
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Checked_In Points</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              {/* <GrUserSettings/> */}
+              <PiSealCheckThin className="h-[20px] w-[20px]" />
+
+              <p className="text-[.9rem] px-4 font-semibold">
+                Checked In Points
+              </p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               // navigate("/CheckedPoints");
               dispatch(themeSliceAction.themeMode());
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Theme</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              {/* <GrUserSettings /> */}
+              {/* import { PiSealCheckThin } from "react-icons/pi"; */}
+              <FaAffiliatetheme className="h-[20px] w-[20px]" />
+              <p className="text-[.9rem] px-4 font-semibold">Theme</p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               navigate("/Analytics");
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Analytics</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              {" "}
+              {/* <GrUserSettings /> */}
+              <IoMdAnalytics className="h-[20px] w-[20px]" />
+              <p className="text-[.9rem] px-4 font-semibold">Analytics</p>
+            </div>
           </div>
           <div
-            className="mx-4 h-[50px] flex items-center cursor-pointer"
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
             onClick={() => {
               localStorage.removeItem("user");
               dispatch(loginSliceAction.logOut());
             }}
           >
-            <GrUserSettings className="h-[20px] w-[20px]" />
-            <p className="text-[.9rem] px-4 font-semibold">Logout</p>
+            <div className="mx-4 h-[50px] flex items-center">
+              <IoLogOutOutline className="h-[20px] w-[20px]" />
+
+              <p className="text-[.9rem] px-4 font-semibold">Logout</p>
+            </div>
           </div>
         </div>
       </section>

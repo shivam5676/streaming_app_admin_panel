@@ -7,23 +7,40 @@ import RoutesInfoDiv from "../RoutesInfoDiv";
 import Pagination from "../commonComponents/pagination";
 import AllSlidersPrint from "./AllSlidersPrint";
 import { allSlidersApi, deleteSliderApi } from "../../Api/Slider/SliderApi";
+import SearchAndSort from "../commonComponents/searchAndSort";
 
 const AllSliders = () => {
   const connectionString = process.env.REACT_APP_API_URL;
+  const [limit, setlimit] = useState(1);
+  const [start, setStart] = useState(0);
+  const [pageMetaData, setPageMetaData] = useState({
+    totalPages: 0,
+    current:0,
+    limit: 0,
+  });
   // const [allSliders, setAllSliders] = useState([]);
   const dispatch = useDispatch();
   const allSliders = useSelector((state) => state.sliderData);
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   useEffect(() => {
+    console.log("hello limit", limit);
+    // return;
     if (allSliders.length === 0) {
       try {
         (async () => {
           try {
-            const res = await allSlidersApi();
-
+            const res = await allSlidersApi(start, limit);
+            console.log(res);
             if (res.data.Slider) {
               Object.values(res.data.Slider).forEach((current) => {
                 dispatch(sliderSliceACtion.addSlider(current));
+              });
+            }
+            if (res.data.totalPages) {
+              setPageMetaData({
+                totalPages: res.data.totalPages,
+                current: start,
+                limit: limit,
               });
             }
           } catch (error) {
@@ -34,7 +51,7 @@ const AllSliders = () => {
         console.log(err);
       }
     }
-  }, [allSliders, dispatch]);
+  }, [allSliders, dispatch, limit]);
   const deleteSliderHandler = async (id) => {
     try {
       const response = deleteSliderApi(id);
@@ -44,18 +61,10 @@ const AllSliders = () => {
       toast.error("something went wrong");
     }
   };
-  // const handleSelectChange = (id, event) => {
-  //   const action = event.target.value;
-  //   console.log(action);
-  //   // Reset the select value after handling the event to ensure proper re-rendering
-  //   event.target.value = ""; // Reset the value to ensure change is recognized next time
-
-  //   if (action === "DELETE") {
-  //     deleteSliderHandler(id);
-  //   } else if (action === "EDIT") {
-  //     // navigate(`/allLayout/${id}`);
-  //   }
-  // };
+  const limitHandler = (data) => {
+    setlimit(data);
+  };
+  
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
       <RoutesInfoDiv
@@ -64,47 +73,20 @@ const AllSliders = () => {
         sectionName={"Hero section"}
         currentDir={"All Sliders"}
       ></RoutesInfoDiv>
-      <section className="w-[100%]">
+      <section
+        className={`w-[100%] ${
+          selectedTheme === "modern reeloid"
+            ? "bg-black/40 backdrop-blur-lg "
+            : "bg-[#2A3042] "
+        } py-2  rounded-md`}
+      >
         {" "}
+        <SearchAndSort limit={limitHandler}></SearchAndSort>
         <div className="flex gap-6 flex-col xl:flex-row">
           <div
-            className={`max-[690px]:overflow-auto ${
-              selectedTheme === "modern reeloid"
-                ? "bg-black/40 backdrop-blur-lg "
-                : "bg-[#2A3042] "
-            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+            className={`max-[690px]:overflow-auto flex-1 text-gray-200 max-md:overflow-auto py-2`}
           >
-            <div className="m-4 text-[.9rem] font-semibold ">
-              <div className="flex justify-between text-white">
-                <div className="flex items-center">
-                  <p>Show </p>
-                  <select
-                    className={`${
-                      selectedTheme === "modern reeloid"
-                        ? "bg-[#2E3648]/70 rounded backdrop-blur-md"
-                        : "bg-[#2E3648]"
-                    } text-[#959db6] mx-2 px-4 py-1  font-normal`}
-                  >
-                    <option>10</option>
-                    <option>10</option>
-                    <option>10</option>
-                  </select>
-                  <p>results </p>
-                </div>
-                <div className="flex items-center">
-                  <p>search : </p>
-                  <input
-                    className={`w-[150px] ${
-                      selectedTheme === "modern reeloid"
-                        ? "bg-[#2E3648]/70 rounded"
-                        : "bg-[#2E3648]"
-                    } mx-2 p-2`}
-                    placeholder="search here..."
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <div className="m-4 font-normal text-[.9rem] min-w-[768px]">
+            <div className="mx-4 font-normal text-[.9rem] min-w-[768px]">
               <div className="font-semibold flex border-b pb-2 border-gray-500">
                 <div className="w-[50px] flex-shrink-0">
                   <p className="p-2">sr</p>
@@ -128,10 +110,9 @@ const AllSliders = () => {
 
               <AllSlidersPrint allSliders={allSliders} />
             </div>
-
-            <Pagination />
           </div>
-        </div>
+        </div>{" "}
+        <Pagination metaData={pageMetaData} />
       </section>
     </div>
   );

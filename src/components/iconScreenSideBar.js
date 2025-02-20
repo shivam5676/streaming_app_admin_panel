@@ -1,76 +1,148 @@
-import React, { useState } from "react";
+import { current } from "@reduxjs/toolkit";
+import React, { useRef, useState } from "react";
 import { BiSolidCameraMovie } from "react-icons/bi";
+import { CiSliderVertical } from "react-icons/ci";
+import { FaAffiliatetheme } from "react-icons/fa6";
 import { GrUserSettings, GrVmMaintenance } from "react-icons/gr";
 import { HiOutlineHome } from "react-icons/hi";
-import { MdOutlineMovie } from "react-icons/md";
-import { RiAdvertisementFill } from "react-icons/ri";
+import { IoMdAnalytics } from "react-icons/io";
+import { IoLanguage, IoLogOutOutline } from "react-icons/io5";
+import { MdOutlineMovie, MdOutlineSubscriptions } from "react-icons/md";
+import { RiAdminLine, RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TfiLayoutGrid3 } from "react-icons/tfi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const IconScreenSideBar = () => {  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+const IconScreenSideBar = () => {
+  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const menuRefs = useRef([]);
   const [hoveredItem, setHoveredItem] = useState(null);
   const item = ["menu item", "close item"];
+  const [position, setPosition] = useState(null);
+  const navigate = useNavigate("");
+  const handleMouseEnter = (index) => {
+    setHoveredItem(index);
+    const rect = menuRefs.current[index].getBoundingClientRect(); // Get position of hovered div
+    setPosition({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    });
+  };
+  console.log(position);
   const menuItems = [
     {
       title: "Dashboard",
       icon: <HiOutlineHome className="h-[20px] w-[20px]" />,
-      subItems: ["Dashboard"],
+      subItems: [{ name: "Dashboard", navigateTo: "/" }],
     },
     {
       title: "Movies",
       icon: <MdOutlineMovie className="h-[20px] w-[20px]" />,
-      subItems: ["Add Movies", "All Movies"],
+      subItems: [
+        { name: "Add Movies", navigateTo: "/addMovies" },
+        { name: "All Movies", navigateTo: "/allMovies" },
+      ],
     },
     {
       title: "Hero",
       icon: <GrVmMaintenance className="h-[20px] w-[20px]" />,
-      subItems: ["Add Slider", "All Slider"],
+      subItems: [
+        { name: "Add Slider", navigateTo: "" },
+        { name: "All Slider", navigateTo: "" },
+      ],
     },
     {
       title: "Layout",
       icon: <TfiLayoutGrid3 className="h-[20px] w-[20px]" />,
-      subItems: ["Add Layout", "All Layout"],
+      subItems: [
+        { name: "Add Layout", navigateTo: "" },
+        { name: "All Layout", navigateTo: "" },
+      ],
     },
     {
       title: "Movies",
       icon: <BiSolidCameraMovie className="h-[20px] w-[20px]" />,
-      subItems: ["Add Movie", "All Movie"],
+      subItems: [{ name: "Add Movie",navigateTo:"" }, { name: "All Movie",navigateTo:"" }],
     },
-    ,
+   
     {
       title: "Web shows",
       icon: <SiWebflow className="h-[20px] w-[20px]" />,
-      subItems: ["Add Shows", "All Shows"],
+      subItems: [{ name: "Add Shows",navigateTo:"" }, { name: "All Shows",navigateTo:"" }],
     },
-    ,
+    
     {
       title: "Ads",
       icon: <RiAdvertisementFill className="h-[20px] w-[20px]" />,
-      subItems: ["Add Ads", "All Ads"],
+      subItems: [{ name: "Add Ads" ,navigateTo:""}, { name: "All Ads",navigateTo:"" }],
     },
-    ,
+    
     {
       title: "Users",
       icon: <GrUserSettings className="h-[20px] w-[20px]" />,
-      subItems: ["Users"],
+      subItems: [{ name: "Add Users" ,navigateTo:""}, { name: "All Admin" }],
     },
+    {
+      title: "Movies",
+      icon: <RiAdminLine className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Add Admin",navigateTo:"" }, { name: "All Admin" }],
+    },
+
+    {
+      title: "Package Plan",
+      icon: <MdOutlineSubscriptions className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Add Package",navigateTo:"" }, { name: "All Package" }],
+    },
+    
+    {
+      title: "Ads",
+      icon: <CiSliderVertical className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Genres",navigateTo:"" }],
+    },
+    ,
+    {
+      title: "Languages",
+      icon: <IoLanguage className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Languages",navigateTo:"" }],
+    },
+    {
+      title: "Analytics",
+      icon: <IoMdAnalytics className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Add Package" ,navigateTo:""}, { name: "All Package",navigateTo:"" }],
+    },
+    {
+      title: "Theme",
+      icon: <FaAffiliatetheme className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Theme" ,navigateTo:""}],
+    },
+    {
+      title: "Log Out",
+      icon: <IoLogOutOutline className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Log Out" ,navigateTo:""}],
+    },
+
     // Add more items as needed
   ];
 
   return (
-    <div className={`w-[70px] h-[100%]  z-[100000] ${
-      selectedTheme === "Yellow Majestic"
-        ? "text-[#FEBD59]"
-        : selectedTheme === "modern reeloid"
-        ? "bg-black/70 backdrop-blur-sm text-[#FEBD59]"
-        : "text-[#A8B2BC]"
-    }  pt-4 flex flex-col flex-shrink-0 items-center`}>
+    <div
+      className={`w-[70px] h-[100%]  z-[100000] ${
+        selectedTheme === "Yellow Majestic"
+          ? "text-[#FEBD59]"
+          : selectedTheme === "modern reeloid"
+          ? "bg-black/70 backdrop-blur-sm text-[#FEBD59]"
+          : "text-[#A8B2BC]"
+      }  pt-4 flex flex-col flex-shrink-0 items-center overflow-y-scroll customScrollbar`}
+    >
       {menuItems?.map((item, index) => (
         <div
           key={index}
+          ref={(el) => (menuRefs.current[index] = el)}
           className="text-white hover:bg-[#2F374A] w-full cursor-pointer flex items-center p-2 ps-3 relative"
-          onMouseEnter={() => setHoveredItem(index)}
+          onMouseEnter={() => handleMouseEnter(index)}
           onMouseLeave={() => setHoveredItem(null)}
         >
           <div className="flex justify-center w-[40px] h-[40px]  rounded-full  items-center text-white font-semibold shadow-[-2px_-2px_5px_rgba(255,_255,_255,_0.8),_5px_5px_5px_rgba(0,_0,_0,_0.25)] transition-all hover:shadow-[-1px_-1px_5px_rgba(96,_165,_250,_0.6),_1px_1px_5px_rgba(0,_0,_0,_0.3),inset_-2px_-2px_5px_rgba(96,_165,_250,_1),inset_2px_2px_4px_rgba(0,_0,_0,_0.3)] hover:text-blue-400">
@@ -78,15 +150,19 @@ const IconScreenSideBar = () => {  const selectedTheme = useSelector((state) => 
           </div>
           {hoveredItem === index && (
             <div
-              className="absolute bg-[#2F374A] text-white px-8 py-2 shadow-lg w-[200px] "
-              style={{ top: 0, left: "70px" }} // Ensure the first item aligns with the icon
+              className="fixed bg-[#2F374A] text-white px-8 py-2 shadow-lg w-[200px] "
+              style={{ top: position.top, left: "66px" }} // Ensure the first item aligns with the icon
             >
               {item.subItems.map((subItem, subIndex) => (
                 <p
                   key={subIndex}
                   className="text-[1rem] h-[40px] font-semibold flex items-center"
+                  onClick={() => {
+                    console.log(subItem.navigateTo);
+                    navigate(subItem.navigateTo);
+                  }}
                 >
-                  {subItem}
+                  {subItem.name}
                 </p>
               ))}
             </div>

@@ -7,13 +7,14 @@ import { deleteSliderApi } from "../../Api/Slider/SliderApi";
 const AllSlidersPrint = ({ allSliders }) => {
   const dispatch = useDispatch();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+
   const deleteSliderHandler = async (id) => {
     try {
       const response = deleteSliderApi(id);
       dispatch(sliderSliceACtion.deleteSlider(id));
       toast.success("movie deleted successfully");
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error("something went wrong");
     }
   };
@@ -35,7 +36,7 @@ const AllSlidersPrint = ({ allSliders }) => {
       {allSliders?.length > 0 &&
         allSliders?.map((current, index) => {
           return (
-            <div className="font-normal flex my-2  border-b border-gray-500">
+            <div className="font-normal flex my-2  border-b border-gray-500  items-center">
               <div className="w-[50px] p-2  flex-shrink-0">
                 <p className="p-2">{index + 1}</p>
               </div>
