@@ -1,9 +1,28 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const SearchAndSort = (props) => {
   const limitRef = useRef();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const searchedQueryRef = useRef("");
+  const [searchValue, setSearchValue] = useState(""); // Track input state
+  const timeoutRef = useRef(null); // Store timeout ID to prevent re-renders
+
+  useEffect(() => {
+    // Clear existing timeout on each input change
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Set new timeout to log value after 5s of inactivity
+    timeoutRef.current = setTimeout(() => {
+      console.log("Search input after 3s of inactivity:", searchValue);
+      props.searchedQuery(searchValue)
+    }, 3000);
+
+    // Cleanup function to clear timeout if component unmounts or re-renders
+    return () => clearTimeout(timeoutRef.current);
+  }, [searchValue]); // Runs whenever searchValue changes
   return (
     <div className="m-4 text-[.9rem] font-semibold ">
       <div className="flex justify-between text-white   max-sm:flex-col">
@@ -35,6 +54,8 @@ const SearchAndSort = (props) => {
                 : "bg-[#2E3648]"
             } mx-2 p-2 max-sm:w-[200px]`}
             placeholder="search here..."
+            value={searchValue} // Controlled component
+            onChange={(e) => setSearchValue(e.target.value)} // Update state on input
           ></input>
         </div>
       </div>

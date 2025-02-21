@@ -10,12 +10,14 @@ import { allSlidersApi, deleteSliderApi } from "../../Api/Slider/SliderApi";
 import SearchAndSort from "../commonComponents/searchAndSort";
 
 const AllSliders = () => {
+  // const [searchValue, setSearchValue] = useState(""); // Track input state
   const connectionString = process.env.REACT_APP_API_URL;
   const [limit, setlimit] = useState(1);
   const [start, setStart] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({
     totalPages: 0,
-    current:0,
+    current: 0,
     limit: 0,
   });
   // const [allSliders, setAllSliders] = useState([]);
@@ -25,33 +27,34 @@ const AllSliders = () => {
   useEffect(() => {
     console.log("hello limit", limit);
     // return;
-    if (allSliders.length === 0) {
-      try {
-        (async () => {
-          try {
-            const res = await allSlidersApi(start, limit);
-            console.log(res);
-            if (res.data.Slider) {
-              Object.values(res.data.Slider).forEach((current) => {
-                dispatch(sliderSliceACtion.addSlider(current));
-              });
-            }
-            if (res.data.totalPages) {
-              setPageMetaData({
-                totalPages: res.data.totalPages,
-                current: start,
-                limit: limit,
-              });
-            }
-          } catch (error) {
-            console.log(error);
+    // if (allSliders.length === 0) {
+    try {
+      (async () => {
+        try {
+          const res = await allSlidersApi(start, limit, searchValue);
+          console.log(res);
+          if (res.data.Slider) {
+            dispatch(
+              sliderSliceACtion.addSlider(Object.values(res.data.Slider))
+            );
           }
-        })();
-      } catch (err) {
-        console.log(err);
-      }
+          if (res.data.totalPages) {
+            setPageMetaData({
+              totalPages: res.data.totalPages,
+              current: start,
+              limit: limit,
+              totalData: res.data.totalData,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    } catch (err) {
+      console.log(err);
     }
-  }, [allSliders, dispatch, limit]);
+    // }
+  }, [dispatch, limit, start, searchValue]);
   const deleteSliderHandler = async (id) => {
     try {
       const response = deleteSliderApi(id);
@@ -64,7 +67,7 @@ const AllSliders = () => {
   const limitHandler = (data) => {
     setlimit(data);
   };
-  
+
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
       <RoutesInfoDiv
@@ -81,7 +84,12 @@ const AllSliders = () => {
         } py-2  rounded-md`}
       >
         {" "}
-        <SearchAndSort limit={limitHandler}></SearchAndSort>
+        <SearchAndSort
+          limit={limitHandler}
+          searchedQuery={(data) => {
+            setSearchValue(data);
+          }}
+        ></SearchAndSort>
         <div className="flex gap-6 flex-col xl:flex-row">
           <div
             className={`max-[690px]:overflow-auto flex-1 text-gray-200 max-md:overflow-auto py-2`}
@@ -112,7 +120,12 @@ const AllSliders = () => {
             </div>
           </div>
         </div>{" "}
-        <Pagination metaData={pageMetaData} />
+        <Pagination
+          metaData={pageMetaData}
+          jumpToPage={(data) => {
+            setStart(data);
+          }}
+        />
       </section>
     </div>
   );

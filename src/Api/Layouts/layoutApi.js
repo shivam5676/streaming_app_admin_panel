@@ -32,13 +32,16 @@ export const deleteLayoutsApi = async (id) => {
   } catch (err) {}
   throw err;
 };
-export const allLayoutsApi = async () => {
+export const allLayoutsApi = async (start, limit, searchedQuery) => {
   try {
-    const res = await axios.get(`${connectionString}/admin/allLayouts`, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    });
+    const res = await axios.get(
+      `${connectionString}/admin/allLayouts?start=${start}&limit=${limit}&searched=${searchedQuery}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
     return res;
   } catch (err) {
     // console.log(err);
@@ -49,7 +52,8 @@ export const deleteLinkedMoviesApi = async (movieId, layoutId) => {
   try {
     const deleteMoviesResponse = await axios.post(
       `${connectionString}/admin/deleteLinkedMovie`,
-      { movieId: movieId, LayoutId: layoutId },{
+      { movieId: movieId, LayoutId: layoutId },
+      {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

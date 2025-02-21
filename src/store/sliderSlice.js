@@ -7,8 +7,8 @@ const sliderSlice = createSlice({
   initialState: sliderData,
   reducers: {
     addSlider(state, action) {
-      console.log(state);
-      state.push(action.payload);
+      // takes an array and update it to newer refrence
+      return action.payload;
     },
     deleteSlider(state, action) {
       const delId = action.payload;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // import allLayouts from "./allLayouts";
@@ -10,29 +10,35 @@ import RoutesInfoDiv from "./../RoutesInfoDiv";
 import AllLAyoutPrint from "./AllLAyoutPrint";
 import { allLayoutsApi } from "../../Api/Layouts/layoutApi";
 import Pagination from "../commonComponents/pagination";
-
+import SearchAndSort from "../commonComponents/searchAndSort";
 
 const AllLAyout = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const dispatch = useDispatch();
   const allLayouts = useSelector((state) => state.layOutData);
-
+  const [limit, setlimit] = useState(1);
+  const [start, setStart] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const [pageMetaData, setPageMetaData] = useState({
+    totalPages: 0,
+    current: 0,
+    limit: 0,
+  });
+  const limitHandler = (data) => {
+    setlimit(data);
+  };
   useEffect(() => {
-    if (allLayouts.length === 0) {
-      try {
-        (async () => {
-          const res = await allLayoutsApi();
-          if (res.data.Layout) {
-            Object.values(res.data.Layout).forEach((current) => {
-              dispatch(layoutSliceACtion.addLayout(current));
-            });
-          }
-        })();
-      } catch (err) {
-        console.log(err);
-      }
+    try {
+      (async () => {
+        const res = await allLayoutsApi(start, limit, searchValue);
+        if (res.data.Layout) {
+          dispatch(layoutSliceACtion.addLayout(Object.values(res.data.Layout)));
+        }
+      })();
+    } catch (err) {
+      console.log(err);
     }
-  }, [allLayouts, dispatch]);
+  }, [dispatch, limit, start, searchValue]);
 
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
@@ -52,29 +58,20 @@ const AllLAyout = () => {
                 : "bg-[#2A3042] "
             } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
           >
-            <div className="m-4 text-[.9rem] font-semibold ">
-              <div className="flex justify-between text-white">
-                <div className="flex items-center">
-                  <p>Show </p>
-                  <select className="bg-[#2E3648] text-[#959db6] mx-2 px-4 py-1  font-normal">
-                    <option>10</option>
-                    <option>10</option>
-                    <option>10</option>
-                  </select>
-                  <p>results </p>
-                </div>
-                <div className="flex items-center">
-                  <p>search : </p>
-                  <input
-                    className="w-[150px] bg-[#2E3648] mx-2 p-2"
-                    placeholder="search"
-                  ></input>
-                </div>
-              </div>
-            </div>
+            <SearchAndSort
+              limit={limitHandler}
+              searchedQuery={(data) => {
+                setSearchValue(data);
+              }}
+            ></SearchAndSort>
 
             <AllLAyoutPrint allLayouts={allLayouts} />
-           <Pagination/>
+            <Pagination
+              metaData={pageMetaData}
+              jumpToPage={(data) => {
+                setStart(data);
+              }}
+            />
           </div>
         </div>
       </section>

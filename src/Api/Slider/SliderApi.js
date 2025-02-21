@@ -38,11 +38,11 @@ export const deleteSliderApi = async (id) => {
   }
 };
 
-export const allSlidersApi = async (start, limit) => {
+export const allSlidersApi = async (start, limit, searchedQuery) => {
   console.log(connectionString);
   try {
     const res = await axios.get(
-      `${connectionString}/admin/allSliders/${start}/${limit}`,
+      `${connectionString}/admin/allSliders?start=${start}&limit=${limit}&searched=${searchedQuery}`,
       {
         headers: {
           Authorization: localStorage.getItem("token"),

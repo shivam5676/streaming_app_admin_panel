@@ -7,8 +7,7 @@ const layoutSlice = createSlice({
   initialState: layoutData,
   reducers: {
     addLayout(state, action) {
-      console.log(state);
-      state.push(action.payload);
+      return action.payload;
     },
     deleteLayout(state, action) {
       const delId = action.payload;
