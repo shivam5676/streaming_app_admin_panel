@@ -66,6 +66,7 @@ const AllSliders = () => {
   };
   const limitHandler = (data) => {
     setlimit(data);
+    setStart(0);
   };
 
   return (
@@ -88,6 +89,7 @@ const AllSliders = () => {
           limit={limitHandler}
           searchedQuery={(data) => {
             setSearchValue(data);
+            setStart(0);
           }}
         ></SearchAndSort>
         <div className="flex gap-6 flex-col xl:flex-row">

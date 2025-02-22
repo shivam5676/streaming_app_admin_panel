@@ -14,7 +14,8 @@ const Pagination = ({ metaData, jumpToPage }) => {
   return (
     <section className="flex mx-4 my-2 text-white text-[.85rem] font-semibold justify-between max-sm:flex-col max-sm:items-center max-sm:gap-2">
       <p>
-        Showing {metaData.current * metaData.limit} to {metaData.limit} of{" "}
+        Showing {metaData.current * metaData.limit} to{" "}
+        {+metaData.limit + +metaData.current * metaData.limit} of{" "}
         {metaData.totalData} entries
       </p>
       <div className="flex  hover:cursor-pointer">
@@ -32,18 +33,21 @@ const Pagination = ({ metaData, jumpToPage }) => {
         >
           <LiaBackwardSolid className="h-[20px] " />
         </p>
-        {metaData.totalPages >= 0 && (
+        {+metaData.totalPages >=1 && (
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
               metaData.current == 0
                 ? "text-black bg-[#FEBD59] "
                 : "hover:text-yellow-500"
             }`}
+            onClick={() => {
+              pageJumpHandler(0);
+            }}
           >
             1
           </p>
         )}
-        {metaData.totalPages >= 1 && (
+        {metaData.totalPages >= 2 && (
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
               metaData.current == 1
@@ -57,20 +61,23 @@ const Pagination = ({ metaData, jumpToPage }) => {
             2
           </p>
         )}
-        {metaData.totalPages >= 2 && (
+        {metaData.totalPages >= 3 && (
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
-              metaData.current == 2
-                ? "text-black bg-[#FEBD59] "
-                : "hover:text-yellow-500"
+              metaData.current >= 2 && "text-black bg-[#FEBD59] "
             }`}
           >
-            {metaData.current <= 3 ? 3 : metaData.current}
+            {metaData.current <3 ? 3 : metaData.current+1}
           </p>
         )}
 
         <p className="border border-gray-500 px-2 py-1">.......</p>
-        <p className="border border-gray-500 px-2 py-1">
+        <p
+          className="border border-gray-500 px-2 py-1"
+          onClick={() => {
+            pageJumpHandler(metaData.totalPages - 1);
+          }}
+        >
           {metaData.totalPages}
         </p>
         <p
@@ -80,12 +87,11 @@ const Pagination = ({ metaData, jumpToPage }) => {
               : "hover:text-yellow-500"
           }`}
           onClick={() => {
-            if (metaData.current == metaData.totalPages-1) {
+            if (metaData.current == metaData.totalPages - 1) {
               toast.error("you can not go next");
-            }else{
-               pageJumpHandler(++metaData.current);
+            } else {
+              pageJumpHandler(++metaData.current);
             }
-           
           }}
         >
           {<LiaForwardSolid className="h-[20px] " />}

@@ -26,6 +26,7 @@ const AllLAyout = () => {
   });
   const limitHandler = (data) => {
     setlimit(data);
+    setStart(0);
   };
   useEffect(() => {
     try {
@@ -33,6 +34,14 @@ const AllLAyout = () => {
         const res = await allLayoutsApi(start, limit, searchValue);
         if (res.data.Layout) {
           dispatch(layoutSliceACtion.addLayout(Object.values(res.data.Layout)));
+        }
+        if (res.data.totalPages) {
+          setPageMetaData({
+            totalPages: res.data.totalPages,
+            current: start,
+            limit: limit,
+            totalData: res.data.totalData,
+          });
         }
       })();
     } catch (err) {
@@ -62,6 +71,7 @@ const AllLAyout = () => {
               limit={limitHandler}
               searchedQuery={(data) => {
                 setSearchValue(data);
+                setStart(0);
               }}
             ></SearchAndSort>
 

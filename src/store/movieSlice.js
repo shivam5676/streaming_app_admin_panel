@@ -7,8 +7,7 @@ const movieSlice = createSlice({
   initialState: moviesData,
   reducers: {
     addMovie(state, action) {
-      console.log(state);
-      state.push(action.payload);
+      return action.payload;
     },
     deleteMovie(state, action) {
       const delId = action.payload;
