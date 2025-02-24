@@ -57,8 +57,21 @@ const AllLAyout = () => {
         sectionName={"Layout section"}
         currentDir={"All Layouts"}
       ></RoutesInfoDiv>
-      <section className="w-[100%]">
+      <section
+        className={`w-[100%] ${
+          selectedTheme === "modern reeloid"
+            ? "bg-black/40 backdrop-blur-lg "
+            : "bg-[#2A3042] "
+        } py-2  rounded-md`}
+      >
         {" "}
+        <SearchAndSort
+          limit={limitHandler}
+          searchedQuery={(data) => {
+            setSearchValue(data);
+            setStart(0);
+          }}
+        ></SearchAndSort>
         <div className="flex gap-6 flex-col xl:flex-row">
           <div
             className={`max-[690px]:overflow-auto ${
@@ -67,23 +80,15 @@ const AllLAyout = () => {
                 : "bg-[#2A3042] "
             } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
           >
-            <SearchAndSort
-              limit={limitHandler}
-              searchedQuery={(data) => {
-                setSearchValue(data);
-                setStart(0);
-              }}
-            ></SearchAndSort>
-
             <AllLAyoutPrint allLayouts={allLayouts} />
-            <Pagination
-              metaData={pageMetaData}
-              jumpToPage={(data) => {
-                setStart(data);
-              }}
-            />
           </div>
-        </div>
+        </div>{" "}
+        <Pagination
+          metaData={pageMetaData}
+          jumpToPage={(data) => {
+            setStart(data);
+          }}
+        />
       </section>
     </div>
   );

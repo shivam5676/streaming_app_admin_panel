@@ -94,7 +94,7 @@ const AllSliders = () => {
         ></SearchAndSort>
         <div className="flex gap-6 flex-col xl:flex-row">
           <div
-            className={`max-[690px]:overflow-auto flex-1 text-gray-200 max-md:overflow-auto py-2`}
+            className={`max-[690px]:overflow-auto customScrollBar flex-1 text-gray-200 max-md:overflow-auto py-2`}
           >
             <div className="mx-4 font-normal text-[.9rem] min-w-[768px]">
               <div className="font-semibold flex border-b pb-2 border-gray-500">

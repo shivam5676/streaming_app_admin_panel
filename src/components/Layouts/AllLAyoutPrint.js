@@ -35,7 +35,7 @@ const AllLAyoutPrint = ({ allLayouts }) => {
   };
   return (
     <>
-      <div className="m-4 font-normal text-[.9rem] min-w-[640px]">
+      <div className="mx-4 font-normal text-[.9rem] min-w-[768px]">
         <div className="font-semibold flex border-b pb-2 border-gray-500">
           <div className="w-[50px] flex-shrink-0">
             <p className="p-2">sr</p>

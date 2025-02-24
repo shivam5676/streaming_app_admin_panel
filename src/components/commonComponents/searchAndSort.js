@@ -18,7 +18,7 @@ const SearchAndSort = (props) => {
     timeoutRef.current = setTimeout(() => {
       console.log("Search input after 3s of inactivity:", searchValue);
       props.searchedQuery(searchValue)
-    }, 3000);
+    }, 2000);
 
     // Cleanup function to clear timeout if component unmounts or re-renders
     return () => clearTimeout(timeoutRef.current);

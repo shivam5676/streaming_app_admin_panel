@@ -1,20 +1,22 @@
 import { current } from "@reduxjs/toolkit";
 import React, { useRef, useState } from "react";
-import { BiSolidCameraMovie } from "react-icons/bi";
+import { BiSolidCameraMovie, BiSolidCheckboxChecked } from "react-icons/bi";
 import { CiSliderVertical } from "react-icons/ci";
 import { FaAffiliatetheme } from "react-icons/fa6";
 import { GrUserSettings, GrVmMaintenance } from "react-icons/gr";
 import { HiOutlineHome } from "react-icons/hi";
 import { IoMdAnalytics } from "react-icons/io";
 import { IoLanguage, IoLogOutOutline } from "react-icons/io5";
-import { MdOutlineMovie, MdOutlineSubscriptions } from "react-icons/md";
+import { MdOutlineMovie, MdOutlineNotificationAdd, MdOutlineSubscriptions } from "react-icons/md";
 import { RiAdminLine, RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TfiLayoutGrid3 } from "react-icons/tfi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginSliceAction } from "../store/loginSlice";
 
 const IconScreenSideBar = () => {
+  const dispatch = useDispatch();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const menuRefs = useRef([]);
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -50,78 +52,117 @@ const IconScreenSideBar = () => {
       title: "Hero",
       icon: <GrVmMaintenance className="h-[20px] w-[20px]" />,
       subItems: [
-        { name: "Add Slider", navigateTo: "" },
-        { name: "All Slider", navigateTo: "" },
+        { name: "Add Slider", navigateTo: "/addSlider" },
+        { name: "All Slider", navigateTo: "/allSliders" },
       ],
     },
     {
       title: "Layout",
       icon: <TfiLayoutGrid3 className="h-[20px] w-[20px]" />,
       subItems: [
-        { name: "Add Layout", navigateTo: "" },
-        { name: "All Layout", navigateTo: "" },
+        { name: "Add Layout", navigateTo: "/addLayout" },
+        { name: "All Layout", navigateTo: "/allLayouts" },
       ],
     },
     {
       title: "Movies",
       icon: <BiSolidCameraMovie className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Movie",navigateTo:"" }, { name: "All Movie",navigateTo:"" }],
+      subItems: [
+        { name: "Add Movie", navigateTo: "/addMovies" },
+        { name: "All Movie", navigateTo: "/allMovies" },
+      ],
     },
-   
+
     {
       title: "Web shows",
       icon: <SiWebflow className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Shows",navigateTo:"" }, { name: "All Shows",navigateTo:"" }],
+      subItems: [
+        { name: "Add Shows", navigateTo: "/addWebShows" },
+        { name: "All Shows", navigateTo: "" },
+      ],
     },
-    
+
     {
       title: "Ads",
       icon: <RiAdvertisementFill className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Ads" ,navigateTo:""}, { name: "All Ads",navigateTo:"" }],
+      subItems: [
+        { name: "Add Ads", navigateTo: "" },
+        { name: "All Ads", navigateTo: "" },
+      ],
     },
-    
+    {
+      title: "Notification Section",
+      icon: <MdOutlineNotificationAdd className="h-[20px] w-[20px]" />,
+      subItems: [
+        { name: "Add Notification", navigateTo: "/addNotification" },
+        { name: "All Notification", navigateTo: "/allNotification" },
+      ],
+    },
     {
       title: "Users",
       icon: <GrUserSettings className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Users" ,navigateTo:""}, { name: "All Admin" }],
+      subItems: [
+        { name: "Add Users", navigateTo: "" },
+        { name: "All Users", navigateTo: "/allUsers" },
+      ],
     },
     {
       title: "Movies",
       icon: <RiAdminLine className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Admin",navigateTo:"" }, { name: "All Admin" }],
+      subItems: [
+        { name: "Add Admin", navigateTo: "" },
+        { name: "All Admin", navigateTo: "/allAdmin" },
+      ],
     },
 
     {
       title: "Package Plan",
       icon: <MdOutlineSubscriptions className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Package",navigateTo:"" }, { name: "All Package" }],
+      subItems: [
+        { name: "Add Package", navigateTo: "/addPackage" },
+        { name: "All Package", navigateTo: "/allPackage" },
+      ],
     },
-    
+
     {
-      title: "Ads",
+      title: "Genres",
       icon: <CiSliderVertical className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Genres",navigateTo:"" }],
+      subItems: [{ name: "Genres", navigateTo: "/GenresList" }],
     },
     ,
     {
       title: "Languages",
       icon: <IoLanguage className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Languages",navigateTo:"" }],
+      subItems: [{ name: "Languages", navigateTo: "/LanguageList" }],
+    },
+    {
+      title: "Checked In Points",
+      icon: <BiSolidCheckboxChecked className="h-[20px] w-[20px]" />,
+      subItems: [{ name: "Checked In Points", navigateTo: "/CheckedPoints" }],
     },
     {
       title: "Analytics",
       icon: <IoMdAnalytics className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Add Package" ,navigateTo:""}, { name: "All Package",navigateTo:"" }],
+      subItems: [{ name: "Analytics", navigateTo: "/Analytics" }],
     },
     {
       title: "Theme",
       icon: <FaAffiliatetheme className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Theme" ,navigateTo:""}],
+      subItems: [{ name: "Theme", navigateTo: "" }],
     },
     {
       title: "Log Out",
       icon: <IoLogOutOutline className="h-[20px] w-[20px]" />,
-      subItems: [{ name: "Log Out" ,navigateTo:""}],
+      subItems: [
+        {
+          name: "Log Out",
+          navigateTo: "",
+          fn: () => {
+            localStorage.removeItem("user");
+            dispatch(loginSliceAction.logOut());
+          },
+        },
+      ],
     },
 
     // Add more items as needed
@@ -158,7 +199,11 @@ const IconScreenSideBar = () => {
                   key={subIndex}
                   className="text-[1rem] h-[40px] font-semibold flex items-center"
                   onClick={() => {
-                    console.log(subItem.navigateTo);
+                    console.log(subItem);
+                    if (subItem.fn) {
+                      console.log(subItem.navigateTo, "hello");
+                      subItem.fn();
+                    }
                     navigate(subItem.navigateTo);
                   }}
                 >
