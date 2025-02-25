@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import EditLAyoutPrint from "./EditLAyoutPrint";
 
 const EditLayout = () => {

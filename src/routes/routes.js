@@ -1,29 +1,33 @@
 import AddLayout from "../components/Layouts/AddLayout";
 import AddMovies from "../components/Movies/AddMovies/AddMovies";
 import AddSlider from "../components/Sliders/AddSlider";
-import AddWebSeries from "../components/AddWebSeries";
+import AddWebSeries from "../components/webSeries/AddWebSeries";
 import AddAds from "../components/Advertisement/AddAds";
 import AllAds from "../components/Advertisement/AllAds";
-import AllAdmin from "../components/AllAdmin";
-import AllGenreList from "../components/AllGenreList";
+import AllAdmin from "../components/Admin/AllAdmin";
+import AllGenreList from "../components/Genres/AllGenreList";
 import AllLAyout from "../components/Layouts/AllLAyout";
-import AllMovies from "../components/AllMovies";
 
-import AllUsers from "../components/AllUSers";
+
+
 import Analytics from "../components/Analytics/Analytics";
-import CheckedInAllotement from "../components/CheckedInAllotement";
-import CreateAdmin from "../components/CreateAdmin";
+
 
 import DashBoard from "../components/dashboard/DashBoard";
 import EditLayout from "../components/Layouts/EditLayout";
-import EditMovies from "../components/editMovie";
-import EdducationQuestionGenerator from "../components/educationQuestionGenerator";
-import LanguageList from "../components/LanguageLIst";
-import UserDetails from "../components/UserDetails";
+import EditMovies from "../components/Movies/editMovie";
+
+import LanguageList from "../components/Language/LanguageLIst";
+import UserDetails from "../components/Users/UserDetails";
 import AllSliders from "../components/Sliders/AllSliders";
 import AddNotification from "../components/Notification/AddNotification";
 import AllNotification from "../components/Notification/AllNotification";
 import AddSubscriptionPlan from "../components/subscription/AddSubscriptionPlan";
+import AllMovies from "../components/Movies/AllMovies/AllMovies";
+import AllUsers from "../components/Users/AllUSers";
+import CheckedInAllotement from "../components/Checked-In-Points/CheckedInAllotement";
+import CreateAdmin from "../components/Admin/CreateAdmin";
+import EdducationQuestionGenerator from "../components/QuestionGenerator/educationQuestionGenerator";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -48,6 +52,6 @@ export const routes = [
   { path: "/allAds", element: <AllAds /> },
   { path: "/addNotification", element: <AddNotification /> },
   { path: "/allNotification", element: <AllNotification /> },
-  { path: "/addPackage", element: <AddSubscriptionPlan/> },
+  { path: "/addPackage", element: <AddSubscriptionPlan /> },
   { path: "*", element: <DashBoard /> },
 ];

@@ -1,8 +1,8 @@
 import { set } from "mongoose";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import welldone from "../assests/well-done-well-done-team.gif"
-import sad from "../assests/sad.gif"
+import welldone from "../../assests/well-done-well-done-team.gif"
+import sad from "../../assests/sad.gif"
 const QuestionModal = (props) => {
   console.log(props.questionArray);
   const [answerGenerator, setAnswerGenerator] = useState(false);

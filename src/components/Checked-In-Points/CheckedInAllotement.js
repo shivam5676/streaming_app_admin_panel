@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import RoutesInfoDiv from "./RoutesInfoDiv";
-import coins from "../assests/coins.gif";
+
+import coins from "../../assests/coins.gif";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "./../../node_modules/@mui/x-date-pickers/AdapterDayjs/AdapterDayjs";
+import { AdapterDayjs } from "./../../../node_modules/@mui/x-date-pickers/AdapterDayjs/AdapterDayjs";
 
 import CheckedInAllotementModal from "./checkedInAllotementModal";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 const CheckedInAllotement = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
 

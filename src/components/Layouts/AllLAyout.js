@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import allLayouts from "./allLayouts";
 import { layoutSliceACtion } from "../../store/layoutSlice";
 
-import RoutesInfoDiv from "./../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 
 import AllLAyoutPrint from "./AllLAyoutPrint";
 import { allLayoutsApi } from "../../Api/Layouts/layoutApi";

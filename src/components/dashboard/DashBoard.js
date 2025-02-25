@@ -1,11 +1,3 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  Select,
-} from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
 import React, { useEffect, useRef, useState } from "react";
 import movieIcon from "../../assests/movie-animate.gif";
 import webseriesIcon from "../../assests/webseriesIcon-animate.gif";

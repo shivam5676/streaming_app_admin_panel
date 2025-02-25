@@ -1,34 +1,34 @@
 import axios from "axios";
-import React, { useDebugValue, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AddGenreModal from "./AddGenreModal";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { GenreSliceACtion } from "../store/genreSlice";
-import RoutesInfoDiv from "./RoutesInfoDiv";
 
-const AllGenreList = () => {
+import { toast } from "react-toastify";
+import AddLanguageModal from "./AddLanguageModal";
+import { languageSliceACtion } from "../../store/languageSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+
+const LanguageList = () => {
+  const selectedTheme = useSelector((state) => state.theme.selectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
-  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const navigate = useNavigate();
+  // const [allLanguages, setAllLanguages] = useState([]);
   const dispatch = useDispatch();
-  // const [allGenres, setAllGenres] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const allGenres = useSelector((state) => state.genreData);
+  const allLanguages = useSelector((state) => state.languageData);
   useEffect(() => {
-    if (allGenres.length == 0) {
+    if (allLanguages.length == 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allGenres`,{
+          const res = await axios.get(`${connectionString}/admin/allLanguages`,{
             headers: {
               Authorization: localStorage.getItem("token"),
-            
             },
           });
-          console.log(res.data);
-          if (res.data.allGenres) {
-            Object.values(res.data.allGenres).forEach((current) => {
-              dispatch(GenreSliceACtion.addGenre(current));
+
+          if (res.data.Languages) {
+            Object.values(res.data.Languages).forEach((current) => {
+              dispatch(languageSliceACtion.addLanguage(current));
             });
           }
         })();
@@ -36,21 +36,27 @@ const AllGenreList = () => {
         console.log(err);
       }
     }
-  }, [allGenres]);
+  }, [allLanguages, dispatch]);
   const deleteGenresHandler = async (id) => {
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteGenre/${id}`
+        `${connectionString}/admin/deleteLanguage/${id}`,{
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
-      dispatch(GenreSliceACtion.deleteGenre(id));
+      dispatch(languageSliceACtion.deleteLanguage(id));
       toast.success("Genre deleted successfully");
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
-    console.log(action);
+  
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
@@ -60,14 +66,18 @@ const AllGenreList = () => {
       navigate(`/allLayout/${id}`);
     }
   };
+
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
-      <RoutesInfoDiv
-        mainHeading={"All Genres"}
-        websiteName={"Reelies"}
-        sectionName={"Others"}
-        currentDir={"Genres"}
-      />
+      <div className="text-white px-2 py-4 ">
+        <p className="text-lg font-bold">All languages</p>
+        <p className="text-[.95rem] font-semibold">
+          <span>Reelisis</span> <span className="mx-2"> &gt; </span>
+          <span>Others</span>
+          <span className="mx-2"> &gt; </span>
+          <span>Languages</span>
+        </p>
+      </div>
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
@@ -96,7 +106,7 @@ const AllGenreList = () => {
                   >
                     <span className="absolute w-64 h-0 transition-all duration-300 origin-center rotate-45 -translate-x-20 bg-yellow-600 top-1/2 group-hover:h-64 group-hover:-translate-y-32 ease"></span>
                     <span className="relative text-yellow-600 transition duration-300 group-hover:text-white ease font-bold">
-                      Add Genre
+                      Add Language
                     </span>
                   </div>
                 </div>
@@ -120,8 +130,8 @@ const AllGenreList = () => {
                 </div>
               </div>
               {/* items */}
-              {allGenres?.length > 0 &&
-                allGenres.map((current, index) => (
+              {allLanguages?.length > 0 &&
+                allLanguages.map((current, index) => (
                   <div className="font-normal flex my-2  border-b border-gray-500">
                     <div className="w-[50px] p-2  flex-shrink-0">
                       <p className="p-2">{index + 1}</p>
@@ -190,9 +200,9 @@ const AllGenreList = () => {
           </div>
         </div>
       </section>
-      {isModalOpen && <AddGenreModal closeModal={closeModal} />}
+      {isModalOpen && <AddLanguageModal closeModal={closeModal} />}
     </div>
   );
 };
 
-export default AllGenreList;
+export default LanguageList;

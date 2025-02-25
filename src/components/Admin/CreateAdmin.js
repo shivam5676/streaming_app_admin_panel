@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import RoutesInfoDiv from "./RoutesInfoDiv";
+import RoutesInfoDiv from "./../commonComponents/RoutesInfoDiv";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import GenreSelector from "./genreSelector";
-import LanguageSelector from "./LanguageSelector";
+
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import GenreSelector from "../commonComponents/genreSelector";
+import LanguageSelector from "../commonComponents/LanguageSelector";
 
 const ActionCenter = (props) => {
   const [reasonSelector, setReasonSelector] = useState(null);

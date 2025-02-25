@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import DragNDropVideos from "./dragNDropVideos";
-import DragNDropImage from "./DragNDropImage";
+
 import axios from "axios";
 import { FormControl } from "@mui/material/FormControl";
 import { toast } from "react-toastify";
-import QuestionModal from "./questionModal";
+
 import { GiPowerGenerator } from "react-icons/gi";
-import scanner from "../assests/scanner.gif";
-import logo from "../assests/logo.png";
+import scanner from "../../assests/scanner.gif";
+import logo from "../../assests/logo.png";
+import DragNDropVideos from "../commonComponents/dragNDropVideos";
+import QuestionModal from "./questionModal";
 const EdducationQuestionGenerator = () => {
-  const connectionString = "http://192.168.1.57:8000";
+  const connectionString = process.env.REACT_APP_API_URL
   const [changeText, setChangeText] = useState("");
   const [questionArray, setQuestionArray] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);

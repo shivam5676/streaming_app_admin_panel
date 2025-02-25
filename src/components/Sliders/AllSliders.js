@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { sliderSliceACtion } from "../../store/sliderSlice";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import Pagination from "../commonComponents/pagination";
 import AllSlidersPrint from "./AllSlidersPrint";
 import { allSlidersApi, deleteSliderApi } from "../../Api/Slider/SliderApi";

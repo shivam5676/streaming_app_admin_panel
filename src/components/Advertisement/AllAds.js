@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import { MdChangeCircle } from "react-icons/md";
 import ToolTip from "./ToolTip";
 

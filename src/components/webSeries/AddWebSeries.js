@@ -1,7 +1,7 @@
 import React from "react";
-import LayoutSelector from "./layoutSelector";
-import DragNDropImage from "./DragNDropImage";
-import RoutesInfoDiv from "./RoutesInfoDiv";
+import LayoutSelector from "../commonComponents/layoutSelector";
+import DragNDropImage from "../commonComponents/DragNDropImage";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 
 const AddWebSeries = () => {
   return (

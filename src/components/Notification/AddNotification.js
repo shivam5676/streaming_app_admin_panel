@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ToolTip from "../Advertisement/ToolTip";
 import { MdSwapHorizontalCircle } from "react-icons/md";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -35,6 +35,7 @@ const AddNotification = () => {
           endDate: endDateRef.current.value,
         }
       );
+      toast.success("NOTIFICATION aDDED SUCCESSFULLY");
     } catch (err) {
       console.log(err);
       if (err.response && err.response.data.msg) {

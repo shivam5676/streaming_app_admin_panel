@@ -7,13 +7,17 @@ import { GrUserSettings, GrVmMaintenance } from "react-icons/gr";
 import { HiOutlineHome } from "react-icons/hi";
 import { IoMdAnalytics } from "react-icons/io";
 import { IoLanguage, IoLogOutOutline } from "react-icons/io5";
-import { MdOutlineMovie, MdOutlineNotificationAdd, MdOutlineSubscriptions } from "react-icons/md";
+import {
+  MdOutlineMovie,
+  MdOutlineNotificationAdd,
+  MdOutlineSubscriptions,
+} from "react-icons/md";
 import { RiAdminLine, RiAdvertisementFill } from "react-icons/ri";
 import { SiWebflow } from "react-icons/si";
 import { TfiLayoutGrid3 } from "react-icons/tfi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginSliceAction } from "../store/loginSlice";
+import { loginSliceAction } from "../../store/loginSlice";
 
 const IconScreenSideBar = () => {
   const dispatch = useDispatch();

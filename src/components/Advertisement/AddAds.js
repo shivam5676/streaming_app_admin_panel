@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import { Provider, useSelector } from "react-redux";
 import { Autocomplete, TextField } from "@mui/material";
 import { MdSwapHorizontalCircle } from "react-icons/md";

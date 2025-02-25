@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import BigScreenSideBar from "./components/BigScreenSideBar";
-import IconScreenSideBar from "./components/iconScreenSideBar";
-import Navbar from "./components/Navbar";
+
+
+
 import useWindowSize from "./customHooks/useWindowSize";
 import { NavLink, Route, Routes } from "react-router-dom";
 
-import Login from "./components/Login";
 import { routes } from "./routes/routes";
 import { authRoutes } from "./routes/authRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSliceAction } from "./store/loginSlice";
-// import bgImg from "./assests/blue-bg.jpg"
-import bgImg from "./assests/blur-bg.jpg"
+
+import bgImg from "./assests/blur-bg.jpg";
+import Navbar from "./components/Navbar/Navbar";
+import BigScreenSideBar from "./components/Sidebar/BigScreenSideBar";
+import IconScreenSideBar from "./components/Sidebar/iconScreenSideBar";
 function App() {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const isLoggedIn = useSelector((state) => state.loginData.loggedIn);

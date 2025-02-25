@@ -2,8 +2,9 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import { languageSliceACtion } from "../store/languageSlice";
+
 import { useDispatch } from "react-redux";
+import { languageSliceACtion } from "../../store/languageSlice";
 
 const AddLanguageModal = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;

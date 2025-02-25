@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import DragNDropImage from "./DragNDropImage";
-import LayoutSelector from "./layoutSelector";
+import DragNDropImage from "../commonComponents/DragNDropImage";
+import LayoutSelector from "../commonComponents/layoutSelector";
 import axios from "axios";
-import dragNDropVideos from "./dragNDropVideos";
-import DragNDropVideos from "./dragNDropVideos";
+import dragNDropVideos from "../commonComponents/dragNDropVideos";
+import DragNDropVideos from "../commonComponents/dragNDropVideos";
 import { FaTrash } from "react-icons/fa";
-import GenreSelector from "./genreSelector";
+import GenreSelector from "../commonComponents/genreSelector";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@mui/material";
-import LanguageSelector from "./LanguageSelector";
-import personalisedAds from "../assests/personalise_Ads.jpg";
+import LanguageSelector from "../commonComponents/LanguageSelector";
+import personalisedAds from "../../assests/personalise_Ads.jpg";
 import { ReactSortable } from "react-sortablejs";
 
 import { CgMenuOreos } from "react-icons/cg";
@@ -18,8 +18,8 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import {
   changeShortsSequence,
   doActionTask,
-} from "../Api/EditMovies/shortsActionTask";
-import RoutesInfoDiv from "./RoutesInfoDiv";
+} from "../../Api/EditMovies/shortsActionTask";
+import RoutesInfoDiv from "./../commonComponents/RoutesInfoDiv";
 
 const EditMovies = () => {
   const params = useParams();

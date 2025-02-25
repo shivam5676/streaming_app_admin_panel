@@ -1,9 +1,9 @@
 import React from "react";
 import { IoMdClose } from "react-icons/io";
-import loader from "../assests/loader.gif";
-import success from "../assests/verified.gif";
+import loader from "../../assests/loader.gif";
+import success from "../../assests/verified.gif";
 import { RxCross2 } from "react-icons/rx";
-import errorImg from "../assests/broken-battery.gif";
+import errorImg from "../../assests/broken-battery.gif";
 const SavingLoaderModal = (props) => {
   return (
     <div

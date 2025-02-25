@@ -2,10 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import RoutesInfoDiv from "./RoutesInfoDiv";
+
 import { useSelector } from "react-redux";
-import Pagination from "./commonComponents/pagination";
-import SearchAndSort from "./commonComponents/searchAndSort";
+import Pagination from "./../commonComponents/pagination";
+import SearchAndSort from "./../commonComponents/searchAndSort";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 
 const AllUsers = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);

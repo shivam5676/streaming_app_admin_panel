@@ -5,8 +5,8 @@ import MovieSelector from "./movieSelector";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { layoutSliceACtion } from "../../store/layoutSlice";
-import RoutesInfoDiv from "./../RoutesInfoDiv";
-import SavingLoaderModal from "./../savingLoaderModal";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
+import SavingLoaderModal from "../commonComponents/savingLoaderModal";
 import { AddLayoutApi } from "../../Api/Layouts/layoutApi";
 
 const AddLayout = (req, res, next) => {

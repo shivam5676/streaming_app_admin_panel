@@ -1,17 +1,17 @@
 import React, { useRef, useState } from "react";
-import DragNDropImage from "../../DragNDropImage";
-import LayoutSelector from "../../layoutSelector";
+import DragNDropImage from "../../commonComponents/DragNDropImage";
+import LayoutSelector from "../../commonComponents/layoutSelector";
 import axios from "axios";
 
-import DragNDropVideos from "../../dragNDropVideos";
+import DragNDropVideos from "../../commonComponents/dragNDropVideos";
 
-import GenreSelector from "../../genreSelector";
+import GenreSelector from "../../commonComponents/genreSelector";
 
-import LanguageSelector from "../../LanguageSelector";
+import LanguageSelector from "../../commonComponents/LanguageSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { movieSliceACtion } from "../../../store/movieSlice";
-import RoutesInfoDiv from "../../RoutesInfoDiv";
-import SavingLoaderModal from "../../savingLoaderModal";
+import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
+import SavingLoaderModal from "../../commonComponents/savingLoaderModal";
 
 import personalisedAds from "../../../assests/personalise_Ads.jpg";
 import SortableAndSelectedMoviesPrint from "./SortableAndSelectedMoviesPrint";

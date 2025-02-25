@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 // import iosLogo from "../assests/IOS-Logo-white.png";
 // import logo from "../assests/logo.png"
-import logoIcon from "../assests/mobile.png"
-import logo from "../assests/reeloid-logo.png"
+import logoIcon from "../../assests/mobile.png"
+import logo from "../../assests/reeloid-logo.png"
 
 import { CgMenu } from "react-icons/cg";
 import { FiSend } from "react-icons/fi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
-import useWindowSize from "./../customHooks/useWindowSize";
+import useWindowSize from "./../../customHooks/useWindowSize";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 const Navbar = (props) => {

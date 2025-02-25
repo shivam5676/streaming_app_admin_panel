@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import DoughnutData from "../doughnutData";
+import DoughnutData from "../commonComponents/doughnutData";
 import { Skeleton } from "@mui/material";
 
 const ViewsComparisonGraph = ({ contentViews }) => {

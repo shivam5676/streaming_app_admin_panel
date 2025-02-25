@@ -39,9 +39,9 @@ const SearchAndSort = (props) => {
                 : "bg-[#2E3648]"
             } text-[#959db6] mx-2 px-4 py-2  font-normal`}
           >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
           </select>
           <p>results </p>
         </div>

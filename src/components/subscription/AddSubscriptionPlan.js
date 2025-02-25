@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import { useSelector } from "react-redux";
 import { CloseFullscreen } from "@mui/icons-material";
 import { toast } from "react-toastify";

@@ -1,5 +1,5 @@
 import React from "react";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import ProductReportCard from "../dashboard/ProductReportCard";
 import AnalyticsCard from "./AnalyticsCard";
 // import GenreWiseDataLineGraph from "./GenreWiseDataLineGraph";

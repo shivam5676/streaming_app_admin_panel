@@ -3,7 +3,9 @@ import React, { useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { GenreSliceACtion } from "../store/genreSlice";
+import { GenreSliceACtion } from "../../store/genreSlice";
+// import { GenreSliceACtion } from "../store/genreSlice";
+
 
 const AddGenreModal = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;

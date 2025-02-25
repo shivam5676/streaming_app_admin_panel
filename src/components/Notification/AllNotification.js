@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RoutesInfoDiv from "../RoutesInfoDiv";
+import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";

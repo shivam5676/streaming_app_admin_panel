@@ -1,29 +1,26 @@
 import React, { useRef } from "react";
-import logoIcon from "../assests/logo-icon.png";
+import logoIcon from "../../assests/logo-icon.png";
 
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaUnlockAlt } from "react-icons/fa";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { loginSliceAction } from "../store/loginSlice";
+import { loginSliceAction } from "../../store/loginSlice";
 
 const Login = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const emailRef = useRef();
   const passwordRef = useRef();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const loginHandler = async () => {
     try {
       const response = await axios.post(`${connectionString}/admin/login`, {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
-      dispatch(loginSliceAction.login("user",true))
-      localStorage.setItem("user",true)
-      localStorage.setItem("token",response.data.token)
-      // console.log(response);
-      // props.loggedIn();
-      // setGenres(response.data.allGenres);
+      dispatch(loginSliceAction.login("user", true));
+      localStorage.setItem("user", true);
+      localStorage.setItem("token", response.data.token);
     } catch (error) {
       console.error(error);
     }
