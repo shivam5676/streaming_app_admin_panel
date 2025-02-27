@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DragNDropImage from "../../commonComponents/DragNDropImage";
 import LayoutSelector from "../../commonComponents/layoutSelector";
 import axios from "axios";
@@ -17,12 +17,14 @@ import personalisedAds from "../../../assests/personalise_Ads.jpg";
 import SortableAndSelectedMoviesPrint from "./SortableAndSelectedMoviesPrint";
 
 import ThumbnailPreview from "./ThumbnailPreview";
+import { toast } from "react-toastify";
 
 const AddMovies = () => {
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
+  const [uploadingPercentage, setUploadingPercentage] = useState(0);
   const [successTick, setSuccessTick] = useState("pending");
   const [message, setMessage] = useState(
-    " Movie creation is in progress...please wait"
+    " Movie uploadation is in progress...Don`t close the Tab"
   );
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const titleRef = useRef();
@@ -43,7 +45,51 @@ const AddMovies = () => {
   const moviesTrailerVideoLinkRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   const interv1 = setInterval(() => {
+  //     setUploadingPercentage((prev) => {
+  //       if (prev >= 100) {
+  //         clearInterval(interv1);
+  //         return 100;
+  //       }
+
+  //       return prev + 5;
+  //     });
+  //     return () => {
+  //       clearInterval(interv1);
+  //     };
+  //   }, 2000);
+  // }, []);
   const addMoviesHandler = async () => {
+    console.log(layOutArrayRef?.current);
+    if (!thumbnailRef?.current) {
+      toast.error("please upload thumbnail");
+      return;
+    }
+
+    if (!titleRef?.current?.value) {
+      toast.error("please provide title");
+      return;
+    }
+    if (!layOutArrayRef?.current.length > 0) {
+      toast.error("please select layout");
+      return;
+    }
+    if (!genreRef?.current.length > 0) {
+      toast.error("please provide genre");
+      return;
+    }
+    if (
+      !moviesTrailerVideoRef?.current?.files[0] &&
+      !moviesTrailerVideoLinkRef?.current?.value
+    ) {
+      toast.error("please provide trailerUrl or trailer video");
+      return;
+    }
+    if (!languageRef?.current.length > 0) {
+      toast.error("please provide content language");
+      return;
+    }
     const adContent = "Personalized Ad Content"; // You can customize this
     const adBlob = new Blob([adContent], { type: "text/plain" });
     const adFile = new File([adBlob], "Personalised_Ad.txt", {
@@ -80,6 +126,22 @@ const AddMovies = () => {
           headers: {
             Authorization: localStorage.getItem("token"),
             "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            const percentage = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadingPercentage(percentage);
+            if (percentage >= 100) {
+              setMessage(
+                "Extraction and trascoding is going on ...you can close tab and can do your other task"
+              );
+            }
+          },
+          onDownloadProgress: (progressEvent) => {
+            setUploadingPercentage(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
           },
         }
       );
@@ -189,11 +251,14 @@ const AddMovies = () => {
         <SavingLoaderModal
           closeModal={() => {
             setUploadStatusModal(false);
-            setMessage(" Slider creation is in progress...please wait");
+            setMessage(
+              "Movie Uploadation is in progress...Don`t close the Tab.you can close the tab after Uploadation"
+            );
             setSuccessTick("pending");
           }}
           success={successTick}
           message={message}
+          uploadingPercentage={uploadingPercentage}
         />
       )}
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
@@ -321,7 +386,7 @@ const AddMovies = () => {
                       placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
                     ></input>
                   )}
-                </div>{" "}
+                </div>
                 {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
               </div>
             </div>

@@ -11,7 +11,7 @@ import logo from "../../assests/logo.png";
 import DragNDropVideos from "../commonComponents/dragNDropVideos";
 import QuestionModal from "./questionModal";
 const EdducationQuestionGenerator = () => {
-  const connectionString = process.env.REACT_APP_API_URL
+  const connectionString = process.env.REACT_APP_API_URL;
   const [changeText, setChangeText] = useState("");
   const [questionArray, setQuestionArray] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
@@ -43,14 +43,20 @@ const EdducationQuestionGenerator = () => {
   };
   console.log(uploadedFiles);
   const generateQuestionHAndler = async (index) => {
-    setChangeText(<p className="font-bold text-green-600">wait!! File is scanning ...</p>);
+    setChangeText(
+      <p className="font-bold text-green-600">wait!! File is scanning ...</p>
+    );
     setQuestionModalOpen(true);
     const response = await axios.post(
       `${connectionString}/videos/generateQuestions/`,
       { file: uploadedFiles[index] }
     );
     console.log(response.data.data);
-    setChangeText(<p className="font-bold text-blue-600">Generating Question Paper from Your videos ...</p>);
+    setChangeText(
+      <p className="font-bold text-blue-600">
+        Generating Question Paper from Your videos ...
+      </p>
+    );
     const promptResponse = await axios.post(
       `${connectionString}/videos/questionHAndler/`,
       { questionPrompt: response.data.data }
