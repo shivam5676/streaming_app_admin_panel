@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 const AddMovies = () => {
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
   const [uploadingPercentage, setUploadingPercentage] = useState(0);
-  const [successTick, setSuccessTick] = useState("pending");
+  const [successTick, setSuccessTick] = useState("Pending");
   const [message, setMessage] = useState(
     " Movie uploadation is in progress...Don`t close the Tab"
   );
@@ -61,35 +61,35 @@ const AddMovies = () => {
   //   }, 2000);
   // }, []);
   const addMoviesHandler = async () => {
-    console.log(layOutArrayRef?.current);
-    if (!thumbnailRef?.current) {
-      toast.error("please upload thumbnail");
-      return;
-    }
+    // console.log(layOutArrayRef?.current);
+    // if (!thumbnailRef?.current) {
+    //   toast.error("please upload thumbnail");
+    //   return;
+    // }
 
-    if (!titleRef?.current?.value) {
-      toast.error("please provide title");
-      return;
-    }
-    if (!layOutArrayRef?.current.length > 0) {
-      toast.error("please select layout");
-      return;
-    }
-    if (!genreRef?.current.length > 0) {
-      toast.error("please provide genre");
-      return;
-    }
-    if (
-      !moviesTrailerVideoRef?.current?.files[0] &&
-      !moviesTrailerVideoLinkRef?.current?.value
-    ) {
-      toast.error("please provide trailerUrl or trailer video");
-      return;
-    }
-    if (!languageRef?.current.length > 0) {
-      toast.error("please provide content language");
-      return;
-    }
+    // if (!titleRef?.current?.value) {
+    //   toast.error("please provide title");
+    //   return;
+    // }
+    // if (!layOutArrayRef?.current.length > 0) {
+    //   toast.error("please select layout");
+    //   return;
+    // }
+    // if (!genreRef?.current.length > 0) {
+    //   toast.error("please provide genre");
+    //   return;
+    // }
+    // if (
+    //   !moviesTrailerVideoRef?.current?.files[0] &&
+    //   !moviesTrailerVideoLinkRef?.current?.value
+    // ) {
+    //   toast.error("please provide trailerUrl or trailer video");
+    //   return;
+    // }
+    // if (!languageRef?.current.length > 0) {
+    //   toast.error("please provide content language");
+    //   return;
+    // }
     const adContent = "Personalized Ad Content"; // You can customize this
     const adBlob = new Blob([adContent], { type: "text/plain" });
     const adFile = new File([adBlob], "Personalised_Ad.txt", {
@@ -134,14 +134,21 @@ const AddMovies = () => {
             setUploadingPercentage(percentage);
             if (percentage >= 100) {
               setMessage(
-                "Extraction and trascoding is going on ...you can close tab and can do your other task"
+                "Task uploadtion is going don`t close the tab otherwise you will lost the data"
               );
+              setSuccessTick("Extracting");
             }
           },
           onDownloadProgress: (progressEvent) => {
-            setUploadingPercentage(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            const percentage = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
             );
+
+            if (percentage >= 100) {
+              setMessage(
+                "Extraction and trascoding is going on ...you can close tab and can do your other task"
+              );
+            }
           },
         }
       );
@@ -149,12 +156,11 @@ const AddMovies = () => {
       if (response.data.movieData) {
         dispatch(movieSliceACtion.addMovie(response.data.movieData));
       }
-      setSuccessTick("success");
+      setSuccessTick("Success");
       setMessage("movie added successfully");
       // toast.success("movie added successfully");
     } catch (err) {
-      console.log(err);
-      setSuccessTick("error");
+      setSuccessTick("Error");
       if (err.response && err.response.data.msg)
         setMessage(err.response.data.msg);
     }
@@ -173,7 +179,6 @@ const AddMovies = () => {
     languageRef.current = value;
   };
   const getThumbnail = (thumbnail) => {
-    console.log(thumbnail);
     thumbnailRef.current = thumbnail;
     // console.log(thumbnailRef)
     if (thumbnail != null) {
@@ -254,7 +259,7 @@ const AddMovies = () => {
             setMessage(
               "Movie Uploadation is in progress...Don`t close the Tab.you can close the tab after Uploadation"
             );
-            setSuccessTick("pending");
+            setSuccessTick("Pending");
           }}
           success={successTick}
           message={message}
