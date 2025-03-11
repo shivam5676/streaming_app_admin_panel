@@ -296,7 +296,6 @@ const AddMovies = () => {
               <div className="m-4 font-semibold">
                 <p>Select Layout</p>
                 <LayoutSelector selectedArray={selectionHandler} />
-                {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>
               <div className="flex sm:flex-row flex-col">
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
@@ -332,6 +331,28 @@ const AddMovies = () => {
                   <GenreSelector selectedGenre={GenreHandler} />
                 </div>
               </div>{" "}
+              <div className="flex sm:flex-row flex-col">
+                <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                  <p>Licence Expiry</p>
+                  <input
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                    placeholder="Write here"
+                    ref={titleRef}
+                    type="date"
+                  ></input>
+                </div>
+                <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                  <p>Video Screen</p>
+
+                  <select
+                    className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
+                    ref={visibleRef}
+                  >
+                    <option value={true}>Horizontal</option>
+                    <option value={false}>Vertical</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <div
               className={`${

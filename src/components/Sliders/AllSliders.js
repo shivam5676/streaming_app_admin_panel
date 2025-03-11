@@ -70,7 +70,7 @@ const AllSliders = () => {
   };
 
   return (
-    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
+    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Sliders"}
         websiteName={"Reelies"}

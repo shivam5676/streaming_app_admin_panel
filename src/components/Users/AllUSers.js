@@ -79,7 +79,7 @@ const AllUsers = () => {
     setStart(0);
   };
   return (
-    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
+    <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All User"}
         websiteName={"Reelies"}
