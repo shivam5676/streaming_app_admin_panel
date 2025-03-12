@@ -28,6 +28,7 @@ const AddMovies = () => {
   );
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const titleRef = useRef();
+  const LicenceExpiryDateRef = useRef();
   const [videoFiles, setvideoFiles] = useState([]);
   const [videoFilesSnapshot, setVideoFilesSnapshot] = useState([]);
   const [thumbnailUrlPreview, setThumbNailUrlPreview] = useState(null);
@@ -41,6 +42,7 @@ const AddMovies = () => {
 
   const freeVideosRef = useRef();
   const visibleRef = useRef();
+  const videoScreenRef = useRef();
   const moviesTrailerVideoRef = useRef();
   const moviesTrailerVideoLinkRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
@@ -90,6 +92,12 @@ const AddMovies = () => {
     //   toast.error("please provide content language");
     //   return;
     // }
+    
+    console.log(
+      LicenceExpiryDateRef.current.value,
+      videoScreenRef.current.value
+    );
+    return;
     const adContent = "Personalized Ad Content"; // You can customize this
     const adBlob = new Blob([adContent], { type: "text/plain" });
     const adFile = new File([adBlob], "Personalised_Ad.txt", {
@@ -111,7 +119,8 @@ const AddMovies = () => {
     formdata.append("visible", visibleRef.current.value);
     formdata.append("genre", JSON.stringify(genreRef.current));
     formdata.append("language", JSON.stringify(languageRef.current) || []);
-
+    formdata.append("screenType", videoScreenRef.current.value);
+    formdata.append("licenseExpiryDate", LicenceExpiryDateRef.current.value);
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -337,7 +346,7 @@ const AddMovies = () => {
                   <input
                     className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
                     placeholder="Write here"
-                    ref={titleRef}
+                    ref={LicenceExpiryDateRef}
                     type="date"
                   ></input>
                 </div>
@@ -346,10 +355,10 @@ const AddMovies = () => {
 
                   <select
                     className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
-                    ref={visibleRef}
+                    ref={videoScreenRef}
                   >
-                    <option value={true}>Horizontal</option>
-                    <option value={false}>Vertical</option>
+                    <option value={"Horizontal"}>Horizontal</option>
+                    <option value={"Vertical"}>Vertical</option>
                   </select>
                 </div>
               </div>
