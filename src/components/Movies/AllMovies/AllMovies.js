@@ -13,7 +13,7 @@ import AllMoviesPrint from "./AllMoviesPrint";
 const AllMovies = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
-  const [limit, setlimit] = useState(1);
+  const [limit, setlimit] = useState(10);
   const [start, setStart] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({
@@ -25,7 +25,7 @@ const AllMovies = () => {
   // const [allMovies, setAllMovies] = useState([]);
   const dispatch = useDispatch();
   const allMovies = useSelector((state) => state.movieData);
-  console.log(allMovies);
+
   useEffect(() => {
     try {
       (async () => {

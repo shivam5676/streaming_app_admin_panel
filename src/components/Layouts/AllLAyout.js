@@ -16,7 +16,7 @@ const AllLAyout = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const dispatch = useDispatch();
   const allLayouts = useSelector((state) => state.layOutData);
-  const [limit, setlimit] = useState(1);
+  const [limit, setlimit] = useState(10);
   const [start, setStart] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({

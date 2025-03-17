@@ -93,11 +93,11 @@ const AddMovies = () => {
     //   return;
     // }
     
-    console.log(
-      LicenceExpiryDateRef.current.value,
-      videoScreenRef.current.value
-    );
-    return;
+    // console.log(
+    //   LicenceExpiryDateRef.current.value,
+    //   videoScreenRef.current.value
+    // );
+    // return;
     const adContent = "Personalized Ad Content"; // You can customize this
     const adBlob = new Blob([adContent], { type: "text/plain" });
     const adFile = new File([adBlob], "Personalised_Ad.txt", {

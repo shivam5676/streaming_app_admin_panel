@@ -11,7 +11,7 @@ const AllNotification = () => {
   const [moreDetails, setMoreDetails] = useState(null);
   const connectionString = process.env.REACT_APP_API_URL;
   const [allNotifications, setAllNotifications] = useState([]);
-  const [limit, setlimit] = useState(1);
+  const [limit, setlimit] = useState(10);
   const [start, setStart] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({
