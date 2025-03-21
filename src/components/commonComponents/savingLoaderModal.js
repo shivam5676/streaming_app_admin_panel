@@ -36,8 +36,6 @@ const SavingLoaderModal = (props) => {
                   {props?.uploadingPercentage == 100 && " uploaded"}
                 </div>
               </div>
-
-            
             </div>
             <div className="w-[100%] flex flex-col items-start text-[.65rem] font-semibold pt-2 pb-4 text-sm">
               <p
@@ -77,19 +75,21 @@ const SavingLoaderModal = (props) => {
                 }`}
               >
                 Step 2:
+                {console.log(props.success)}
                 {(props.success == "Pending" ||
-                  props.uploadingPercentage < 100) && <span>Extraction </span>}
+                  props.uploadingPercentage < 100) &&<span>Extraction </span>}
                 {(props.uploadingPercentage == 100 ||
-                  props.status == "Extraction") && (
-                  <div className="flex items-center">
-                    {" "}
-                    <p>Extracting</p>{" "}
-                    <img
-                      src={loadingStatusGif}
-                      className="h-[30px] w-[30px] mx-1"
-                    ></img>
-                  </div>
-                )}
+                  props.status == "Extraction") &&
+                  props.success != "Success" && (
+                    <div className="flex items-center">
+                      {" "}
+                      <p>Extracting</p>{" "}
+                      <img
+                        src={loadingStatusGif}
+                        className="h-[30px] w-[30px] mx-1"
+                      ></img>
+                    </div>
+                  )}
                 {props.success == "Success" && (
                   <>
                     <span>Extracted</span>

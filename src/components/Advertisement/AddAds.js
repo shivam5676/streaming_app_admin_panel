@@ -14,7 +14,9 @@ const AddAds = () => {
   const AdsNameRef = useRef("");
   const AdsTypeRef = useRef("Banner");
   // const visibleRef = useRef(true);
+  const promotionalAdsContentRef = useRef("");
   const AdsPositionSessionTypeRef = useRef("firstTime");
+  const AdsSkipableAfter = useRef("3");
   const AdsPositionRef = useRef("/homePage");
   const handleAdsProvider = (e) => {
     setAdsProvider(e.target.value);
@@ -28,7 +30,15 @@ const AddAds = () => {
       visible: visible,
       position: AdsPositionRef.current.value,
       sessionType: AdsPositionSessionTypeRef.current.value,
+      ...(promotionalAdsContentRef.current?.files?.length > 0 && {
+        contentData: promotionalAdsContentRef?.current?.files[0],
+      }),
+      ...(AdsSkipableAfter?.current?.length > 0 && {
+        skipAfter: AdsSkipableAfter?.current?.value,
+      }),
     };
+    console.log(data);
+    return;
     try {
       const res = await axios.post(`${connectionString}/admin/addAds`, data, {
         headers: {
@@ -109,31 +119,58 @@ const AddAds = () => {
               </select>
             </div>
             {adsProvider !== "Google" && (
-              <div className="p-4 font-semibold w-[100%] ">
-                <p>
-                  Link Ads Content :<span className="text-red-500"> *</span>
+              <>
+                {" "}
+                <div className="p-4 font-semibold w-[100%] ">
+                  <p>
+                    Link Ads Content :<span className="text-red-500"> *</span>
+                    <select
+                      className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
+                      // onChange={handlePromotionalContentType}
+                    >
+                      <option
+                        className="px-2 bg-[#2E3648]"
+                        value="Image-upload"
+                      >
+                        By Image Upload:
+                      </option>
+                      <option className="px-2 bg-[#2E3648]" value="URL">
+                        By Video Upload:
+                      </option>
+                    </select>
+                  </p>
+                  <div className="my-4">
+                    {" "}
+                    <input
+                      className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
+                      ref={promotionalAdsContentRef}
+                      type="file"
+                    ></input>
+                  </div>{" "}
+                  {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+                </div>
+                <div className="p-4 font-semibold w-[100%] flex">
+                  <p className="flex items-center">
+                    {" "}
+                    Ads Skippable After :{" "}
+                    <span className="text-red-500"> *</span>
+                  </p>{" "}
                   <select
-                    className="bg-transparent mx-4 outline-none border-2 rounded px-2 py-1"
-                    // onChange={handlePromotionalContentType}
+                    className=" h-[40px] bg-[#2E3648] w-[50%]   px-4 outline-none text-white  rounded-md mx-2"
+                    // onChange={handleSliderTypeChange}
+                    ref={AdsPositionSessionTypeRef}
                   >
-                    <option className="px-2 bg-[#2E3648]" value="Image-upload">
-                      By Image Upload:
-                    </option>
-                    <option className="px-2 bg-[#2E3648]" value="URL">
-                      By Video Upload:
-                    </option>
+                    <option value={"3"}> 3s</option>
+                    {/*this will not click any things this willl only take and image of promotional conttnt*/}
+                    <option value={"5"}>5s</option>
+                    <option value={"10"}>10s</option>
+                    <option value={"15"}>15s</option>
+                    {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
+                    {/* <option value={"Redirection"}>Redirection(app section)</option>{" "} */}
+                    {/*this will  take an image and also a link for redirection to app and other things*/}
                   </select>
-                </p>
-                <div className="my-4">
-                  {" "}
-                  <input
-                    className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
-                    // ref={promotionalImageRef}
-                    type="file"
-                  ></input>
-                </div>{" "}
-                {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
-              </div>
+                </div>
+              </>
             )}
             {/* if user select Movies_shorts then this will dropdown all movies  from backend and  thier shorts will be  linked to the slide*/}
             <div className="p-4 font-semibold w-[100%] flex gap-6 flex-col xl:flex-row">
@@ -231,7 +268,7 @@ const AddAds = () => {
                     </option>
                     {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
                     {/* <option value={"Redirection"}>Redirection(app section)</option>{" "} */}
-                    {/*this will  take an image and also a link for redirection to app and othger things*/}
+                    {/*this will  take an image and also a link for redirection to app and other things*/}
                   </select>
                   <select
                     className=" h-[40px] bg-[#2E3648] w-[50%]  py-2 px-4 outline-none text-white  rounded-md my-2"

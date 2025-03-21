@@ -92,7 +92,7 @@ const AddMovies = () => {
     //   toast.error("please provide content language");
     //   return;
     // }
-    
+
     // console.log(
     //   LicenceExpiryDateRef.current.value,
     //   videoScreenRef.current.value
@@ -154,9 +154,7 @@ const AddMovies = () => {
             );
 
             if (percentage >= 100) {
-              setMessage(
-                "Extraction and trascoding is going on ...you can close tab and can do your other task"
-              );
+              setMessage("Extraction and trascoding is going on ...");
             }
           },
         }
@@ -166,8 +164,13 @@ const AddMovies = () => {
         dispatch(movieSliceACtion.addMovie(response.data.movieData));
       }
       setSuccessTick("Success");
-      setMessage("movie added successfully");
-      // toast.success("movie added successfully");
+      setMessage(
+        "trascoding completed ...you can close tab and can do other task ...shorts and other data will be saved in background"
+      );
+      // setMessage("movie added successfully");
+      toast.success(
+        "movie added successfully...shorts will be uploaded in background"
+      );
     } catch (err) {
       setSuccessTick("Error");
       if (err.response && err.response.data.msg)
