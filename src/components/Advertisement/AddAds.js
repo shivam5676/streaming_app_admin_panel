@@ -93,7 +93,7 @@ const AddAds = () => {
                 // ref={sliderTypeRef}
               >
                 <option value={"Google"}>Google Personlised Ads</option>
-                {/*this will not click any things this willl only take and image of promotional conttnt*/}
+                {/*this will not click any things this willl only take and image of promotional content*/}
                 <option value={"Custom"}>Custom Ads</option>
                 {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
                 {/* <option value={"Redirection"}>Redirection(app section)</option>{" "} */}
@@ -158,7 +158,7 @@ const AddAds = () => {
                   <select
                     className=" h-[40px] bg-[#2E3648] w-[50%]   px-4 outline-none text-white  rounded-md mx-2"
                     // onChange={handleSliderTypeChange}
-                    ref={AdsPositionSessionTypeRef}
+                    ref={AdsSkipableAfter}
                   >
                     <option value={"3"}> 3s</option>
                     {/*this will not click any things this willl only take and image of promotional conttnt*/}
