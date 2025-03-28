@@ -41,7 +41,12 @@ const AllAdmin = () => {
 
     try {
       const response = await axios.delete(
-        `${connectionString}/admin/deleteSliders/${id}`
+        `${connectionString}/admin/deleteSliders/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
       //   dispatch(sliderSliceACtion.deleteSlider(id));
       toast.success("movie deleted successfully");

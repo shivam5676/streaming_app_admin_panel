@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import RoutesInfoDiv from "./../commonComponents/RoutesInfoDiv";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const CreateAdmin = () => {
   const connectionString = process.env.REACT_APP_API_URL;
@@ -16,11 +17,18 @@ const CreateAdmin = () => {
         {
           name: titleRef.current.value,
           email: emailRef.current.value,
-          password: passwordRef.current.value,
-          confirmPassword: confirmPasswordRef.current.value,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         }
       );
-    } catch (err) {}
+      toast.success("admin added successfully .need to verify email for login")
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div

@@ -37,8 +37,8 @@ const AddAds = () => {
         skipAfter: AdsSkipableAfter?.current?.value,
       }),
     };
-    console.log(data);
-    return;
+    // console.log(data);
+    // return;
     try {
       const res = await axios.post(`${connectionString}/admin/addAds`, data, {
         headers: {
@@ -114,7 +114,7 @@ const AddAds = () => {
                 {/*this will not click any things this willl only take and image of promotional conttnt*/}
                 <option value={"interstitial "}>Full Screen Ads</option>
                 {/*this will play trailer on click when type will be equal to this and it will take a trailer video or link*/}
-                {/* <option value={"Redirection"}>Redirection(app section)</option>{" "} */}
+                {/* <option value={"Redirection"}>Redirection(app section)</option>  */}
                 {/*this will  take an image and also a link for redirection to app and othger things*/}
               </select>
             </div>
@@ -191,14 +191,14 @@ const AddAds = () => {
                 <div className="bg-[#2E3648] p-2">
                   {" "}
                   <p className="pb-2">
-                    Start time{" "}
+                    Start time
                     <ToolTip
                       ParaHeading={"Start Time -"}
                       content={
                         "From when you want to launch your Ads if you Add an ads today and put start time after 3 days then ads will be visible after 3 days on specific time  "
                       }
                       tipsContent={
-                        "leave Start time empty (no data & time) selected if you want to launch ads instantly"
+                        "leave Start time empty (Don`t select date & time) , if you want to launch ads instantly ..."
                       }
                     />
                   </p>
