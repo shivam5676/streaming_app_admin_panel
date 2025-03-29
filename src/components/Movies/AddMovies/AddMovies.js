@@ -35,7 +35,7 @@ const AddMovies = () => {
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const languageRef = useRef();
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
-
+  const shortDeductionPointsRef = useRef(0);
   const [trailerType, setTrailerType] = useState("Upload");
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
   // let thumbNail = null;
@@ -121,6 +121,7 @@ const AddMovies = () => {
     formdata.append("language", JSON.stringify(languageRef.current) || []);
     formdata.append("screenType", videoScreenRef.current.value);
     formdata.append("licenseExpiryDate", LicenceExpiryDateRef.current.value);
+    formdata.append("eachShortsPoint", shortDeductionPointsRef.current.value);
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -357,7 +358,7 @@ const AddMovies = () => {
                   <p>Video Screen</p>
 
                   <select
-                    className="w-full h-[30px] bg-[#2E3648] px-2 outline-none text-white rounded-md my-2"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 py-0  outline-none text-white rounded-md"
                     ref={videoScreenRef}
                   >
                     <option value={"Horizontal"}>Horizontal</option>
@@ -426,6 +427,18 @@ const AddMovies = () => {
                   )}
                 </div>
                 {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
+              </div>
+              {console.log(shortDeductionPointsRef.current)}
+              <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                <p>Shorts Deduction (mints)</p>
+                <input
+                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                  placeholder="Points deduction for each shorts"
+                  ref={shortDeductionPointsRef}
+                  type="number"
+                  min={0}
+                  defaultValue={shortDeductionPointsRef.current.value}
+                ></input>
               </div>
             </div>
           </div>

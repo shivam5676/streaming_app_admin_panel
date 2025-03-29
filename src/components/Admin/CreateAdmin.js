@@ -24,10 +24,9 @@ const CreateAdmin = () => {
           },
         }
       );
-      toast.success("admin added successfully .need to verify email for login")
-      console.log(response);
+      toast.success("admin added successfully .need to verify email for login");
     } catch (err) {
-      console.log(err);
+      toast.error("Something went wrong while adding admin ...");
     }
   };
   return (
@@ -64,20 +63,7 @@ const CreateAdmin = () => {
               ref={emailRef}
             ></input>
           </div>
-          <div className="w-[100%] flex justify-start text-[.9rem] font-semibold p-2">
-            <label className="w-[100px]">Password :</label>
-            <input
-              className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
-              ref={passwordRef}
-            ></input>
-          </div>
-          <div className="w-[100%] flex justify-start text-[.9rem] font-semibold p-2">
-            <label className="w-[100px]">confirm Password :</label>
-            <input
-              className="mx-2 px-2 py-1 border-gray-500 border rounded-md"
-              ref={confirmPasswordRef}
-            ></input>
-          </div>
+
           <button
             type="button"
             className="text-white mt-4 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
