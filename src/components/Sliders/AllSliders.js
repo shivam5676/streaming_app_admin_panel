@@ -73,7 +73,7 @@ const AllSliders = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Sliders"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Hero section"}
         currentDir={"All Sliders"}
       ></RoutesInfoDiv>
