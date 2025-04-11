@@ -648,8 +648,25 @@ const EditMovies = () => {
                       ></Skeleton>
                     </div>
                   )}
-                </div>
-                <div className="w-[80%] min-w-[100px]  flex-shrink-1">
+                </div>{" "}
+                <div className=" min-w-[60px]  flex-shrink-1">
+                  {shortsPreviewFromBackend.length > 0 ? (
+                    <p className="p-2">Deduct</p>
+                  ) : (
+                    <div className="p-2">
+                      <Skeleton
+                        variant="rounded"
+                        animation="wave"
+                        height={"30px"}
+                        width={"100%"}
+                        sx={{
+                          bgcolor: "purple.600",
+                        }}
+                      ></Skeleton>
+                    </div>
+                  )}
+                </div>{" "}
+                <div className="w-[80%] min-w-[70px]  flex-shrink-1">
                   {shortsPreviewFromBackend?.length > 0 ? (
                     <p className="p-2">Visible</p>
                   ) : (
@@ -733,24 +750,33 @@ const EditMovies = () => {
                         {current !== "Ads" &&
                         current?.name != "Personalised Ads" ? (
                           <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
-                            <div className="w-[80px] flex-shrink-0">
-                              <img
-                                // src={`${connectionString}/thumbnails${current.fileLocation.replace(
-                                //   "uploads/thumbnail",
-                                //   ""
-                                // )}`}
-                                className=" h-[80px] w-[100px] p-2"
-                              ></img>
+                            <div className="min-w-[120px] w-[100%] flex items-center flex-shrink-1">
+                              <div className="w-[80px] flex-shrink-0">
+                                <img
+                                  // src={`${connectionString}/thumbnails${current.fileLocation.replace(
+                                  //   "uploads/thumbnail",
+                                  //   ""
+                                  // )}`}
+                                  className=" h-[80px] w-[100px] p-2"
+                                ></img>
+                              </div>
+                              <p className="p-2 w-full">{current?.name}</p>
                             </div>
-                            <div className="min-w-[120px] w-[100%]  flex-shrink-1">
-                              <p className="p-2">{current?.name}</p>
-                            </div>
-                            <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                            <div className="w-[80%] min-w-[100px] flex-shrink-1 flex items-center">
                               <p className="p-2 break-words">
                                 {current?.views}
                               </p>
                             </div>{" "}
-                            <div className="w-[80%] min-w-[100px] flex-shrink-1">
+                            <div className=" min-w-[60px]  flex-shrink-1">
+                              <p
+                                className="p-2 w-full border rounded-md"
+                                contentEditable={true}
+                              >
+                                1
+                              </p>
+                              {/* <input></input> */}
+                            </div>
+                            <div className="w-[80%] min-w-[70px]  flex-shrink-1">
                               <p className="p-2 break-words">
                                 {current?.visible ? "true" : "false"}
                               </p>

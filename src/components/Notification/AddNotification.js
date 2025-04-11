@@ -35,7 +35,7 @@ const AddNotification = () => {
           endDate: endDateRef.current.value,
         }
       );
-      toast.success("NOTIFICATION aDDED SUCCESSFULLY");
+      toast.success("NOTIFICATION ADDED SUCCESSFULLY");
     } catch (err) {
       console.log(err);
       if (err.response && err.response.data.msg) {
