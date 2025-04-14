@@ -4,37 +4,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { sliderSliceACtion } from "../../store/sliderSlice";
 
-import CreateAdmin from "./CreateAdmin";
+// import CreateAdmin from "./CreateAdmin";
 import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 
-const AllAdmin = () => {
+const AllSubscriptionPlan = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   const connectionString = process.env.REACT_APP_API_URL;
-  const [allAdmin, setAllAdmin] = useState([]);
+  const [allPackages, setAllPackages] = useState([]);
   const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
   const dispatch = useDispatch();
   //   const allSliders = useSelector((state) => state.sliderData);
 
   useEffect(() => {
-    if (allAdmin.length === 0) {
+    if (allPackages.length === 0) {
       (async () => {
         try {
-          const res = await axios.get(`${connectionString}/admin/allAdmin`, {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          });
+          const res = await axios.get(
+            `${connectionString}/admin/allSubscriptionPlan`,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
           console.log(res.data);
-          if (res.data.AdminList) {
-            setAllAdmin(res.data.AdminList);
+          if (res.data.subscriptionPlans) {
+            setAllPackages(res.data.subscriptionPlans);
           }
         } catch (err) {
           console.log(err);
         }
       })();
     }
-  }, [allAdmin, dispatch]);
-  
+  }, [allPackages, dispatch]);
+
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
     console.log(action);
@@ -51,22 +54,11 @@ const AllAdmin = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <div className="flex justify-between items-center">
         <RoutesInfoDiv
-          mainHeading={"All Admin"}
-          websiteName={"Reelies"}
+          mainHeading={"All Packages"}
+          websiteName={"Reeloid"}
           sectionName={"Users section"}
-          currentDir={"All Admin"}
+          currentDir={"All Packages"}
         ></RoutesInfoDiv>
-
-        <div
-          onClick={() => {
-            setOpenCreateAdmin(!openCreateAdmin);
-          }}
-          class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-blue-500 hover:text-white bg-gray-800 rounded-lg group border border-blue-500"
-        >
-          <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-blue-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
-          <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-          <span class="relative font-bold">Add Admin</span>
-        </div>
       </div>
 
       <section className="w-[100%]">
@@ -107,25 +99,17 @@ const AllAdmin = () => {
                 <div className="w-[90px]  flex-shrink-0">
                   <p className="p-2">action</p>
                 </div>
-                <div className="w-[100px]  flex-shrink-0">
-                  <p className="p-2">Profile Pic</p>
-                </div>
+
                 <div className="w-[100%]  min-w-[120px] flex-shrink-1">
-                  <p className="p-2">Name</p>
+                  <p className="p-2">Price (Inr)</p>
                 </div>
                 <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Email</p>
-                </div>
-                <div className="w-[100%] min-w-[100px]  flex-shrink-1">
-                  <p className="p-2">Contact no</p>
-                </div>
-                <div className="w-[80px]  flex-shrink-0">
-                  <p className="p-2">status</p>
+                  <p className="p-2">Mints</p>
                 </div>
               </div>
               {/* items */}
-              {allAdmin.length > 0 &&
-                allAdmin.map((current, index) => (
+              {allPackages.length > 0 &&
+                allPackages.map((current, index) => (
                   <div className="font-normal flex my-2  border-b border-gray-500">
                     <div className="w-[50px] p-2  flex-shrink-0">
                       <p className="p-2">{index + 1}</p>
@@ -148,46 +132,12 @@ const AllAdmin = () => {
                         <option value="DELETE">DELETE</option>
                       </select>
                     </div>
-                    <div className="w-[100px] flex-shrink-0">
-                      <img
-                        // src={`${connectionString}/thumbnails${current.fileLocation.replace(
-                        //   "uploads/thumbnail",
-                        //   ""
-                        // )}`}
-                        className=" h-[120px] w-[100px] p-2"
-                      ></img>
-                    </div>
                     <div className="w-[100%]   min-w-[120px] flex-shrink-1">
-                      <p className="p-2">{current.name}</p>
+                      <p className="p-2">{current.Price}</p>
                     </div>
                     <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      {console.log(current, "cu---------")}
-                      <p className="p-2 break-words">
-                        {current.email}{" "}
-                        {/* {current.genre.map((currentIndex) => {
-                          return <span>{`${currentIndex.name} | `}</span>;
-                        })} */}
-                      </p>
+                      <p className="p-2 break-words">{current.Quantity} </p>
                     </div>{" "}
-                    <div className="w-[100%] min-w-[100px] flex-shrink-1">
-                      <p className="p-2 break-words">
-                        {current.contact}
-                        {/* {current.layouts.map((currentIndex) => {
-                          return <span>{currentIndex.name}</span>;
-                        })} */}
-                      </p>
-                    </div>
-                    <div className="w-[80px]  flex-shrink-0">
-                      {!current.visible ? (
-                        <p className="px-2 py-1 font-semibold bg-red-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                          Not published
-                        </p>
-                      ) : (
-                        <p className="px-2 py-1 font-semibold bg-green-500 rounded-md text-white text-[.8rem] flex justify-center text-center">
-                          Published
-                        </p>
-                      )}
-                    </div>
                   </div>
                 ))}
             </div>
@@ -205,9 +155,9 @@ const AllAdmin = () => {
           </div>
         </div>
       </section>
-      {openCreateAdmin && <CreateAdmin />}
+      {/* {openCreateAdmin && <CreateAdmin />} */}
     </div>
   );
 };
 
-export default AllAdmin;
+export default AllSubscriptionPlan;

@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import DragNDropImage from "../commonComponents/DragNDropImage";
-import LayoutSelector from "../commonComponents/layoutSelector";
+import DragNDropImage from "../../commonComponents/DragNDropImage";
+import LayoutSelector from "../../commonComponents/layoutSelector";
 import axios from "axios";
-import dragNDropVideos from "../commonComponents/dragNDropVideos";
-import DragNDropVideos from "../commonComponents/dragNDropVideos";
+import dragNDropVideos from "../../commonComponents/dragNDropVideos";
+import DragNDropVideos from "../../commonComponents/dragNDropVideos";
 import { FaTrash } from "react-icons/fa";
-import GenreSelector from "../commonComponents/genreSelector";
+import GenreSelector from "../../commonComponents/genreSelector";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@mui/material";
-import LanguageSelector from "../commonComponents/LanguageSelector";
-import personalisedAds from "../../assests/personalise_Ads.jpg";
+import LanguageSelector from "../../commonComponents/LanguageSelector";
+import personalisedAds from "../../../assests/personalise_Ads.jpg";
 import { ReactSortable } from "react-sortablejs";
 
 import { CgMenuOreos } from "react-icons/cg";
@@ -18,8 +18,9 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import {
   changeShortsSequence,
   doActionTask,
-} from "../../Api/EditMovies/shortsActionTask";
-import RoutesInfoDiv from "./../commonComponents/RoutesInfoDiv";
+} from "../../../Api/EditMovies/shortsActionTask";
+import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
+import ShortsTableHeaders from "./shortsTableHeaders";
 
 const EditMovies = () => {
   const params = useParams();
@@ -48,10 +49,11 @@ const EditMovies = () => {
   const genre = [];
 
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
-  // let thumbNail = null;
+
   const freeVideosRef = useRef();
   const visibleRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
+  const deductableShortsPoints = {};
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -63,15 +65,14 @@ const EditMovies = () => {
           },
         }
       );
-      console.log(response.data.movieData, ".....");
-      // return
+
       if (
         response.data.movieData &&
         Object.values(response.data.movieData).length > 0
       ) {
         setAllData(response.data.movieData);
         setTrailerPresent(response?.data?.movieData?.trailerUrl);
-        // setLanguages(response?.data?.movieData?.language || []);
+
         setThumbNailFromBackendPreview(
           response.data.movieData.fileLocation.replace("uploads/thumbnail", "")
         );
@@ -93,12 +94,11 @@ const EditMovies = () => {
 
     fetchMovie();
   }, []);
-  console.log("render", AllData.trailerUrl);
+
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
   };
   const addMoviesHandler = async () => {
-    console.log(genreRef.current);
     if (!thumbnailUrlPreview && !thumbnailFromBackendPreview) {
       toast.error("please upload thumbnail");
       return;
@@ -108,7 +108,6 @@ const EditMovies = () => {
     if (thumbnailUrlPreview) {
       formdata.append("thumbnail", thumbnailRef.current);
     }
-    // formdata.append();
 
     videoFiles.forEach((current) => formdata.append("shorts", current));
     formdata.append("title", titleRef.current.value);
@@ -138,18 +137,13 @@ const EditMovies = () => {
   const selectionHandler = (value) => {
     console.log(value);
     layOutArrayRef.current = value;
-    // console.log(layOutArray);
-    // setLanguages((prev) => [...prev, value]);
   };
   const GenreHandler = (value) => {
-    // console.log(value);
     genreRef.current = value;
-    // console.log(layOutArray);
   };
   const getThumbnail = (thumbnail) => {
-    console.log(thumbnail);
     thumbnailRef.current = thumbnail;
-    // console.log(thumbnailRef)
+
     if (thumbnail != null) {
       const objectUrlCreation = URL.createObjectURL(thumbnail);
       console.log(objectUrlCreation);
@@ -345,11 +339,27 @@ const EditMovies = () => {
           return "Ads";
         }
       });
-
-      changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
+      try {
+        changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
+      } catch (error) {}
     } else if (action === "Delete Shorts") {
       console.log("Delete shorts");
+    } else if (action === "Points Deduction") {
+      try {
+        doActionTask("/admin/setShortspoints", deductableShortsPoints);
+      } catch (error) {}
+
+      // console.log("Points Deduction", deductableShortsPoints);
     }
+  };
+  const shortsDeductionPointsSetter = (id, deductablePoints) => {
+    // console.log(id,event);
+    // deductableShortsPoints.push({ id, deductablePoints });
+    if (isNaN(deductablePoints)) {
+      toast.error("only numerical value");
+      return;
+    }
+    deductableShortsPoints[id] = deductablePoints;
   };
   return (
     <>
@@ -502,7 +512,7 @@ const EditMovies = () => {
                           className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
                           ref={moviesTrailerVideoLinkRef}
                           // type="file"
-                          placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                          placeholder="Enter the Url address of Image eg...(https://reeloid.app/image.jpg)"
                         ></input>
                       )}
                     </div>{" "}
@@ -567,140 +577,27 @@ const EditMovies = () => {
                 >
                   Delete Shorts
                 </option>
-                <option
-                  value="Enable"
-                  selected={selectedAction === "Enable/Disable"}
-                >
+                <option value="Enable" selected={selectedAction === "Enable"}>
                   Enable
                 </option>
-                <option value="Disable">Disable</option>
+                <option value="Disable" selected={selectedAction === "Disable"}>
+                  Disable
+                </option>
+                <option
+                  value="Points Deduction"
+                  selected={selectedAction === "Points Deduction"}
+                >
+                  Points Deduction
+                </option>
               </select>
             </div>
             {/* <div className="bg-gray-500 w-full h-28 items-center flex justify-center">
             upload movie here
           </div> */}
             <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
-              <div className="font-semibold flex border-b pb-2 text-[#A8B2BC] border-gray-500 px-2">
-                <div className="w-[50px] flex-shrink-0">
-                  {shortsPreviewFromBackend.length > 0 ? (
-                    <p className="p-2">sr</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>
-                <div className="w-[90px] flex-shrink-0">
-                  {shortsPreviewFromBackend.length > 0 ? (
-                    <p className="p-2">Action</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-[120px] w-[100%]  flex-shrink-1">
-                  {shortsPreviewFromBackend.length > 0 ? (
-                    <p className="p-2">Name</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>
-                <div className="w-[80%] min-w-[100px]  flex-shrink-1">
-                  {shortsPreviewFromBackend.length > 0 ? (
-                    <p className="p-2">Views</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>{" "}
-                <div className=" min-w-[60px]  flex-shrink-1">
-                  {shortsPreviewFromBackend.length > 0 ? (
-                    <p className="p-2">Deduct</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>{" "}
-                <div className="w-[80%] min-w-[70px]  flex-shrink-1">
-                  {shortsPreviewFromBackend?.length > 0 ? (
-                    <p className="p-2">Visible</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>
-                <div className="w-[80px]   flex-shrink-0">
-                  {shortsPreviewFromBackend?.length > 0 ? (
-                    <p className="p-2">Preview</p>
-                  ) : (
-                    <div className="p-2">
-                      <Skeleton
-                        variant="rounded"
-                        animation="wave"
-                        height={"30px"}
-                        width={"100%"}
-                        sx={{
-                          bgcolor: "purple.600",
-                        }}
-                      ></Skeleton>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <ShortsTableHeaders
+                shortsPreviewFromBackend={shortsPreviewFromBackend}
+              ></ShortsTableHeaders>
               {/* if sequence changer is diabled then we will show this else we will show react sortable screen changer */}
               <ReactSortable
                 list={shortsPreviewFromBackend.map((_, index) => ({
@@ -770,9 +667,22 @@ const EditMovies = () => {
                             <div className=" min-w-[60px]  flex-shrink-1">
                               <p
                                 className="p-2 w-full border rounded-md"
-                                contentEditable={true}
+                                contentEditable={
+                                  selectedAction == "Points Deduction"
+                                }
+                                onInput={(e) => {
+                                  if (isNaN(e.target.textContent)) {
+                                    toast.error("only numerical value");
+                                    e.target.textContent = "";
+                                    return;
+                                  }
+                                  shortsDeductionPointsSetter(
+                                    current._id,
+                                    e.target.textContent
+                                  );
+                                }}
                               >
-                                1
+                                {current?.deductionPoints || 0}
                               </p>
                               {/* <input></input> */}
                             </div>

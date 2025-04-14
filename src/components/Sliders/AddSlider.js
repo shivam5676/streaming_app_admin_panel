@@ -90,12 +90,12 @@ const AddSlider = () => {
       const response = await addSliderApi(formdata);
 
       dispatch(sliderSliceACtion.addSlider(response.data));
-      setSuccessTick("success");
+      setSuccessTick("Success");
       setMessage("Slider successfully Created");
       toast.success("slider added successfully");
     } catch (err) {
       console.log(err);
-      setSuccessTick("error");
+      setSuccessTick("Error");
       if (err?.response && err?.response?.data?.msg) {
         setMessage(err?.response?.data?.msg);
       } else {
@@ -124,6 +124,7 @@ const AddSlider = () => {
           }}
           success={successTick}
           message={message}
+          uploadingPercentage={100}
         />
       )}
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">

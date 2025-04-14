@@ -42,13 +42,13 @@ const AddLayout = (req, res, next) => {
 
       if (response.data.layoutResponse) {
         dispatch(layoutSliceACtion.addLayout(response.data.layoutResponse));
-        setSuccessTick("success");
+        setSuccessTick("Success");
         setMessage("layout added successfully");
         toast.success("layout added successfully");
       }
     } catch (err) {
       console.log(err);
-      setSuccessTick("error");
+      setSuccessTick("Error");
       if (err.response && err.response.data.msg){
         setMessage(err.response.data.msg);
       }
@@ -71,6 +71,7 @@ const AddLayout = (req, res, next) => {
           }}
           success={successTick}
           message={message}
+          uploadingPercentage={100}
         />
       )}
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">

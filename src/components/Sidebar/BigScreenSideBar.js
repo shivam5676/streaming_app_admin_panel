@@ -430,22 +430,59 @@ const BigScreenSideBar = (props) => {
             <p className="text-[.9rem] px-4 font-semibold">Admin</p>
           </div>
         </div>
-        <div
-          className={` hover:text-white  ${
-            selectedTheme == "modern reeloid"
-              ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
-              : "hover:bg-[#2F374A]"
-          }  cursor-pointer`}
-          onClick={() => {
-            navigate("/addPackage");
-          }}
-        >
-          <div className="mx-4 h-[50px] flex items-center">
-            {/* <GrUserSettings className="h-[20px] w-[20px]" /> */}
-            <MdOutlineSubscriptions className="h-[20px] w-[20px]" />
 
-            <p className="text-[.9rem] px-4 font-semibold">Package Plan</p>
+        <div>
+          <div
+            className={` hover:text-white  ${
+              selectedTheme == "modern reeloid"
+                ? "hover:bg-[#FEBD59]/70 hover:backdrop-blur-md"
+                : "hover:bg-[#2F374A]"
+            }  cursor-pointer`}
+            onClick={() => {
+              currentMenuOpen == "Package Section"
+                ? currentMenuHandler(null)
+                : currentMenuHandler("Package Section");
+            }}
+          >
+            <div className="mx-4 h-[50px] flex items-center justify-between">
+              <div className="flex">
+                {" "}
+                <MdOutlineSubscriptions className="h-[20px] w-[20px]" />
+                <p className="text-[.9rem] px-4 font-semibold">
+                  Package Section
+                </p>
+              </div>
+              {currentMenuOpen == "Ads Section" ? (
+                <MdArrowDropUp className="h-[25px] w-[25px]" />
+              ) : (
+                <MdArrowDropDown className="h-[25px] w-[25px]" />
+              )}
+            </div>
           </div>
+          {currentMenuOpen == "Package Section" && (
+            <div className="text-[.85rem] text-white">
+              <div
+                className="flex h-[40px] items-center cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/addPackage");
+                }}
+              >
+                <MdOutlineAddToQueue className="mx-2" />
+                <p>Add Package</p>
+              </div>
+
+              <div
+                className="flex h-[40px] items-center  cursor-pointer ps-12"
+                onClick={() => {
+                  navigate("/allPackages");
+                }}
+              >
+                <LuLayoutList className="mx-2" />
+
+                <p>All Packages (mints plan)</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
       <section>

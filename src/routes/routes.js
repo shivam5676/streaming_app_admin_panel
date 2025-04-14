@@ -8,14 +8,11 @@ import AllAdmin from "../components/Admin/AllAdmin";
 import AllGenreList from "../components/Genres/AllGenreList";
 import AllLAyout from "../components/Layouts/AllLAyout";
 
-
-
 import Analytics from "../components/Analytics/Analytics";
-
 
 import DashBoard from "../components/dashboard/DashBoard";
 import EditLayout from "../components/Layouts/EditLayout";
-import EditMovies from "../components/Movies/editMovie";
+// import EditMovies from "../components/Movies/editMovie";
 
 import LanguageList from "../components/Language/LanguageLIst";
 import UserDetails from "../components/Users/UserDetails";
@@ -28,6 +25,8 @@ import AllUsers from "../components/Users/AllUSers";
 import CheckedInAllotement from "../components/Checked-In-Points/CheckedInAllotement";
 import CreateAdmin from "../components/Admin/CreateAdmin";
 import EdducationQuestionGenerator from "../components/QuestionGenerator/educationQuestionGenerator";
+import EditMovies from "../components/Movies/editmovies/editMovie";
+import AllSubscriptionPlan from "../components/subscription/AllSubscriptionPlan";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -46,6 +45,7 @@ export const routes = [
   { path: "/userDetails/:uid", element: <UserDetails /> },
   { path: "/CheckedPoints/", element: <CheckedInAllotement /> },
   { path: "/allAdmin/", element: <AllAdmin /> },
+
   { path: "/createAdmin/", element: <CreateAdmin /> },
   { path: "/Analytics/", element: <Analytics /> },
   { path: "/addAds/", element: <AddAds /> },
@@ -53,5 +53,6 @@ export const routes = [
   { path: "/addNotification", element: <AddNotification /> },
   { path: "/allNotification", element: <AllNotification /> },
   { path: "/addPackage", element: <AddSubscriptionPlan /> },
+  { path: "/allpackages", element: <AllSubscriptionPlan /> },
   { path: "*", element: <DashBoard /> },
 ];
