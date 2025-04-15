@@ -14,7 +14,7 @@ const AllUsers = () => {
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
 
-  const [limit, setlimit] = useState(1);
+  const [limit, setlimit] = useState(10);
   const [start, setStart] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({

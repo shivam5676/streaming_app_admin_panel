@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const CreateAdmin = () => {
+const CreateAdmin = ({setOpenCreateAdmin}) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const titleRef = useRef();
   const emailRef = useRef();
@@ -41,7 +41,7 @@ const CreateAdmin = () => {
         <button
           type="button"
           className="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center"
-          // onClick={props.closeModal}
+          onClick={()=>setOpenCreateAdmin(false)}
         >
           <IoMdClose className="w-[20px] h-[20px]" />
         </button>
