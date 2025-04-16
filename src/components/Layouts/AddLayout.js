@@ -77,7 +77,7 @@ const AddLayout = (req, res, next) => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
         <RoutesInfoDiv
           mainHeading={"Add Layout"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Layout section"}
           currentDir={"Add Layout"}
         ></RoutesInfoDiv>

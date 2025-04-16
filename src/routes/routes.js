@@ -27,6 +27,7 @@ import CreateAdmin from "../components/Admin/CreateAdmin";
 import EdducationQuestionGenerator from "../components/QuestionGenerator/educationQuestionGenerator";
 import EditMovies from "../components/Movies/editmovies/editMovie";
 import AllSubscriptionPlan from "../components/subscription/AllSubscriptionPlan";
+import Error from "../components/Error/Error";
 
 export const routes = [
   { path: "/addMovies", element: <AddMovies /> },
@@ -54,5 +55,6 @@ export const routes = [
   { path: "/allNotification", element: <AllNotification /> },
   { path: "/addPackage", element: <AddSubscriptionPlan /> },
   { path: "/allpackages", element: <AllSubscriptionPlan /> },
-  { path: "*", element: <DashBoard /> },
+  { path: "/", element: <DashBoard /> },
+  // { path: "/error/:redirectUrl", element: <Error message={"User Not Authorised"} statusCode={401} /> },
 ];

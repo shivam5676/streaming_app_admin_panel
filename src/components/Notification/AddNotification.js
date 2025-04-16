@@ -49,7 +49,7 @@ const AddNotification = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
       <RoutesInfoDiv
         mainHeading={"Add Notification"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Notification section"}
         currentDir={"Add Notification"}
       ></RoutesInfoDiv>

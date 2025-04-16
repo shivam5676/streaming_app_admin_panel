@@ -14,7 +14,7 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
             <div className="w-[90px] text-white font-semibold flex-shrink-0">
               <select
                 className="bg-[#3C445A] rounded-sm p-2"
-                onChange={(event) => handleSelectChange(current._id, event)}
+                onChange={(event) => handleSelectChange(current._id, event, current.name)}
               >
                 <option
                   value=""

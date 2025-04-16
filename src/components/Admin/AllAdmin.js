@@ -62,8 +62,8 @@ const AllAdmin = () => {
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
-    if (action === "DELETE") {
-      deleteSliderHandler(id);
+    if (action === "DISABLE") {
+      // deleteSliderHandler(id);
     } else if (action === "EDIT") {
       // navigate(`/allLayout/${id}`);
     }
@@ -77,7 +77,7 @@ const AllAdmin = () => {
       <div className="flex justify-between items-center">
         <RoutesInfoDiv
           mainHeading={"All Admin"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Users section"}
           currentDir={"All Admin"}
         ></RoutesInfoDiv>
@@ -182,7 +182,7 @@ const AllAdmin = () => {
                           option
                         </option>
                         <option value="EDIT">EDIT</option>
-                        <option value="DELETE">DELETE</option>
+                        <option value="DELETE">DISABLE</option>
                       </select>
                     </div>
                     <div className="w-[100px] flex-shrink-0">

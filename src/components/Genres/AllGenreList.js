@@ -84,7 +84,7 @@ const AllGenreList = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Genres"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Others"}
         currentDir={"Genres"}
       />
@@ -95,7 +95,7 @@ const AllGenreList = () => {
           ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <p>Show </p>
                   <select className="bg-[#2E3648] text-[#959db6] mx-2 px-4 py-1  font-normal">
                     <option>10</option>
@@ -103,7 +103,7 @@ const AllGenreList = () => {
                     <option>10</option>
                   </select>
                   <p>results </p>
-                </div>
+                </div> */}
                 <div className="flex items-center">
                   {/* <p>search : </p>
                   <input

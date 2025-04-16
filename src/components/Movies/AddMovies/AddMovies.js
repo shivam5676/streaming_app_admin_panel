@@ -282,7 +282,7 @@ const AddMovies = () => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2 customScrollbar">
         <RoutesInfoDiv
           mainHeading={"Add Movies"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Movies section"}
           currentDir={"Add Movies"}
         ></RoutesInfoDiv>
@@ -422,7 +422,7 @@ const AddMovies = () => {
                       className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
                       ref={moviesTrailerVideoLinkRef}
                       // type="file"
-                      placeholder="Enter the Url address of Image eg...(https://reelies.com/image.jpg"
+                      placeholder="Enter the Url address of Image eg...(https://Reeloid.com/image.jpg"
                     ></input>
                   )}
                 </div>

@@ -4,7 +4,7 @@ import { layoutSliceACtion } from "../../store/layoutSlice";
 import { useDispatch } from "react-redux";
 import { deleteLayoutsApi } from "../../Api/Layouts/layoutApi";
 
-const AllLAyoutPrint = ({ allLayouts }) => {
+const AllLAyoutPrint = ({ allLayouts, handleSelectChange }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const deleteLayoutHandler = async (id) => {
@@ -21,18 +21,18 @@ const AllLAyoutPrint = ({ allLayouts }) => {
       toast.error("something went wrong");
     }
   };
-  const handleSelectChange = (id, event) => {
-    const action = event.target.value;
-    console.log(action);
-    // Reset the select value after handling the event to ensure proper re-rendering
-    event.target.value = ""; // Reset the value to ensure change is recognized next time
+  // const handleSelectChange = (id, event, name) => {
+  //   const action = event.target.value;
+  //   console.log(action);
+  //   // Reset the select value after handling the event to ensure proper re-rendering
+  //   event.target.value = ""; // Reset the value to ensure change is recognized next time
 
-    if (action === "DELETE") {
-      deleteLayoutHandler(id);
-    } else if (action === "EDIT") {
-      navigate(`/allLayout/${id}`);
-    }
-  };
+  //   if (action === "DELETE") {
+  //     deleteLayoutHandler(id);
+  //   } else if (action === "EDIT") {
+  //     navigate(`/allLayout/${id}`);
+  //   }
+  // };
   return (
     <>
       <div className="mx-4 font-normal text-[.9rem] min-w-[768px]">
@@ -62,7 +62,7 @@ const AllLAyoutPrint = ({ allLayouts }) => {
               <div className="w-[90px] text-white font-semibold flex-shrink-0">
                 <select
                   className="bg-[#3C445A] rounded-sm p-2"
-                  onChange={(event) => handleSelectChange(current._id, event)}
+                  onChange={(event) => handleSelectChange(current._id, event, current.name)}
                 >
                   <option
                     value=""

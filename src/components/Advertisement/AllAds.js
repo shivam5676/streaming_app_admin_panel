@@ -62,7 +62,7 @@ const AllAds = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Ads"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Ads section"}
         currentDir={"All Ads"}
       ></RoutesInfoDiv>

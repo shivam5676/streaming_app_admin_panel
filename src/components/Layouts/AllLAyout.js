@@ -11,6 +11,8 @@ import AllLAyoutPrint from "./AllLAyoutPrint";
 import { allLayoutsApi } from "../../Api/Layouts/layoutApi";
 import Pagination from "../commonComponents/pagination";
 import SearchAndSort from "../commonComponents/searchAndSort";
+import DeleteConfirm from "../Confirmation/DeleteConfirm";
+import { useNavigate } from "react-router-dom";
 
 const AllLAyout = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
@@ -24,6 +26,9 @@ const AllLAyout = () => {
     current: 0,
     limit: 0,
   });
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [layoutName, setLayoutName] = useState([]);
+    const navigate = useNavigate();
   const limitHandler = (data) => {
     setlimit(data);
     setStart(0);
@@ -49,11 +54,32 @@ const AllLAyout = () => {
     }
   }, [dispatch, limit, start, searchValue]);
 
+  const handleSelectChange = (id, event, name) => {
+    const action = event.target.value;
+    console.log(action);
+    setLayoutName(prev => [...prev, name])
+    // Reset the select value after handling the event to ensure proper re-rendering
+    event.target.value = ""; // Reset the value to ensure change is recognized next time
+
+    if (action === "DELETE") {
+      setConfirmDelete(true)
+      // deleteLayoutHandler(id);
+    } else if (action === "EDIT") {
+      navigate(`/allLayout/${id}`);
+    }
+  };
+    useEffect(()=>{
+      if(!confirmDelete){
+        setLayoutName([])
+      }
+    },[confirmDelete])
+    console.log(confirmDelete)
+
   return (
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Layouts"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Layout section"}
         currentDir={"All Layouts"}
       ></RoutesInfoDiv>
@@ -80,7 +106,7 @@ const AllLAyout = () => {
                 : "bg-[#2A3042] "
             } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
           >
-            <AllLAyoutPrint allLayouts={allLayouts} />
+            <AllLAyoutPrint allLayouts={allLayouts} handleSelectChange={handleSelectChange} />
           </div>
         </div>{" "}
         <Pagination
@@ -90,6 +116,13 @@ const AllLAyout = () => {
           }}
         />
       </section>
+      {confirmDelete && (
+        <DeleteConfirm
+          message={"Are you sure you want to delete Layout - "}
+          name={layoutName}
+          setConfirmDelete={setConfirmDelete}
+        />
+      )}
     </div>
   );
 };
