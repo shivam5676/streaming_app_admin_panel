@@ -211,6 +211,8 @@ const EditMovies = () => {
 
     setShortsPreviewFromBackend(newVideoFiles);
   };
+
+  
   // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
     return;
