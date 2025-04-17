@@ -5,7 +5,9 @@ import success from "../../assests/verified.gif";
 import { RxCross2 } from "react-icons/rx";
 import errorImg from "../../assests/broken-battery.gif";
 import loadingStatusGif from "../../assests/fileStatusLoader.gif";
+import { useNavigate } from "react-router-dom";
 const SavingLoaderModal = (props) => {
+  const navigate=useNavigate()
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 "
@@ -157,6 +159,9 @@ const SavingLoaderModal = (props) => {
                 } rounded-md shadow-md group`}
                 // style={{ textShadow: "2px 2px 8px #facc15" }}
                 onClick={() => {
+                  if (props.success == "Success" ){
+                    navigate(-1)
+                  }
                   props.closeModal();
                 }}
               >
