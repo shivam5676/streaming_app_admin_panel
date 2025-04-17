@@ -224,6 +224,7 @@ const EditMovies = () => {
   };
   console.log(shortsPreviewFromBackend);
   console.log(AllData, "alldata");
+
   // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
     const movieId = params.edit;
