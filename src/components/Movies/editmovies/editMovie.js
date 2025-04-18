@@ -24,6 +24,7 @@ import ShortsTableHeaders from "./shortsTableHeaders";
 import DeleteConfirm from "../../Confirmation/DeleteConfirm";
 
 const EditMovies = () => {
+  const shortDeductionPointsRef = useRef(0);
   const params = useParams();
   const [selectedIds, setSelectedIds] = useState([]);
   // console.log(params);
@@ -48,7 +49,8 @@ const EditMovies = () => {
   const genreRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const layOutArrayRef = useRef(); //contains multiple layout where we want to show our movies and related shorts
   const genre = [];
-
+  const videoScreenRef = useRef();
+  const LicenceExpiryDateRef = useRef();
   const thumbnailRef = useRef(); //contains object for thumbnail file ,initially it will be null
 
   const freeVideosRef = useRef();
@@ -120,6 +122,8 @@ const EditMovies = () => {
     formdata.append("genre", JSON.stringify(genreRef.current));
     formdata.append("language", JSON.stringify(languageRef.current));
     formdata.append("id", AllData._id);
+    formdata.append("screenType", videoScreenRef.current.value);
+    formdata.append("licenseExpiryDate", LicenceExpiryDateRef.current.value);
     try {
       const response = await axios.post(
         `${connectionString}/admin/editMovie`,
@@ -207,6 +211,8 @@ const EditMovies = () => {
 
     setShortsPreviewFromBackend(newVideoFiles);
   };
+
+  
   // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
     return;
@@ -223,6 +229,7 @@ const EditMovies = () => {
   };
   console.log(shortsPreviewFromBackend);
   console.log(AllData, "alldata");
+
   // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
     const movieId = params.edit;
@@ -456,6 +463,30 @@ const EditMovies = () => {
                   <option value={false}>No, will make it live later</option>
                 </select> */}
                 </div>
+              </div>{" "}
+              <div className="flex sm:flex-row flex-col">
+                <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                  <p>Licence Expiry</p>
+                  <input
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                    placeholder="Write here"
+                    ref={LicenceExpiryDateRef}
+                    type="date"
+                    defaultValue={AllData?.licenseExpiry}
+                  ></input>
+                </div>
+                <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                  <p>Video Screen</p>
+
+                  <select
+                    className="w-full h-[30px] bg-[#2E3648] p-4 py-0  outline-none text-white rounded-md"
+                    ref={videoScreenRef}
+                    defaultValue={AllData?.screenType}
+                  >
+                    <option value={"Horizontal"}>Horizontal</option>
+                    <option value={"Vertical"}>Vertical</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div className="bg-[#2A3042] flex-1  rounded-md text-white">
@@ -547,6 +578,17 @@ const EditMovies = () => {
                     {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
                   </div>
                 )}
+                <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
+                  <p>Shorts Deduction (mints)</p>
+                  <input
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                    placeholder="Points deduction for each shorts"
+                    ref={shortDeductionPointsRef}
+                    type="number"
+                    min={0}
+                    defaultValue={shortDeductionPointsRef.current.value}
+                  ></input>
+                </div>
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>
             </div>
@@ -641,23 +683,31 @@ const EditMovies = () => {
                               ></input>
                             )}
                         </div>
-                        <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                          <p
-                            className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
-                            onClick={() => {
-                              console.log("hello");
-                              // deleteVideoFromBackendHandler(
-                              //   current?.name === "Personalised Ads"
-                              //     ? { name: "Ads", index: index }
-                              //     : { name: "Video", id: current?._id }
-                              // );
+                        {current?.status == "finished" ? (
+                          <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
+                            <p
+                              className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
+                              onClick={() => {
+                                console.log("hello");
+                                // deleteVideoFromBackendHandler(
+                                //   current?.name === "Personalised Ads"
+                                //     ? { name: "Ads", index: index }
+                                //     : { name: "Video", id: current?._id }
+                                // );
                               setConfirmDelete(true)
                               setShortName(prev => [...prev, current.name])
-                            }}
-                          >
-                            Delete
-                          </p>
-                        </div>
+                              }}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
+                            <p className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer">
+                              Uploading
+                            </p>
+                          </div>
+                        )}
                         {current !== "Ads" &&
                         current?.name != "Personalised Ads" ? (
                           <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
