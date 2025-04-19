@@ -212,7 +212,6 @@ const EditMovies = () => {
     setShortsPreviewFromBackend(newVideoFiles);
   };
 
-  
   // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
     return;
@@ -321,7 +320,7 @@ const EditMovies = () => {
   }
   // let selectedIds = [];
   const multipleIdsHAndler = (id, name) => {
-    setShortName(prev => [...prev, name])
+    setShortName((prev) => [...prev, name]);
     // const idExist = selectedIds.find((current) => id === current);
 
     // if (!idExist) {
@@ -354,7 +353,7 @@ const EditMovies = () => {
         changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
       } catch (error) {}
     } else if (action === "Delete Shorts") {
-      setConfirmDelete(true)
+      setConfirmDelete(true);
       // setShortName("Selected Shorts")
       console.log("Delete shorts");
     } else if (action === "Points Deduction") {
@@ -365,12 +364,12 @@ const EditMovies = () => {
       // console.log("Points Deduction", deductableShortsPoints);
     }
   };
-    useEffect(()=>{
-      if(!confirmDelete){
-        setShortName([])
-        setSelectedAction("none")
-      }
-    },[confirmDelete])
+  useEffect(() => {
+    if (!confirmDelete) {
+      setShortName([]);
+      setSelectedAction("none");
+    }
+  }, [confirmDelete]);
   const shortsDeductionPointsSetter = (id, deductablePoints) => {
     // console.log(id,event);
     // deductableShortsPoints.push({ id, deductablePoints });
@@ -645,9 +644,7 @@ const EditMovies = () => {
                 </option>
               </select>
             </div>
-            {/* <div className="bg-gray-500 w-full h-28 items-center flex justify-center">
-            upload movie here
-          </div> */}
+
             <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
               <ShortsTableHeaders
                 shortsPreviewFromBackend={shortsPreviewFromBackend}
@@ -679,35 +676,37 @@ const EditMovies = () => {
                             current?.name != "Personalised Ads" && (
                               <input
                                 type="checkbox"
-                                onClick={() => multipleIdsHAndler(current?._id, current.name)}
+                                onClick={() =>
+                                  multipleIdsHAndler(current?._id, current.name)
+                                }
                               ></input>
                             )}
                         </div>
-                        {current?.status == "finished" ? (
-                          <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                            <p
-                              className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
-                              onClick={() => {
-                                console.log("hello");
-                                // deleteVideoFromBackendHandler(
-                                //   current?.name === "Personalised Ads"
-                                //     ? { name: "Ads", index: index }
-                                //     : { name: "Video", id: current?._id }
-                                // );
-                              setConfirmDelete(true)
-                              setShortName(prev => [...prev, current.name])
-                              }}
-                            >
-                              Delete
-                            </p>
-                          </div>
-                        ) : (
+
+                        <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
+                          <p
+                            className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
+                            onClick={() => {
+                              console.log("hello");
+                              // deleteVideoFromBackendHandler(
+                              //   current?.name === "Personalised Ads"
+                              //     ? { name: "Ads", index: index }
+                              //     : { name: "Video", id: current?._id }
+                              // );
+                              setConfirmDelete(true);
+                              setShortName((prev) => [...prev, current.name]);
+                            }}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                        {/* ) : (
                           <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
                             <p className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer">
                               Uploading
                             </p>
                           </div>
-                        )}
+                        )} */}
                         {current !== "Ads" &&
                         current?.name != "Personalised Ads" ? (
                           <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
