@@ -12,20 +12,30 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
               <p className="p-2">{index + 1}</p>
             </div>
             <div className="w-[90px] text-white font-semibold flex-shrink-0">
-              <select
-                className="bg-[#3C445A] rounded-sm p-2"
-                onChange={(event) => handleSelectChange(current._id, event)}
-              >
-                <option
-                  value=""
-                  // disabled
-                  className="border-b-2 border-gray-400"
+              {current?.status == "finished" ? (
+                <select
+                  className="bg-[#3C445A] rounded-sm p-2"
+                  onChange={(event) =>
+                    handleSelectChange(current._id, event, current.name)
+                  }
                 >
-                  option
-                </option>
-                <option value="EDIT">EDIT</option>
-                <option value="DELETE">DELETE</option>
-              </select>
+                  <option
+                    value=""
+                    // disabled
+                    className="border-b-2 border-gray-400"
+                  >
+                    option
+                  </option>
+                  <option value="EDIT">EDIT</option>
+                  <option value="DELETE">DELETE</option>
+                </select>
+              ) : (
+                <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
+                  <p className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer">
+                    Uploading
+                  </p>
+                </div>
+              )}
             </div>
             <div className="w-[100px] flex-shrink-0">
               <img
@@ -40,7 +50,6 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
               <p className="p-2">{current.name}</p>
             </div>
             <div className="w-[100%] min-w-[100px] flex-shrink-1">
-              
               <p className="p-2 break-words">
                 {" "}
                 {current.genre.map((currentIndex) => {

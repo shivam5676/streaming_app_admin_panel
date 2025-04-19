@@ -49,7 +49,7 @@ const Navbar = (props) => {
       ) : (
         <div className="flex flex-shrink-0 w-[70px] bg-[#2A3142]  text-white h-[100%] items-center justify-center">
           <img src={logoIcon} className="w-[40px] h-[50px]"></img>
-          {/* <p className="text-3xl font-semibold mx-2">Reelies </p> */}
+          {/* <p className="text-3xl font-semibold mx-2">Reeloid </p> */}
         </div>
       )}
       <div className="h-[100%] w-[100%] flex items-center justify-between pe-8">

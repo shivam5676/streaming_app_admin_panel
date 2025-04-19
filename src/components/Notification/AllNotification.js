@@ -78,7 +78,7 @@ const AllNotification = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Notification"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Notification section"}
         currentDir={"All Notification"}
       ></RoutesInfoDiv>

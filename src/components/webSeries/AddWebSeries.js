@@ -8,7 +8,7 @@ const AddWebSeries = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"Add Shows"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Web shows section"}
         currentDir={"Add Shows"}
       ></RoutesInfoDiv>

@@ -21,6 +21,7 @@ import {
 } from "../../../Api/EditMovies/shortsActionTask";
 import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
 import ShortsTableHeaders from "./shortsTableHeaders";
+import DeleteConfirm from "../../Confirmation/DeleteConfirm";
 
 const EditMovies = () => {
   const shortDeductionPointsRef = useRef(0);
@@ -56,6 +57,8 @@ const EditMovies = () => {
   const visibleRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
   const deductableShortsPoints = {};
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [shortName, setShortName] = useState([]);
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -208,6 +211,7 @@ const EditMovies = () => {
 
     setShortsPreviewFromBackend(newVideoFiles);
   };
+
   // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
     return;
@@ -315,14 +319,15 @@ const EditMovies = () => {
     setSelectedAction(event.target.value);
   }
   // let selectedIds = [];
-  const multipleIdsHAndler = (id) => {
-    const idExist = selectedIds.find((current) => id === current);
+  const multipleIdsHAndler = (id, name) => {
+    setShortName((prev) => [...prev, name]);
+    // const idExist = selectedIds.find((current) => id === current);
 
-    if (!idExist) {
-      setSelectedIds((prev) => [...prev, id]);
-    } else {
-      setSelectedIds((prev) => prev.filter((current) => current != id));
-    }
+    // if (!idExist) {
+    //   setSelectedIds((prev) => [...prev, id]);
+    // } else {
+    //   setSelectedIds((prev) => prev.filter((current) => current != id));
+    // }
   };
   console.log(selectedIds, "selecteddIds");
   const selectedActionPerform = async (action) => {
@@ -348,6 +353,8 @@ const EditMovies = () => {
         changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
       } catch (error) {}
     } else if (action === "Delete Shorts") {
+      setConfirmDelete(true);
+      // setShortName("Selected Shorts")
       console.log("Delete shorts");
     } else if (action === "Points Deduction") {
       try {
@@ -357,6 +364,12 @@ const EditMovies = () => {
       // console.log("Points Deduction", deductableShortsPoints);
     }
   };
+  useEffect(() => {
+    if (!confirmDelete) {
+      setShortName([]);
+      setSelectedAction("none");
+    }
+  }, [confirmDelete]);
   const shortsDeductionPointsSetter = (id, deductablePoints) => {
     // console.log(id,event);
     // deductableShortsPoints.push({ id, deductablePoints });
@@ -371,7 +384,7 @@ const EditMovies = () => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
         <RoutesInfoDiv
           mainHeading={"Edit Movie"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Movies section"}
           currentDir={"Edit Movie"}
         ></RoutesInfoDiv>
@@ -631,9 +644,7 @@ const EditMovies = () => {
                 </option>
               </select>
             </div>
-            {/* <div className="bg-gray-500 w-full h-28 items-center flex justify-center">
-            upload movie here
-          </div> */}
+
             <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
               <ShortsTableHeaders
                 shortsPreviewFromBackend={shortsPreviewFromBackend}
@@ -665,33 +676,37 @@ const EditMovies = () => {
                             current?.name != "Personalised Ads" && (
                               <input
                                 type="checkbox"
-                                onClick={() => multipleIdsHAndler(current?._id)}
+                                onClick={() =>
+                                  multipleIdsHAndler(current?._id, current.name)
+                                }
                               ></input>
                             )}
                         </div>
-                        {current?.status == "finished" ? (
-                          <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                            <p
-                              className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
-                              onClick={() => {
-                                console.log("hello");
-                                // deleteVideoFromBackendHandler(
-                                //   current?.name === "Personalised Ads"
-                                //     ? { name: "Ads", index: index }
-                                //     : { name: "Video", id: current?._id }
-                                // );
-                              }}
-                            >
-                              Delete
-                            </p>
-                          </div>
-                        ) : (
+
+                        <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
+                          <p
+                            className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
+                            onClick={() => {
+                              console.log("hello");
+                              // deleteVideoFromBackendHandler(
+                              //   current?.name === "Personalised Ads"
+                              //     ? { name: "Ads", index: index }
+                              //     : { name: "Video", id: current?._id }
+                              // );
+                              setConfirmDelete(true);
+                              setShortName((prev) => [...prev, current.name]);
+                            }}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                        {/* ) : (
                           <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
                             <p className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer">
                               Uploading
                             </p>
                           </div>
-                        )}
+                        )} */}
                         {current !== "Ads" &&
                         current?.name != "Personalised Ads" ? (
                           <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
@@ -833,6 +848,13 @@ const EditMovies = () => {
           </div>
         </div>
       </div>
+      {confirmDelete && (
+        <DeleteConfirm
+          message={"Are you sure you want to delete shorts - "}
+          name={shortName}
+          setConfirmDelete={setConfirmDelete}
+        />
+      )}
     </>
   );
 };

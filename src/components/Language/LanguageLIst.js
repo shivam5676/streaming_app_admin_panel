@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import AddLanguageModal from "./AddLanguageModal";
 import { languageSliceACtion } from "../../store/languageSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import Pagination from "../commonComponents/pagination";
 
 const LanguageList = () => {
   const selectedTheme = useSelector((state) => state.theme.selectedTheme);
@@ -16,31 +16,52 @@ const LanguageList = () => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const allLanguages = useSelector((state) => state.languageData);
+
+  const [pageMetaData, setPageMetaData] = useState({
+    totalPages: 0,
+    current: 0,
+    limit: 0,
+  });
+  const [limit, setlimit] = useState(10);
+  const [start, setStart] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+
   useEffect(() => {
     if (allLanguages.length == 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allLanguages`,{
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          });
+          const res = await axios.get(
+            `${connectionString}/admin/allLanguages?start=${start}&limit=${limit}&searched=${searchValue}`,
+            {
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            }
+          );
 
-          if (res.data.Languages) {
+          if (res.data) {
             Object.values(res.data.Languages).forEach((current) => {
               dispatch(languageSliceACtion.addLanguage(current));
             });
+            setPageMetaData({
+              totalPages: res.data.totalPages,
+              current: start,
+              limit: limit,
+              totalData: res.data.totalData,
+            });
+            console.log(pageMetaData);
           }
         })();
       } catch (err) {
         console.log(err);
       }
     }
-  }, [allLanguages, dispatch]);
+  }, [allLanguages, dispatch, limit, start, searchValue]);
   const deleteGenresHandler = async (id) => {
     try {
-      const response = await axios.delete(
-        `${connectionString}/admin/deleteLanguage/${id}`,{
+      const res = await axios.delete(
+        `${connectionString}/admin/deleteLanguage/${id}`,
+        {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -56,7 +77,7 @@ const LanguageList = () => {
   const closeModal = () => setIsModalOpen(false);
   const handleSelectChange = (id, event) => {
     const action = event.target.value;
-  
+
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
@@ -81,8 +102,13 @@ const LanguageList = () => {
       <section className="w-[100%]">
         {" "}
         <div className="flex gap-6 flex-col xl:flex-row">
-        <div className={`max-[690px]:overflow-auto ${ selectedTheme === "modern reeloid"
-          ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
+          <div
+            className={`max-[690px]:overflow-auto ${
+              selectedTheme === "modern reeloid"
+                ? "bg-black/40 backdrop-blur-lg "
+                : "bg-[#2A3042] "
+            } flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}
+          >
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
                 <div className="flex items-center">
@@ -186,7 +212,7 @@ const LanguageList = () => {
                   </div>
                 ))}
             </div>
-            <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
+            {/* <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
               <p>Showing 1 to 10 of 155 entries</p>
               <div className="flex">
                 <p className="border border-gray-500 px-2 py-1">Previous</p>
@@ -196,7 +222,13 @@ const LanguageList = () => {
                 <p className="border border-gray-500 px-2 py-1">.......</p>
                 <p className="border border-gray-500 px-2 py-1">Next</p>
               </div>
-            </section>
+            </section> */}
+            <Pagination
+              metaData={pageMetaData}
+              jumpToPage={(data) => {
+                setStart(data);
+              }}
+            />
           </div>
         </div>
       </section>

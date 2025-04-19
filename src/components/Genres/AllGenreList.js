@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GenreSliceACtion } from "../../store/genreSlice";
 import RoutesInfoDiv from "../commonComponents/RoutesInfoDiv";
 import AddGenreModal from "./AddGenreModal";
+import Pagination from "../commonComponents/pagination";
 
 
 const AllGenreList = () => {
@@ -17,11 +18,21 @@ const AllGenreList = () => {
   // const [allGenres, setAllGenres] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const allGenres = useSelector((state) => state.genreData);
+
+        const [pageMetaData, setPageMetaData] = useState({
+          totalPages: 0,
+          current: 0,
+          limit: 0,
+        });
+        const [limit, setlimit] = useState(10);
+        const [start, setStart] = useState(0);
+        const [searchValue, setSearchValue] = useState("");
+
   useEffect(() => {
     if (allGenres.length == 0) {
       try {
         (async () => {
-          const res = await axios.get(`${connectionString}/admin/allGenres`,{
+          const res = await axios.get(`${connectionString}/admin/allGenres?start=${start}&limit=${limit}&searched=${searchValue}`,{
             headers: {
               Authorization: localStorage.getItem("token"),
             
@@ -32,16 +43,23 @@ const AllGenreList = () => {
             Object.values(res.data.allGenres).forEach((current) => {
               dispatch(GenreSliceACtion.addGenre(current));
             });
+            setPageMetaData({
+              totalPages: res.data.totalPages,
+              current: start,
+              limit: limit,
+              totalData: res.data.totalData,
+            });
+            console.log(pageMetaData);
           }
         })();
       } catch (err) {
         console.log(err);
       }
     }
-  }, [allGenres]);
+  }, [allGenres, limit, start, searchValue]);
   const deleteGenresHandler = async (id) => {
     try {
-      const response = await axios.delete(
+      const res = await axios.delete(
         `${connectionString}/admin/deleteGenre/${id}`
       );
       dispatch(GenreSliceACtion.deleteGenre(id));
@@ -66,7 +84,7 @@ const AllGenreList = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Genres"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Others"}
         currentDir={"Genres"}
       />
@@ -77,7 +95,7 @@ const AllGenreList = () => {
           ? "bg-black/40 backdrop-blur-lg ":"bg-[#2A3042] "} flex-1  rounded-md text-gray-200 max-md:overflow-auto py-2`}>
             <div className="m-4 text-[.9rem] font-semibold ">
               <div className="flex justify-between text-white">
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <p>Show </p>
                   <select className="bg-[#2E3648] text-[#959db6] mx-2 px-4 py-1  font-normal">
                     <option>10</option>
@@ -85,7 +103,7 @@ const AllGenreList = () => {
                     <option>10</option>
                   </select>
                   <p>results </p>
-                </div>
+                </div> */}
                 <div className="flex items-center">
                   {/* <p>search : </p>
                   <input
@@ -178,7 +196,7 @@ const AllGenreList = () => {
                   </div>
                 ))}
             </div>
-            <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
+            {/* <section className="flex m-2 text-white text-[.95rem] font-semibold justify-between">
               <p>Showing 1 to 10 of 155 entries</p>
               <div className="flex">
                 <p className="border border-gray-500 px-2 py-1">Previous</p>
@@ -188,7 +206,13 @@ const AllGenreList = () => {
                 <p className="border border-gray-500 px-2 py-1">.......</p>
                 <p className="border border-gray-500 px-2 py-1">Next</p>
               </div>
-            </section>
+            </section> */}
+            <Pagination
+              metaData={pageMetaData}
+              jumpToPage={(data) => {
+                setStart(data);
+              }}
+            />
           </div>
         </div>
       </section>

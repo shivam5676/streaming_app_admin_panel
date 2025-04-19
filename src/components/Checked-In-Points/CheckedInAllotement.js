@@ -47,7 +47,7 @@ const CheckedInAllotement = () => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
         <RoutesInfoDiv
           mainHeading={"Checked_In Points"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Others"}
           currentDir={"Checked_In Points section"}
         ></RoutesInfoDiv>
