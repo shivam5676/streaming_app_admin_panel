@@ -12,7 +12,7 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
               <p className="p-2">{index + 1}</p>
             </div>
             <div className="w-[90px] text-white font-semibold flex-shrink-0">
-              {current?.status == "finished" ? (
+              {current?.status == "finished" || !current?.status ? (
                 <select
                   className="bg-[#3C445A] rounded-sm p-2"
                   onChange={(event) =>
