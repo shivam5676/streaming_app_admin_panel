@@ -3,10 +3,9 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds }) => {
-  const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  console.log(name)
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-[100000] p-9">
       <div className="bg-[#2A3042] p-8 rounded-xl shadow-2xl w-full sm:w-96 max-w-lg">
@@ -49,11 +48,11 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
               <button
                 onClick={() => {
                   setConfirmDelete(false);
-                  if (name.length === 1) {
-                    toast.success(`"${name}" Deleted Successfully!`);
-                  } else {
-                    toast.success(`All Selected Deleted Successfully!`);
-                  }
+                  // if (name.length === 1) {
+                  //   toast.success(`"${name}" Deleted Successfully!`);
+                  // } else {
+                  //   toast.success(`All Selected Deleted Successfully!`);
+                  // }
                   deleteFun(selectedIds)
                 }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium transition-all hover:bg-red-600 hover:scale-105 active:scale-100"

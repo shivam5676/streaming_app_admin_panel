@@ -59,6 +59,7 @@ const EditMovies = () => {
   const deductableShortsPoints = {};
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [shortName, setShortName] = useState([]);
+  const [notDeleteShow, setNotDeleteShow] = useState(false);
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -227,7 +228,7 @@ const EditMovies = () => {
     setvideoFiles(videosAfterDeletion);
   };
   // console.log(shortsPreviewFromBackend);
-  console.log(AllData, "alldata");
+  // console.log(AllData, "alldata");
 
   // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
@@ -381,25 +382,32 @@ const EditMovies = () => {
   };
   const deleteHandler=async(shortIds)=>{
     console.log(shortIds)
-    try {
-      const response = await axios.delete(
-        `${connectionString}/admin/multipleDeleteShorts`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-          data: { shortIds }
-        }
-      );
-      toast.success("shorts  deleted successfully");
-      console.log(response)
-    } catch (error) {
-      toast.error("something went wrong");
-      console.log(error)
-    } finally {
-      setSelectedIds([])
-    }
+    setSelectedIds([])
+    setNotDeleteShow(false)
+    // try {
+    //   const response = await axios.delete(
+    //     `${connectionString}/admin/multipleDeleteShorts`,
+    //     {
+    //       headers: {
+    //         Authorization: localStorage.getItem("token"),
+    //       },
+    //       data: { shortIds }
+    //     }
+    //   );
+    //   toast.success("shorts  deleted successfully");
+    //   console.log(response)
+    // } catch (error) {
+    //   toast.error("something went wrong");
+    //   console.log(error)
+    // } finally {
+    //   setSelectedIds([])
+    // }
   }
+  useEffect(()=>{
+    if(selectedAction==="Delete Shorts"){
+      setNotDeleteShow(true)
+    }
+  },[selectedAction])
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -705,7 +713,8 @@ const EditMovies = () => {
                         </div>
 
                         <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                          <p
+                          {!notDeleteShow && (
+                            <p
                             className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
                             onClick={() => {
                               console.log("hello");
@@ -716,10 +725,12 @@ const EditMovies = () => {
                               // );
                               setConfirmDelete(true);
                               setShortName((prev) => [...prev, current.name]);
+                              setSelectedIds([current._id]);
                             }}
                           >
                             Delete
                           </p>
+                          )}
                         </div>
                         {/* ) : (
                           <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
