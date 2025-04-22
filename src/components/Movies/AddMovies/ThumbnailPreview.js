@@ -12,7 +12,7 @@ const ThumbnailPreview = ({
           className="border w-[100%] h-[100%] rounded-md"
         ></img>
         <div
-          className="flex justify-center text-[.9rem] text-yellow-500 underline cursor-pointer font-semibold pt-1"
+          className="flex justify-center text-[.9rem] text-purple-400 underline cursor-pointer font-semibold pt-1"
           onClick={() => {
             //   setThumbNailUrlPreview(null);
             removeThumbnailPreview();

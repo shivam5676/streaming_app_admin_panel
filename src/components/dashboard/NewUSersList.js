@@ -151,7 +151,7 @@ const NewUSersList = ({ latestUsers }) => {
                   navigate(`/userDetails/${current._id}`);
                 }}
               >
-                <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                <p className="p-2 px-3 font-semibold  border border-white hover:border-purple-600 hover:bg-purple-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
                   view
                 </p>
               </div>

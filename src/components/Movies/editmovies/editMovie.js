@@ -379,8 +379,8 @@ const EditMovies = () => {
     }
     deductableShortsPoints[id] = deductablePoints;
   };
-  const deleteHandler=async(value)=>{
-    console.log(value)
+  const deleteHandler=async(shortIds)=>{
+    console.log(shortIds)
     try {
       const response = await axios.delete(
         `${connectionString}/admin/multipleDeleteShorts`,
@@ -388,7 +388,7 @@ const EditMovies = () => {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
-          data: { value }
+          data: { shortIds }
         }
       );
       toast.success("shorts  deleted successfully");

@@ -21,7 +21,7 @@ const Pagination = ({ metaData, jumpToPage }) => {
       <div className="flex  hover:cursor-pointer">
         <p
           className={`border border-gray-500 h-full px-2 py-1  ${
-            metaData.current == 0 ? "text-gray-400" : "hover:text-yellow-500"
+            metaData.current == 0 ? "text-gray-400" : "hover:text-purple-500"
           }`}
           onClick={() => {
             if (metaData.current <= 0) {
@@ -37,8 +37,8 @@ const Pagination = ({ metaData, jumpToPage }) => {
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
               metaData.current == 0
-                ? "text-black bg-[#FEBD59] "
-                : "hover:text-yellow-500"
+                ? "text-black bg-purple-500 "
+                : "hover:text-purple-500"
             }`}
             onClick={() => {
               pageJumpHandler(0);
@@ -51,8 +51,8 @@ const Pagination = ({ metaData, jumpToPage }) => {
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
               metaData.current == 1
-                ? "text-black bg-[#FEBD59] "
-                : "hover:text-yellow-500"
+                ? "text-black bg-purple-500 "
+                : "hover:text-purple-500"
             }`}
             onClick={() => {
               pageJumpHandler(1);
@@ -64,7 +64,7 @@ const Pagination = ({ metaData, jumpToPage }) => {
         {metaData.totalPages >= 3 && (
           <p
             className={`border border-gray-500 h-full px-2 py-1  ${
-              metaData.current >= 2 && "text-black bg-[#FEBD59] "
+              metaData.current >= 2 && "text-black bg-purple-500 "
             }`}
           >
             {metaData.current <3 ? 3 : metaData.current+1}
@@ -84,7 +84,7 @@ const Pagination = ({ metaData, jumpToPage }) => {
           className={`border border-gray-500 h-full px-2 py-1  ${
             metaData.current == metaData.totalPages - 1
               ? "text-gray-400"
-              : "hover:text-yellow-500"
+              : "hover:text-purple-500"
           }`}
           onClick={() => {
             if (metaData.current == metaData.totalPages - 1) {
