@@ -5,7 +5,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const DeleteConfirm = ({ message, name, setConfirmDelete }) => {
+const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds }) => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-[100000] p-9">
@@ -54,6 +54,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete }) => {
                   } else {
                     toast.success(`All Selected Deleted Successfully!`);
                   }
+                  deleteFun(selectedIds)
                 }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium transition-all hover:bg-red-600 hover:scale-105 active:scale-100"
               >
@@ -65,6 +66,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete }) => {
             <button
               onClick={() => {
                 setConfirmDelete(false);
+                deleteFun(selectedIds)
               }}
               className="flex items-center mx-auto gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-medium transition-all hover:bg-orange-600 hover:scale-105 active:scale-100"
             >

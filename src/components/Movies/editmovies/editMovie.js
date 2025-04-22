@@ -199,7 +199,7 @@ const EditMovies = () => {
     // })
   };
   const languageHandler = (value) => {
-    console.log(value);
+    // console.log(value);
     languageRef.current = value;
     // setLanguages((prev) => [...prev, value]);
   };
@@ -226,7 +226,7 @@ const EditMovies = () => {
     setVideoFilesSnapshot(snapshotsAfterDeletion);
     setvideoFiles(videosAfterDeletion);
   };
-  console.log(shortsPreviewFromBackend);
+  // console.log(shortsPreviewFromBackend);
   console.log(AllData, "alldata");
 
   // delete uploaded videos which already uploaded in backend databases
@@ -321,15 +321,15 @@ const EditMovies = () => {
   // let selectedIds = [];
   const multipleIdsHAndler = (id, name) => {
     setShortName((prev) => [...prev, name]);
-    // const idExist = selectedIds.find((current) => id === current);
+    const idExist = selectedIds.find((current) => id === current);
 
-    // if (!idExist) {
-    //   setSelectedIds((prev) => [...prev, id]);
-    // } else {
-    //   setSelectedIds((prev) => prev.filter((current) => current != id));
-    // }
+    if (!idExist) {
+      setSelectedIds((prev) => [...prev, id]);
+    } else {
+      setSelectedIds((prev) => prev.filter((current) => current != id));
+    }
   };
-  console.log(selectedIds, "selecteddIds");
+  // console.log(selectedIds, "selecteddIds");
   const selectedActionPerform = async (action) => {
     const moviesId = params.edit;
     if (action === "Enable") {
@@ -379,6 +379,27 @@ const EditMovies = () => {
     }
     deductableShortsPoints[id] = deductablePoints;
   };
+  const deleteHandler=async(value)=>{
+    console.log(value)
+    try {
+      const response = await axios.delete(
+        `${connectionString}/admin/multipleDeleteShorts`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          data: { value }
+        }
+      );
+      toast.success("shorts  deleted successfully");
+      console.log(response)
+    } catch (error) {
+      toast.error("something went wrong");
+      console.log(error)
+    } finally {
+      setSelectedIds([])
+    }
+  }
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -853,6 +874,8 @@ const EditMovies = () => {
           message={"Are you sure you want to delete shorts - "}
           name={shortName}
           setConfirmDelete={setConfirmDelete}
+          deleteFun={deleteHandler}
+          selectedIds={selectedIds}
         />
       )}
     </>
