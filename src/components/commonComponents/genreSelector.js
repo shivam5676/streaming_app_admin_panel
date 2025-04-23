@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Checkbox, Chip, MenuItem, FormControl, Select } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Chip,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 
 const GenreSelector = (props) => {
@@ -11,11 +18,14 @@ const GenreSelector = (props) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await axios.get(`${connectionString}/admin/allGenres`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
+        const response = await axios.get(
+          `${connectionString}/admin/allGenres`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
         setGenres(response.data.allGenres);
       } catch (error) {
         console.error(error);
@@ -42,7 +52,9 @@ const GenreSelector = (props) => {
 
   // Notify parent of selected genres whenever the selection changes
   useEffect(() => {
-    const selectedItems = genres.filter((genre) => selectedGenres.includes(genre._id));
+    const selectedItems = genres.filter((genre) =>
+      selectedGenres.includes(genre._id)
+    );
     props.selectedGenre(selectedItems); // Send selected genre objects to the parent
   }, [selectedGenres, genres, props]);
 
@@ -65,7 +77,7 @@ const GenreSelector = (props) => {
               {selectedIds.map((id) => {
                 const selectedGenre = genres.find((genre) => genre._id === id);
                 return selectedGenre ? (
-                  <Chip key={id} color="info" label={selectedGenre.name} />
+                  <Chip key={id} color="success" label={selectedGenre.name} />
                 ) : null;
               })}
             </Box>

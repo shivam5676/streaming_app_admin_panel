@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Autocomplete, TextField } from "@mui/material";
 import DragNDropImage from "../../commonComponents/DragNDropImage";
 import LayoutSelector from "../../commonComponents/layoutSelector";
 import axios from "axios";
@@ -62,7 +63,27 @@ const EditMovies = () => {
   const [confirmAdd, setConfirmAdd] = useState(false);
   const [shortName, setShortName] = useState([]);
   const [notDeleteShow, setNotDeleteShow] = useState(false);
-  const [addVideoLoader, setAddVideoLoader]=useState(false)
+  const [addVideoLoader, setAddVideoLoader] = useState(false);
+  const options = Array.from({ length: 51 }, (_, i) => i.toString()); // "0" to "50"
+  const [value, setValue] = useState(""); // initial value as string
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (shortDeductionPointsRef && inputRef.current) {
+      shortDeductionPointsRef.current = inputRef.current;
+    }
+  }, [shortDeductionPointsRef]);
+
+  const handleInputChange = (event, newInputValue) => {
+    if (
+      newInputValue === "" ||
+      (/^\d+$/.test(newInputValue) &&
+        +newInputValue >= 0 &&
+        +newInputValue <= 50)
+    ) {
+      setValue(newInputValue);
+    }
+  };
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -129,6 +150,7 @@ const EditMovies = () => {
     formdata.append("screenType", videoScreenRef.current.value);
     formdata.append("licenseExpiryDate", LicenceExpiryDateRef.current.value);
     try {
+      setAddVideoLoader(true);
       const response = await axios.post(
         `${connectionString}/admin/editMovie`,
         formdata,
@@ -143,6 +165,9 @@ const EditMovies = () => {
       toast.success("file edited successfully");
     } catch (err) {
       toast.error("something went wrong while editing movies");
+    } finally {
+      setAddVideoLoader(false)
+      setConfirmAdd(false)
     }
   };
   const selectionHandler = (value) => {
@@ -236,8 +261,9 @@ const EditMovies = () => {
   // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
     const movieId = params.edit;
-    console.log(data);
-    return;
+    // console.log(data);
+    // console.log(data?.id)
+    // return;
     if (data.name === "Ads") {
       console.log("ads triggered");
       const dataObj = {
@@ -324,13 +350,16 @@ const EditMovies = () => {
   }
   // let selectedIds = [];
   const multipleIdsHAndler = (id, name) => {
-    setShortName((prev) => [...prev, name]);
-    const idExist = selectedIds.find((current) => id === current);
-
-    if (!idExist) {
-      setSelectedIds((prev) => [...prev, id]);
+    const idExists = selectedIds.includes(id);
+  
+    if (idExists) {
+      // Remove ID and corresponding name
+      setSelectedIds((prev) => prev.filter((current) => current !== id));
+      setShortName((prev) => prev.filter((n) => n !== name));
     } else {
-      setSelectedIds((prev) => prev.filter((current) => current != id));
+      // Add ID and name
+      setSelectedIds((prev) => [...prev, id]);
+      setShortName((prev) => [...prev, name]);
     }
   };
   // console.log(selectedIds, "selecteddIds");
@@ -357,6 +386,7 @@ const EditMovies = () => {
         changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
       } catch (error) {}
     } else if (action === "Delete Shorts") {
+      setSelectedIds([])
       setConfirmDelete(true);
       // setShortName("Selected Shorts")
       console.log("Delete shorts");
@@ -383,44 +413,43 @@ const EditMovies = () => {
     }
     deductableShortsPoints[id] = deductablePoints;
   };
-  const deleteHandler=async(shortIds)=>{
-    console.log(shortIds)
-    setSelectedIds([])
-    setNotDeleteShow(false)
-    // try {
-    //   const response = await axios.delete(
-    //     `${connectionString}/admin/multipleDeleteShorts`,
-    //     {
-    //       headers: {
-    //         Authorization: localStorage.getItem("token"),
-    //       },
-    //       data: { shortIds }
-    //     }
-    //   );
-    //   toast.success("shorts  deleted successfully");
-    //   console.log(response)
-    // } catch (error) {
-    //   toast.error("something went wrong");
-    //   console.log(error)
-    // } finally {
-    //   setSelectedIds([])
-    // }
-  }
+  const deleteHandler = async (shortIds) => {
+    // console.log(shortIds);
+    setSelectedIds([]);
+    setNotDeleteShow(false);
+    try {
+      const response = await axios.delete(
+        `${connectionString}/admin/multipleDeleteShorts`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+          data: { shortIds }
+        }
+      );
+      toast.success("shorts  deleted successfully");
+      console.log(response)
+    } catch (error) {
+      toast.error("something went wrong");
+      console.log(error)
+    } finally {
+      setSelectedIds([])
+    }
+  };
+  useEffect(() => {
+    if (selectedAction === "Delete Shorts") {
+      setNotDeleteShow(true);
+    }
+    if (selectedAction === "none") {
+      setNotDeleteShow(false);
+    }
+  }, [selectedAction]);
+
   useEffect(()=>{
-    if(selectedAction==="Delete Shorts"){
-      setNotDeleteShow(true)
-    }
-    if(selectedAction==="none"){
-      setNotDeleteShow(false)
-    }
-  },[selectedAction])
-  const addmovieHan=()=>{
-    setAddVideoLoader(true)
-    setTimeout(() => {
-      setAddVideoLoader(false)
-      setConfirmAdd(false);
-    }, 5000);
-  }
+    setSelectedIds([])
+    console.log(videoFiles)
+    console.log(shortsPreviewFromBackend)
+  },[])
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -462,6 +491,7 @@ const EditMovies = () => {
                     className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)]  rounded-md my-2"
                     ref={freeVideosRef}
                     type="number"
+                    min={0}
                   ></input>
                 </div>
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
@@ -550,11 +580,13 @@ const EditMovies = () => {
                               : `${connectionString}/thumbnails${thumbnailFromBackendPreview}`
                           }
                           className="border w-[100%] h-[100%] rounded-md"
+                          type="file"
+                          accept=".png, .jpg, .jpeg"
                         >
                           {/* <img src={thumbnailUrlPreview}></img> */}
                         </img>
                         <div
-                          className="flex justify-center text-[.9rem] text-yellow-500 underline cursor-pointer font-semibold pt-1"
+                          className="flex justify-center text-[.9rem] text-[#C1A6E6] underline cursor-pointer font-semibold pt-1"
                           onClick={() => {
                             setThumbNailUrlPreview(null);
                             setThumbNailFromBackendPreview(null);
@@ -611,7 +643,7 @@ const EditMovies = () => {
                       <p className="border mx-2 p-1">Watch Now</p>
                     </div>
                     <div
-                      className="my-4 font-normal  w-fit text-sm border-b border-red-500 text-yellow-400 cursor-pointer"
+                      className="my-4 font-normal  w-fit text-sm border-b border-[#C1A6E6] text-[#C1A6E6] cursor-pointer"
                       onClick={() => {}}
                     >
                       I want to change trailer
@@ -621,14 +653,72 @@ const EditMovies = () => {
                 )}
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                   <p>Shorts Deduction (mints)</p>
-                  <input
+                  {/* <input
                     className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
                     placeholder="Points deduction for each shorts"
                     ref={shortDeductionPointsRef}
                     type="number"
                     min={0}
                     defaultValue={shortDeductionPointsRef.current.value}
-                  ></input>
+                  ></input> */}
+                  <Autocomplete
+                    freeSolo
+                    options={options}
+                    value={value}
+                    inputValue={value}
+                    onChange={(e, newVal) => {
+                      if (newVal === null) {
+                        setValue("");
+                      } else if (
+                        /^\d+$/.test(newVal) &&
+                        +newVal >= 0 &&
+                        +newVal <= 50
+                      ) {
+                        setValue(newVal);
+                      }
+                    }}
+                    onInputChange={handleInputChange}
+                    filterOptions={(opts, state) => {
+                      const input = state.inputValue || "";
+                      return opts.filter((option) =>
+                        option.includes(input.toString())
+                      );
+                    }}
+                    isOptionEqualToValue={(option, val) => option === val}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        placeholder="Points deduction for each shorts"
+                        inputRef={inputRef}
+                        inputProps={{
+                          ...params.inputProps,
+                          inputMode: "numeric",
+                          pattern: "[0-9]*",
+                        }}
+                        sx={{
+                          "& .MuiInputBase-root": {
+                            backgroundColor: "#2E3648",
+                            height: "40px",
+                            px: 2,
+                            borderRadius: "0.375rem",
+                            color: "rgb(107,149,168)",
+                            fontSize: "0.875rem",
+                            fontWeight: 400,
+                            display: "flex",
+                            alignItems: "center",
+                          },
+                          "& input": {
+                            padding: "0 !important",
+                            color: "rgb(107,149,168)",
+                            textAlign: "start",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            display: "none", // hide dropdown arrow
+                          },
+                        }}
+                      />
+                    )}
+                  />
                 </div>
                 {/* <input className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md"></input> */}
               </div>
@@ -643,9 +733,9 @@ const EditMovies = () => {
                     ? addAdsInShortHandler()
                     : selectedActionPerform(selectedAction);
                 }}
-                class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-yellow-500 hover:text-white bg-gray-800 rounded-lg group border border-yellow-500"
+                class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-[#C1A6E6] hover:text-white bg-gray-800 rounded-lg group border border-[#C1A6E6]"
               >
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-yellow-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
+                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-[#A880DF] rounded-full group-hover:w-56 group-hover:h-56"></span>
                 <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                 <span class="relative font-bold">
                   {selectedAction !== "none" ? "Save" : "Add Ads"}
@@ -710,7 +800,7 @@ const EditMovies = () => {
                         key={index}
                         className="font-normal flex py-1 items-center text-[#c8cfd6] bg-gray-400  backdrop-blur-lg hover:text-white  border-b border-gray-500 px-2"
                       >
-                        <div className="w-[50px] p-2  flex-shrink-0">
+                        <div className="w-[30px] p-2  flex-shrink-0">
                           <p className="px-2">{index + 1}</p>
                           {/* {selectedAction !== "Change sequence" &&
                             selectedAction !== "none" &&
@@ -746,36 +836,40 @@ const EditMovies = () => {
                           )} */}
                           {!notDeleteShow ? (
                             <p
-                            className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
-                            onClick={() => {
-                              console.log("hello");
-                              // deleteVideoFromBackendHandler(
-                              //   current?.name === "Personalised Ads"
-                              //     ? { name: "Ads", index: index }
-                              //     : { name: "Video", id: current?._id }
-                              // );
-                              setConfirmDelete(true);
-                              setShortName((prev) => [...prev, current.name]);
-                              setSelectedIds([current._id]);
-                            }}
-                          >
-                            Delete
-                          </p>
-                          ):(
+                              className="bg-[#3C445A] rounded-sm p-2 m-3 cursor-pointer text-center"
+                              onClick={() => {
+                                console.log("hello");
+                                deleteVideoFromBackendHandler(
+                                  current?.name === "Personalised Ads"
+                                    ? { name: "Ads", index: index }
+                                    : { name: "Video", id: current?._id }
+                                );
+                                // deleteVideoFromBackendHandler(current)
+                                // setConfirmDelete(true);
+                                // setShortName((prev) => [...prev, current.name]);
+                                // setSelectedIds([current._id]);
+                              }}
+                            >
+                              Delete
+                            </p>
+                          ) : (
                             selectedAction !== "Change sequence" &&
-                              selectedAction !== "none" &&
-                              current !== "Ads" &&
-                              current?.name != "Personalised Ads" && (
-                                <div className="h-6 flex justify-center items-center">
-                                  <input
+                            selectedAction !== "none" &&
+                            current !== "Ads" &&
+                            current?.name != "Personalised Ads" && (
+                              <div className="h-6 flex justify-center items-center">
+                                <input
                                   className="w-full h-full mr-5"
                                   type="checkbox"
                                   onClick={() =>
-                                    multipleIdsHAndler(current?._id, current.name)
+                                    multipleIdsHAndler(
+                                      current?._id,
+                                      current.name
+                                    )
                                   }
                                 ></input>
-                                </div>
-                              )
+                              </div>
+                            )
                           )}
                         </div>
                         {/* ) : (
@@ -838,7 +932,7 @@ const EditMovies = () => {
                                 // navigate(`/userDetails/${current._id}`);
                               }}
                             >
-                              <p className="p-2 px-3 font-semibold  border border-white hover:border-yellow-600 hover:bg-yellow-600 rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                              <p className="p-2 px-3 font-semibold  border border-white hover:border-[#A880DF] hover:bg-[#A880DF] rounded-md text-white text-[.9rem] flex justify-center text-center ">
                                 Watch
                               </p>
                             </div>
@@ -847,7 +941,7 @@ const EditMovies = () => {
                           <>
                             {/* <img className="h-[60px] w-[220px]" src={personalisedAds}></img> */}
                             <div
-                              className="h-[60px] w-[100%] flex items-center justify-center rounded-md bg-yellow-600 mb-2 sm:text-[1.1rem] font-semibold text-white p-1"
+                              className="h-[60px] w-[100%] flex items-center justify-center rounded-md bg-[#A880DF] mb-2 sm:text-[1.1rem] font-semibold text-white p-1"
                               src={personalisedAds}
                             >
                               Personalised Ads
@@ -906,7 +1000,7 @@ const EditMovies = () => {
             onClick={() => {
               setUploadMoreMovies(!uploadMoreMovies);
             }}
-            className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
+            className="relative rounded px-5 py-2.5 overflow-hidden group bg-green-600  hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300 cursor-pointer"
           >
             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
             <span className="relative font-semibold">
@@ -915,19 +1009,17 @@ const EditMovies = () => {
                 : "I will add videos later"}
             </span>
           </div>
-          {videoFiles.length>0 && (
-            <div
+          <div
             onClick={() => {
               // addMoviesHandler();
               // setUploadMoreMovies(false)
-              setConfirmAdd(true)
+              setConfirmAdd(true);
             }}
-            className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
+            className="relative rounded px-5 py-2.5 overflow-hidden group bg-green-600  hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300 cursor-pointer"
           >
             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-            <span className="relative font-semibold">Save Movies</span>
+            <span className="relative font-semibold">Save Changes</span>
           </div>
-          )}
         </div>
       </div>
       {confirmDelete && (
@@ -940,7 +1032,15 @@ const EditMovies = () => {
         />
       )}
       {confirmAdd && (
-        <AddConfirm message={"You are about to add the following items."} setConfirmAdd={setConfirmAdd} videoFiles={videoFiles} setvideoFiles={setvideoFiles} addVideoLoader={addVideoLoader} addFun={addmovieHan} />
+        <AddConfirm
+          message={"You are about to add the following items."}
+          setConfirmAdd={setConfirmAdd}
+          videoFiles={videoFiles}
+          setvideoFiles={setvideoFiles}
+          addVideoLoader={addVideoLoader}
+          addFun={addMoviesHandler}
+          setUploadMoreMovies={setUploadMoreMovies}
+        />
       )}
     </>
   );

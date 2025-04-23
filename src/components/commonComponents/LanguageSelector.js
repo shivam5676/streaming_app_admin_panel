@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Checkbox, Chip, MenuItem, FormControl, Select } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Chip,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 
 const LanguageSelector = (props) => {
@@ -40,7 +47,9 @@ const LanguageSelector = (props) => {
 
   // Send selected languages back to the parent component
   useEffect(() => {
-    const selectedLanguages = language.filter((lang) => state.includes(lang._id));
+    const selectedLanguages = language.filter((lang) =>
+      state.includes(lang._id)
+    );
     props.selectedLanguage(selectedLanguages);
   }, [state, language, props]);
 
@@ -53,16 +62,17 @@ const LanguageSelector = (props) => {
           onChange={handleMultiple}
           sx={{
             borderBottom: "2px solid white",
-            "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after": {
-              borderBottom: "none", // Remove underline styles
-            },
+            "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after":
+              {
+                borderBottom: "none", // Remove underline styles
+              },
           }}
           renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selectedIds.map((id) => {
                 const selectedLang = language.find((lang) => lang._id === id);
                 return selectedLang ? (
-                  <Chip key={id} color="info" label={selectedLang.name} />
+                  <Chip key={id} color="success" label={selectedLang.name} />
                 ) : null;
               })}
             </Box>

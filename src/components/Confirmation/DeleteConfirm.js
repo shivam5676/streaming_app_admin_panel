@@ -3,7 +3,13 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds }) => {
+const DeleteConfirm = ({
+  message,
+  name,
+  setConfirmDelete,
+  deleteFun,
+  selectedIds,
+}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-[100000] p-9">
       <div className="bg-[#2A3042] p-8 rounded-xl shadow-2xl w-full sm:w-96 max-w-lg">
@@ -20,15 +26,22 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
 
         {/* Message */}
         <p className="text-sm leading-relaxed text-white text-center mb-1">
-          {name.length > 0
-            ? (<div className="mb-2"><div>{message}</div><div>The total selected items: {name.length}</div></div>)
-            : "Please select atleast one item to delete."}
+          {name.length > 0 ? (
+            <div className="mb-2">
+              <div>{message}</div>
+              <div>The total selected items: {name.length}</div>
+            </div>
+          ) : (
+            "Please select atleast one item to delete."
+          )}
         </p>
         <div className="mb-6 max-h-28 overflow-auto">
           {name?.map((i) => {
             return (
-              <div className="text-white text-sm font-semibold text-center">"{i}"</div>
-            )
+              <div className="text-white text-sm font-semibold text-center">
+                "{i}"
+              </div>
+            );
           })}
         </div>
 
@@ -51,7 +64,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
                   // } else {
                   //   toast.success(`All Selected Deleted Successfully!`);
                   // }
-                  deleteFun(selectedIds)
+                  deleteFun(selectedIds);
                 }}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-medium transition-all hover:bg-red-600 hover:scale-105 active:scale-100"
               >
@@ -63,7 +76,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
             <button
               onClick={() => {
                 setConfirmDelete(false);
-                deleteFun(selectedIds)
+                deleteFun(selectedIds);
               }}
               className="flex items-center mx-auto gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-medium transition-all hover:bg-orange-600 hover:scale-105 active:scale-100"
             >
