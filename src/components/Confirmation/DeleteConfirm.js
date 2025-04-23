@@ -2,10 +2,8 @@ import React from "react";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { toast } from "react-toastify";
 
 const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds }) => {
-  console.log(name)
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-[100000] p-9">
       <div className="bg-[#2A3042] p-8 rounded-xl shadow-2xl w-full sm:w-96 max-w-lg">
@@ -21,7 +19,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
         </div>
 
         {/* Message */}
-        <p className="text-sm leading-relaxed text-white text-center">
+        <p className="text-sm leading-relaxed text-white text-center mb-1">
           {name.length > 0
             ? (<div className="mb-2"><div>{message}</div><div>The total selected items: {name.length}</div></div>)
             : "Please select atleast one item to delete."}
@@ -30,7 +28,7 @@ const DeleteConfirm = ({ message, name, setConfirmDelete, deleteFun, selectedIds
           {name?.map((i) => {
             return (
               <div className="text-white text-sm font-semibold text-center">"{i}"</div>
-            );
+            )
           })}
         </div>
 

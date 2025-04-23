@@ -22,6 +22,7 @@ import {
 import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
 import ShortsTableHeaders from "./shortsTableHeaders";
 import DeleteConfirm from "../../Confirmation/DeleteConfirm";
+import AddConfirm from "../../Confirmation/AddConfirm";
 
 const EditMovies = () => {
   const shortDeductionPointsRef = useRef(0);
@@ -58,8 +59,10 @@ const EditMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const deductableShortsPoints = {};
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmAdd, setConfirmAdd] = useState(false);
   const [shortName, setShortName] = useState([]);
   const [notDeleteShow, setNotDeleteShow] = useState(false);
+  const [addVideoLoader, setAddVideoLoader]=useState(false)
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -215,7 +218,7 @@ const EditMovies = () => {
 
   // delete uploadeable videos which is not uploaded yet
   const deleteVideoHandler = (id) => {
-    return;
+    // return;
     const allVideos = [...videoFiles];
     const allSnapshots = [...videoFilesSnapshot];
     const videosAfterDeletion = allVideos.filter(
@@ -407,7 +410,17 @@ const EditMovies = () => {
     if(selectedAction==="Delete Shorts"){
       setNotDeleteShow(true)
     }
+    if(selectedAction==="none"){
+      setNotDeleteShow(false)
+    }
   },[selectedAction])
+  const addmovieHan=()=>{
+    setAddVideoLoader(true)
+    setTimeout(() => {
+      setAddVideoLoader(false)
+      setConfirmAdd(false);
+    }, 5000);
+  }
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -496,7 +509,7 @@ const EditMovies = () => {
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                   <p>Licence Expiry</p>
                   <input
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal date-white-icon"
                     placeholder="Write here"
                     ref={LicenceExpiryDateRef}
                     type="date"
@@ -699,7 +712,7 @@ const EditMovies = () => {
                       >
                         <div className="w-[50px] p-2  flex-shrink-0">
                           <p className="px-2">{index + 1}</p>
-                          {selectedAction !== "Change sequence" &&
+                          {/* {selectedAction !== "Change sequence" &&
                             selectedAction !== "none" &&
                             current !== "Ads" &&
                             current?.name != "Personalised Ads" && (
@@ -709,11 +722,11 @@ const EditMovies = () => {
                                   multipleIdsHAndler(current?._id, current.name)
                                 }
                               ></input>
-                            )}
+                            )} */}
                         </div>
 
                         <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                          {!notDeleteShow && (
+                          {/* {!notDeleteShow && (
                             <p
                             className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
                             onClick={() => {
@@ -730,6 +743,39 @@ const EditMovies = () => {
                           >
                             Delete
                           </p>
+                          )} */}
+                          {!notDeleteShow ? (
+                            <p
+                            className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
+                            onClick={() => {
+                              console.log("hello");
+                              // deleteVideoFromBackendHandler(
+                              //   current?.name === "Personalised Ads"
+                              //     ? { name: "Ads", index: index }
+                              //     : { name: "Video", id: current?._id }
+                              // );
+                              setConfirmDelete(true);
+                              setShortName((prev) => [...prev, current.name]);
+                              setSelectedIds([current._id]);
+                            }}
+                          >
+                            Delete
+                          </p>
+                          ):(
+                            selectedAction !== "Change sequence" &&
+                              selectedAction !== "none" &&
+                              current !== "Ads" &&
+                              current?.name != "Personalised Ads" && (
+                                <div className="h-6 flex justify-center items-center">
+                                  <input
+                                  className="w-full h-full mr-5"
+                                  type="checkbox"
+                                  onClick={() =>
+                                    multipleIdsHAndler(current?._id, current.name)
+                                  }
+                                ></input>
+                                </div>
+                              )
                           )}
                         </div>
                         {/* ) : (
@@ -869,15 +915,19 @@ const EditMovies = () => {
                 : "I will add videos later"}
             </span>
           </div>
-          <div
+          {videoFiles.length>0 && (
+            <div
             onClick={() => {
-              addMoviesHandler();
+              // addMoviesHandler();
+              // setUploadMoreMovies(false)
+              setConfirmAdd(true)
             }}
             className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
           >
             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-            <span className="relative font-semibold">Edit Movies</span>
+            <span className="relative font-semibold">Save Movies</span>
           </div>
+          )}
         </div>
       </div>
       {confirmDelete && (
@@ -888,6 +938,9 @@ const EditMovies = () => {
           deleteFun={deleteHandler}
           selectedIds={selectedIds}
         />
+      )}
+      {confirmAdd && (
+        <AddConfirm message={"You are about to add the following items."} setConfirmAdd={setConfirmAdd} videoFiles={videoFiles} setvideoFiles={setvideoFiles} addVideoLoader={addVideoLoader} addFun={addmovieHan} />
       )}
     </>
   );
