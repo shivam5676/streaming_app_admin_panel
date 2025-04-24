@@ -60,10 +60,12 @@ const EditMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const deductableShortsPoints = {};
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [checkType, setCheckType] = useState("");
   const [confirmAdd, setConfirmAdd] = useState(false);
   const [shortName, setShortName] = useState([]);
   const [notDeleteShow, setNotDeleteShow] = useState(false);
   const [addVideoLoader, setAddVideoLoader] = useState(false);
+  const [deleteVideoLoader, setDeleteVideoLoader] = useState(false);
   const options = Array.from({ length: 51 }, (_, i) => i.toString()); // "0" to "50"
   const [value, setValue] = useState(""); // initial value as string
   const inputRef = useRef();
@@ -84,6 +86,7 @@ const EditMovies = () => {
       setValue(newInputValue);
     }
   };
+
   useEffect(() => {
     const id = params.edit;
     async function fetchMovie() {
@@ -123,14 +126,16 @@ const EditMovies = () => {
     }
 
     fetchMovie();
-  }, []);
+  }, [deleteVideoLoader, addVideoLoader]);
 
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
   };
+
   const addMoviesHandler = async () => {
     if (!thumbnailUrlPreview && !thumbnailFromBackendPreview) {
-      toast.error("please upload thumbnail");
+      setConfirmAdd(false);
+      toast.error("please upload thumbnail first!");
       return;
     }
 
@@ -166,17 +171,20 @@ const EditMovies = () => {
     } catch (err) {
       toast.error("something went wrong while editing movies");
     } finally {
-      setAddVideoLoader(false)
-      setConfirmAdd(false)
+      setAddVideoLoader(false);
+      setConfirmAdd(false);
     }
   };
+
   const selectionHandler = (value) => {
     console.log(value);
     layOutArrayRef.current = value;
   };
+
   const GenreHandler = (value) => {
     genreRef.current = value;
   };
+
   const getThumbnail = (thumbnail) => {
     thumbnailRef.current = thumbnail;
 
@@ -186,6 +194,7 @@ const EditMovies = () => {
       setThumbNailUrlPreview(objectUrlCreation);
     }
   };
+
   // console.log(AllData.genre,"...>");
   const getVideoFilesHandler = (videoFiles) => {
     Object.values(videoFiles).forEach((current) => {
@@ -227,6 +236,7 @@ const EditMovies = () => {
     //   return
     // })
   };
+
   const languageHandler = (value) => {
     // console.log(value);
     languageRef.current = value;
@@ -261,8 +271,9 @@ const EditMovies = () => {
   // delete uploaded videos which already uploaded in backend databases
   const deleteVideoFromBackendHandler = async (data) => {
     const movieId = params.edit;
-    // console.log(data);
-    // console.log(data?.id)
+    console.log(data);
+    console.log(data?.id);
+    console.log("single short called");
     // return;
     if (data.name === "Ads") {
       console.log("ads triggered");
@@ -271,6 +282,7 @@ const EditMovies = () => {
         movieId: movieId,
       };
       try {
+        setDeleteVideoLoader(true);
         const response = await axios.delete(
           `${connectionString}/admin/deleteAds/`,
 
@@ -287,9 +299,15 @@ const EditMovies = () => {
         );
       } catch (error) {
         toast.error("something went wrong");
+      } finally {
+        setTimeout(() => {
+          setDeleteVideoLoader(false);
+          setConfirmDelete(false);
+        }, 3000);
       }
     } else if (data.name === "Video") {
       try {
+        setDeleteVideoLoader(true);
         const response = await axios.delete(
           `${connectionString}/admin/deleteShort/${data.id}`,
           {
@@ -301,10 +319,14 @@ const EditMovies = () => {
         toast.success("Video  deleted successfully");
       } catch (error) {
         toast.error("something went wrong");
+      } finally {
+        setDeleteVideoLoader(false);
+        setConfirmDelete(false);
       }
     }
     return;
   };
+
   async function addAdsInShortHandler() {
     const id = params.edit;
     try {
@@ -329,9 +351,11 @@ const EditMovies = () => {
 
     // setVideoFilesSnapshot((prev) => [...prev, personalisedAds]);
   }
+
   const toggleMenu = (index) => {
     setMenuOpenIndex(menuOpenIndex === index ? null : index);
   };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Close the menu if clicked outside
@@ -344,14 +368,16 @@ const EditMovies = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   function selectedActionHandler(event) {
     // console.log(event.target.value);
     setSelectedAction(event.target.value);
   }
+
   // let selectedIds = [];
   const multipleIdsHAndler = (id, name) => {
     const idExists = selectedIds.includes(id);
-  
+
     if (idExists) {
       // Remove ID and corresponding name
       setSelectedIds((prev) => prev.filter((current) => current !== id));
@@ -362,6 +388,7 @@ const EditMovies = () => {
       setShortName((prev) => [...prev, name]);
     }
   };
+
   // console.log(selectedIds, "selecteddIds");
   const selectedActionPerform = async (action) => {
     const moviesId = params.edit;
@@ -386,7 +413,6 @@ const EditMovies = () => {
         changeShortsSequence("/admin/changeSequence", moviesId, sequenceData);
       } catch (error) {}
     } else if (action === "Delete Shorts") {
-      setSelectedIds([])
       setConfirmDelete(true);
       // setShortName("Selected Shorts")
       console.log("Delete shorts");
@@ -398,12 +424,15 @@ const EditMovies = () => {
       // console.log("Points Deduction", deductableShortsPoints);
     }
   };
+
   useEffect(() => {
     if (!confirmDelete) {
       setShortName([]);
+      setSelectedIds([]);
       setSelectedAction("none");
     }
   }, [confirmDelete]);
+
   const shortsDeductionPointsSetter = (id, deductablePoints) => {
     // console.log(id,event);
     // deductableShortsPoints.push({ id, deductablePoints });
@@ -413,29 +442,45 @@ const EditMovies = () => {
     }
     deductableShortsPoints[id] = deductablePoints;
   };
+
   const deleteHandler = async (shortIds) => {
-    // console.log(shortIds);
-    setSelectedIds([]);
+    console.log(shortIds);
+    // setSelectedIds([]);
     setNotDeleteShow(false);
+    console.log("multiple called");
     try {
+      setDeleteVideoLoader(true);
       const response = await axios.delete(
         `${connectionString}/admin/multipleDeleteShorts`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
-          data: { shortIds }
+          data: { shortIds },
         }
       );
       toast.success("shorts  deleted successfully");
-      console.log(response)
+      console.log(response);
     } catch (error) {
       toast.error("something went wrong");
-      console.log(error)
+      console.log(error);
     } finally {
-      setSelectedIds([])
+      setSelectedIds([]);
+      setDeleteVideoLoader(false);
+      setConfirmDelete(false);
     }
   };
+
+  const checkAndDelete = (ids, name, type) => {
+    const data = { id: ids, name: type, shortname: name };
+    console.log(data);
+    if (notDeleteShow) {
+      deleteHandler(selectedIds);
+    } else {
+      deleteVideoFromBackendHandler(data);
+    }
+  };
+
   useEffect(() => {
     if (selectedAction === "Delete Shorts") {
       setNotDeleteShow(true);
@@ -445,11 +490,6 @@ const EditMovies = () => {
     }
   }, [selectedAction]);
 
-  useEffect(()=>{
-    setSelectedIds([])
-    console.log(videoFiles)
-    console.log(shortsPreviewFromBackend)
-  },[])
   return (
     <>
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2 customScrollbar">
@@ -839,13 +879,26 @@ const EditMovies = () => {
                               className="bg-[#3C445A] rounded-sm p-2 m-3 cursor-pointer text-center"
                               onClick={() => {
                                 console.log("hello");
-                                deleteVideoFromBackendHandler(
+                                // deleteVideoFromBackendHandler(
+                                //   current?.name === "Personalised Ads"
+                                //     ? { name: "Ads", index: index }
+                                //     : { name: "Video", id: current?._id }
+                                // );
+                                const data =
                                   current?.name === "Personalised Ads"
                                     ? { name: "Ads", index: index }
-                                    : { name: "Video", id: current?._id }
-                                );
+                                    : {
+                                        name: "Video",
+                                        id: current?._id,
+                                        shortName: current?.name,
+                                      };
+                                console.log(data);
+                                setShortName([data?.shortName]);
+                                setSelectedIds([data?.id]);
+                                setConfirmDelete(true);
+                                setCheckType(data?.name);
                                 // deleteVideoFromBackendHandler(current)
-                                // setConfirmDelete(true);
+                                setConfirmDelete(true);
                                 // setShortName((prev) => [...prev, current.name]);
                                 // setSelectedIds([current._id]);
                               }}
@@ -861,7 +914,7 @@ const EditMovies = () => {
                                 <input
                                   className="w-full h-full mr-5"
                                   type="checkbox"
-                                  onClick={() =>
+                                  onChange={() =>
                                     multipleIdsHAndler(
                                       current?._id,
                                       current.name
@@ -1027,8 +1080,10 @@ const EditMovies = () => {
           message={"Are you sure you want to delete shorts - "}
           name={shortName}
           setConfirmDelete={setConfirmDelete}
-          deleteFun={deleteHandler}
+          deleteFun={checkAndDelete}
           selectedIds={selectedIds}
+          checkType={checkType}
+          deleteVideoLoader={deleteVideoLoader}
         />
       )}
       {confirmAdd && (
