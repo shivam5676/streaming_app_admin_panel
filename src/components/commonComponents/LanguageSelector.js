@@ -13,6 +13,7 @@ const LanguageSelector = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const [language, setLanguage] = useState([]); // Available languages from the API
   const [state, setState] = useState([]); // Selected language IDs
+  const [open, setOpen] = useState(false);
 
   // Fetch languages from the API
   useEffect(() => {
@@ -43,6 +44,10 @@ const LanguageSelector = (props) => {
   const handleMultiple = (e) => {
     const { value } = e.target; // The selected language IDs
     setState(value); // Update the selected IDs
+    // Auto-close when all items are selected
+    if (value.length === language.length) {
+      setOpen(false); // <--- Close dropdown
+    }
   };
 
   // Send selected languages back to the parent component
@@ -60,12 +65,18 @@ const LanguageSelector = (props) => {
           multiple
           value={state} // Pass selected IDs to `value`
           onChange={handleMultiple}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           sx={{
             borderBottom: "2px solid white",
             "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after":
               {
                 borderBottom: "none", // Remove underline styles
               },
+            "& .MuiSelect-icon": {
+              color: "white", // <-- this makes the arrow icon white
+            },
           }}
           renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

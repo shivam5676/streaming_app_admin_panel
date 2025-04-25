@@ -10,6 +10,7 @@ const LayoutSelector = (props) => {
   console.log(props, "ppp");
   const [layouts, setLayouts] = useState([]);
   const [selectedLayouts, setSelectedLayouts] = useState([]);
+  const [open, setOpen] = useState(false);
   const connectionString = process.env.REACT_APP_API_URL;
 
   // Fetch layouts from the server
@@ -45,6 +46,11 @@ const LayoutSelector = (props) => {
       target: { value },
     } = event;
     setSelectedLayouts(value); // Value should be an array of IDs
+
+    // Auto-close when all items are selected
+    if (value.length === layouts.length) {
+      setOpen(false); // <--- Close dropdown
+    }
   };
 
   // Notify parent component of selection changes
@@ -63,12 +69,18 @@ const LayoutSelector = (props) => {
           multiple
           value={selectedLayouts}
           onChange={handleMultiple}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           sx={{
             borderBottom: "2px solid white",
             "&:before": { borderBottom: "none" },
             "&:after": { borderBottom: "none" },
             "&:hover:not(.Mui-disabled):before": { borderBottom: "none" },
             "&.Mui-focused:after": { borderBottom: "none" },
+            "& .MuiSelect-icon": {
+              color: "white", // <-- this makes the arrow icon white
+            },
           }}
           renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

@@ -278,7 +278,7 @@ const EditMovies = () => {
     if (data.name === "Ads") {
       console.log("ads triggered");
       const dataObj = {
-        index: data?.index,
+        index: data?.id,
         movieId: movieId,
       };
       try {
@@ -300,10 +300,8 @@ const EditMovies = () => {
       } catch (error) {
         toast.error("something went wrong");
       } finally {
-        setTimeout(() => {
-          setDeleteVideoLoader(false);
-          setConfirmDelete(false);
-        }, 3000);
+        setDeleteVideoLoader(false);
+        setConfirmDelete(false);
       }
     } else if (data.name === "Video") {
       try {
@@ -446,7 +444,6 @@ const EditMovies = () => {
   const deleteHandler = async (shortIds) => {
     console.log(shortIds);
     // setSelectedIds([]);
-    setNotDeleteShow(false);
     console.log("multiple called");
     try {
       setDeleteVideoLoader(true);
@@ -468,6 +465,7 @@ const EditMovies = () => {
       setSelectedIds([]);
       setDeleteVideoLoader(false);
       setConfirmDelete(false);
+      setNotDeleteShow(false);
     }
   };
 
@@ -508,7 +506,7 @@ const EditMovies = () => {
               <div className="m-4 font-semibold">
                 <p>Title</p>
                 <input
-                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal"
                   placeholder="Write here"
                   ref={titleRef}
                   defaultValue={AllData?.name}
@@ -528,7 +526,7 @@ const EditMovies = () => {
 
                   <input
                     defaultValue={AllData?.freeVideos}
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)]  rounded-md my-2"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)]  rounded-md my-2"
                     ref={freeVideosRef}
                     type="number"
                     min={0}
@@ -579,7 +577,7 @@ const EditMovies = () => {
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                   <p>Licence Expiry</p>
                   <input
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal date-white-icon"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal date-white-icon"
                     placeholder="Write here"
                     ref={LicenceExpiryDateRef}
                     type="date"
@@ -611,28 +609,54 @@ const EditMovies = () => {
                   {!thumbnailUrlPreview && !thumbnailFromBackendPreview ? (
                     <DragNDropImage thumbnail={getThumbnail}></DragNDropImage>
                   ) : (
-                    <div className="w-[100%] flex justify-center">
-                      <div className="w-[150px] h-[220px] rounded-md">
+                    // <div className="w-[100%] flex justify-center">
+                    //   <div className="w-[150px] h-[220px] rounded-md">
+                    //     <img
+                    //       src={
+                    //         thumbnailUrlPreview
+                    //           ? thumbnailUrlPreview
+                    //           : `${connectionString}/thumbnails${thumbnailFromBackendPreview}`
+                    //       }
+                    //       className="border w-[100%] h-[100%] rounded-md"
+                    //       type="file"
+                    //       accept=".png, .jpg, .jpeg"
+                    //     >
+                    //       {/* <img src={thumbnailUrlPreview}></img> */}
+                    //     </img>
+                    //     <div
+                    //       className="flex justify-center text-[.9rem] text-[#C1A6E6] underline cursor-pointer font-semibold pt-1"
+                    //       onClick={() => {
+                    //         setThumbNailUrlPreview(null);
+                    //         setThumbNailFromBackendPreview(null);
+                    //       }}
+                    //     >
+                    //       remove Image
+                    //     </div>
+                    //   </div>
+                    // </div>
+                    <div className="w-full flex justify-center">
+                      <div className="w-[150px] h-[220px] rounded-md relative group overflow-hidden">
                         <img
                           src={
                             thumbnailUrlPreview
                               ? thumbnailUrlPreview
                               : `${connectionString}/thumbnails${thumbnailFromBackendPreview}`
                           }
-                          className="border w-[100%] h-[100%] rounded-md"
+                          className="border w-full h-full rounded-md object-cover"
+                          alt="Thumbnail Preview"
                           type="file"
                           accept=".png, .jpg, .jpeg"
-                        >
-                          {/* <img src={thumbnailUrlPreview}></img> */}
-                        </img>
+                        />
+
+                        {/* Hover Overlay with Delete Icon */}
                         <div
-                          className="flex justify-center text-[.9rem] text-[#C1A6E6] underline cursor-pointer font-semibold pt-1"
+                          className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           onClick={() => {
                             setThumbNailUrlPreview(null);
                             setThumbNailFromBackendPreview(null);
                           }}
                         >
-                          remove Image
+                          <FaTrash className="text-white text-2xl" />
                         </div>
                       </div>
                     </div>
@@ -741,7 +765,7 @@ const EditMovies = () => {
                             height: "40px",
                             px: 2,
                             borderRadius: "0.375rem",
-                            color: "rgb(107,149,168)",
+                            color: "rgb(147,200,224)",
                             fontSize: "0.875rem",
                             fontWeight: 400,
                             display: "flex",
@@ -749,8 +773,12 @@ const EditMovies = () => {
                           },
                           "& input": {
                             padding: "0 !important",
-                            color: "rgb(107,149,168)",
+                            color: "rgb(147,200,224)",
                             textAlign: "start",
+                            "&::placeholder": {
+                              color: "rgb(147,200,224)", // <-- placeholder color
+                              opacity: 1, // fix for Safari/Firefox
+                            },
                           },
                           "& .MuiSvgIcon-root": {
                             display: "none", // hide dropdown arrow
@@ -886,7 +914,11 @@ const EditMovies = () => {
                                 // );
                                 const data =
                                   current?.name === "Personalised Ads"
-                                    ? { name: "Ads", index: index }
+                                    ? {
+                                        name: "Ads",
+                                        id: index,
+                                        shortName: "Personalised Ads",
+                                      }
                                     : {
                                         name: "Video",
                                         id: current?._id,

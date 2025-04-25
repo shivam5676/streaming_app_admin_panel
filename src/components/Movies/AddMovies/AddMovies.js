@@ -18,6 +18,8 @@ import SortableAndSelectedMoviesPrint from "./SortableAndSelectedMoviesPrint";
 
 import ThumbnailPreview from "./ThumbnailPreview";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { Autocomplete, TextField } from "@mui/material";
 
 const AddMovies = () => {
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
@@ -47,6 +49,20 @@ const AddMovies = () => {
   const moviesTrailerVideoLinkRef = useRef();
   const connectionString = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const options = Array.from({ length: 51 }, (_, i) => i.toString()); // "0" to "50"
+  const [value, setValue] = useState(""); // initial value as string
+  const inputRef = useRef();
+  const handleInputChange = (event, newInputValue) => {
+    if (
+      newInputValue === "" ||
+      (/^\d+$/.test(newInputValue) &&
+        +newInputValue >= 0 &&
+        +newInputValue <= 50)
+    ) {
+      setValue(newInputValue);
+    }
+  };
   // useEffect(() => {
   //   const interv1 = setInterval(() => {
   //     setUploadingPercentage((prev) => {
@@ -176,6 +192,8 @@ const AddMovies = () => {
       setSuccessTick("Error");
       if (err.response && err.response.data.msg)
         setMessage(err.response.data.msg);
+    } finally {
+      navigate("/allMovies");
     }
   };
   function addAdsInShortHandler() {
@@ -301,7 +319,7 @@ const AddMovies = () => {
               <div className="m-4 font-semibold">
                 <p>Title</p>
                 <input
-                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                  className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal"
                   placeholder="Write here"
                   ref={titleRef}
                 ></input>
@@ -316,7 +334,7 @@ const AddMovies = () => {
 
                   <input
                     defaultValue="0"
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)]  rounded-md my-2"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)]  rounded-md my-2"
                     ref={freeVideosRef}
                   ></input>
                 </div>
@@ -348,7 +366,7 @@ const AddMovies = () => {
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                   <p>Licence Expiry</p>
                   <input
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal"
                     placeholder="Write here"
                     ref={LicenceExpiryDateRef}
                     type="date"
@@ -415,6 +433,7 @@ const AddMovies = () => {
                       className="w-full h-[40px] bg-[#2E3648] py-2 px-4 outline-none text-[rgb(107,149,168)] rounded-md"
                       ref={moviesTrailerVideoRef}
                       type="file"
+                      accept="video/*"
                     ></input>
                   )}
                   {trailerType === "URL" && (
@@ -431,14 +450,76 @@ const AddMovies = () => {
               {console.log(shortDeductionPointsRef.current)}
               <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                 <p>Shorts Deduction (mints)</p>
-                <input
+                {/* <input
                   className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(107,149,168)] rounded-md font-normal"
                   placeholder="Points deduction for each shorts"
                   ref={shortDeductionPointsRef}
                   type="number"
                   min={0}
                   defaultValue={shortDeductionPointsRef.current.value}
-                ></input>
+                ></input> */}
+                <Autocomplete
+                  freeSolo
+                  options={options}
+                  value={value}
+                  inputValue={value}
+                  onChange={(e, newVal) => {
+                    if (newVal === null) {
+                      setValue("");
+                    } else if (
+                      /^\d+$/.test(newVal) &&
+                      +newVal >= 0 &&
+                      +newVal <= 50
+                    ) {
+                      setValue(newVal);
+                    }
+                  }}
+                  onInputChange={handleInputChange}
+                  filterOptions={(opts, state) => {
+                    const input = state.inputValue || "";
+                    return opts.filter((option) =>
+                      option.includes(input.toString())
+                    );
+                  }}
+                  isOptionEqualToValue={(option, val) => option === val}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Points deduction for each shorts"
+                      inputRef={inputRef}
+                      inputProps={{
+                        ...params.inputProps,
+                        inputMode: "numeric",
+                        pattern: "[0-9]*",
+                      }}
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          backgroundColor: "#2E3648",
+                          height: "40px",
+                          px: 2,
+                          borderRadius: "0.375rem",
+                          color: "rgb(147,200,224)",
+                          fontSize: "0.875rem",
+                          fontWeight: 400,
+                          display: "flex",
+                          alignItems: "center",
+                        },
+                        "& input": {
+                          padding: "0 !important",
+                          color: "rgb(147,200,224)",
+                          textAlign: "start",
+                          "&::placeholder": {
+                            color: "rgb(147,200,224)", // <-- placeholder color
+                            opacity: 1, // fix for Safari/Firefox
+                          },
+                        },
+                        "& .MuiSvgIcon-root": {
+                          display: "none", // hide dropdown arrow
+                        },
+                      }}
+                    />
+                  )}
+                />
               </div>
             </div>
           </div>
