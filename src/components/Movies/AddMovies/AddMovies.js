@@ -20,6 +20,8 @@ import ThumbnailPreview from "./ThumbnailPreview";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Autocomplete, TextField } from "@mui/material";
+import { FaTrash } from "react-icons/fa";
+import AddConfirm from "../../Confirmation/AddConfirm";
 
 const AddMovies = () => {
   const [uploadStatusModal, setUploadStatusModal] = useState(false);
@@ -50,6 +52,9 @@ const AddMovies = () => {
   const connectionString = process.env.REACT_APP_API_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [confirmAdd, setConfirmAdd] = useState(false);
+  const [addVideoLoader, setAddVideoLoader] = useState(false);
+  const [uploadMoreMovies, setUploadMoreMovies] = useState(false);
   const options = Array.from({ length: 51 }, (_, i) => i.toString()); // "0" to "50"
   const [value, setValue] = useState(""); // initial value as string
   const inputRef = useRef();
@@ -137,7 +142,7 @@ const AddMovies = () => {
     formdata.append("language", JSON.stringify(languageRef.current) || []);
     formdata.append("screenType", videoScreenRef.current.value);
     formdata.append("licenseExpiryDate", LicenceExpiryDateRef.current.value);
-    formdata.append("eachShortsPoint", shortDeductionPointsRef.current.value);
+    formdata.append("eachShortsPoint", value);
     if (moviesTrailerVideoRef?.current?.value) {
       formdata.append("trailerVideo", moviesTrailerVideoRef.current.files[0]);
     }
@@ -145,6 +150,7 @@ const AddMovies = () => {
       formdata.append("trailerUrl", moviesTrailerVideoLinkRef.current.value);
     }
     try {
+      setConfirmAdd(false);
       const response = await axios.post(
         `${connectionString}/admin/addMovie`,
         formdata,
@@ -193,7 +199,8 @@ const AddMovies = () => {
       if (err.response && err.response.data.msg)
         setMessage(err.response.data.msg);
     } finally {
-      navigate("/allMovies");
+      setvideoFiles([]);
+      // navigate("/allMovies");
     }
   };
   function addAdsInShortHandler() {
@@ -366,7 +373,7 @@ const AddMovies = () => {
                 <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                   <p>Licence Expiry</p>
                   <input
-                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal"
+                    className="w-full h-[30px] bg-[#2E3648] p-4 outline-none text-[rgb(147,200,224)] rounded-md font-normal date-white-icon"
                     placeholder="Write here"
                     ref={LicenceExpiryDateRef}
                     type="date"
@@ -447,7 +454,7 @@ const AddMovies = () => {
                 </div>
                 {/* if promotional content type will be url then we will show url input box else we will show file input box with thier given key property*/}
               </div>
-              {console.log(shortDeductionPointsRef.current)}
+              {/* {console.log(shortDeductionPointsRef.current)} */}
               <div className="p-4 font-semibold w-[100%] sm:w-[50%]">
                 <p>Shorts Deduction (mints)</p>
                 {/* <input
@@ -513,6 +520,15 @@ const AddMovies = () => {
                             opacity: 1, // fix for Safari/Firefox
                           },
                         },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#808080", // <<< set border color here
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#808080", // <<< border color on hover
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#808080", // <<< border color when focused
+                        },
                         "& .MuiSvgIcon-root": {
                           display: "none", // hide dropdown arrow
                         },
@@ -532,7 +548,7 @@ const AddMovies = () => {
           >
             <div className="m-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between">
               <p>Shorts Upload Section</p>
-              <div
+              {/* <div
                 onClick={() => {
                   addAdsInShortHandler();
                 }}
@@ -541,7 +557,7 @@ const AddMovies = () => {
                 <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-purple-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
                 <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                 <span class="relative font-bold">Add Ads</span>
-              </div>
+              </div> */}
             </div>
             <div className="flex   w-[100%]  flex-col">
               {" "}
@@ -550,27 +566,68 @@ const AddMovies = () => {
                   Drag and Drop or upload movie here
                 </div>
               </DragNDropVideos>
-              <SortableAndSelectedMoviesPrint
+              {/* <SortableAndSelectedMoviesPrint
                 videoFiles={videoFiles}
                 videoFilesSnapshot={videoFilesSnapshot}
                 sortArray={handleSort}
                 deleteVideoHandler={deleteVideoHandler}
-              />
+              /> */}
+              {videoFiles.length > 0 && (
+                <div className="w-[100%] border-2 border-gray-500 grid  grid-cols-1 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-2 p-2 my-2">
+                  {videoFiles?.map((current, index) => (
+                    <div
+                      key={index}
+                      className="relative bg-white h-[100px]  m-2 group shadow-md shadow-white"
+                    >
+                      <img
+                        src={videoFilesSnapshot[index]}
+                        alt={`Snapshot`}
+                        className="h-[100%] w-[100%] object-cover"
+                      />
+                      <div className="absolute top-0 left-0 right-0 bg-black bg-opacity-30 text-white text-xs p-1 text-center break-words">
+                        {current.name}
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center bg-red-500 bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <FaTrash
+                          className="text-white text-lg cursor-pointer w-[30px] h-[30px]"
+                          onClick={() => {
+                            deleteVideoHandler(index);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
         <div className="flex justify-end w-[100%]">
           <div
             onClick={() => {
-              addMoviesHandler();
+              // addMoviesHandler();
+              setConfirmAdd(true);
+              console.log(titleRef.current.value);
             }}
             className="relative rounded px-5 py-2.5 overflow-hidden group bg-blue-500  hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 text-white hover:ring-2 hover:ring-offset-2 hover:ring-blue-400 transition-all ease-out duration-300 cursor-pointer"
           >
             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-            <span className="relative font-semibold">Add Movies</span>
+            <span className="relative font-semibold">Add Movie</span>
           </div>
         </div>
       </div>
+      {confirmAdd && (
+        <AddConfirm
+          message={"You are about to add a new Movie."}
+          setConfirmAdd={setConfirmAdd}
+          videoFiles={videoFiles}
+          setvideoFiles={setvideoFiles}
+          addVideoLoader={addVideoLoader}
+          addFun={addMoviesHandler}
+          setUploadMoreMovies={setUploadMoreMovies}
+          MovieName={titleRef?.current?.value}
+        />
+      )}
     </>
   );
 };

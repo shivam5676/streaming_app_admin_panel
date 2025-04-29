@@ -10,7 +10,7 @@ const SavingLoaderModal = (props) => {
   const navigate=useNavigate()
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 "
+      className="fixed inset-0 z-[10001] flex items-center justify-center bg-black bg-opacity-50 "
       // onClick={props.closeModal} // Close modal when clicking outside the modal content
     >
       <div

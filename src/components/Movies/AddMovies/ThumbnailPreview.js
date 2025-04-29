@@ -21,7 +21,7 @@ const ThumbnailPreview = ({ thumbnailUrlPreview, removeThumbnailPreview }) => {
     //   </div>
     // </div>
     <div className="w-full flex justify-center">
-      <div className="w-[150px] h-[220px] rounded-md relative group overflow-hidden">
+      <div className="w-[150px] h-[220px] rounded-md relative group overflow-hidden cursor-pointer">
         <img
           src={thumbnailUrlPreview}
           className="border w-[100%] h-[100%] rounded-md"

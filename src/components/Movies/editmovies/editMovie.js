@@ -387,6 +387,12 @@ const EditMovies = () => {
     }
   };
 
+  const selectAllShorts = (id, name) => {
+    // Add ID and name
+    setSelectedIds((prev) => [...prev, id]);
+    setShortName((prev) => [...prev, name]);
+  };
+
   // console.log(selectedIds, "selecteddIds");
   const selectedActionPerform = async (action) => {
     const moviesId = params.edit;
@@ -444,28 +450,30 @@ const EditMovies = () => {
   const deleteHandler = async (shortIds) => {
     console.log(shortIds);
     // setSelectedIds([]);
-    console.log("multiple called");
-    try {
-      setDeleteVideoLoader(true);
-      const response = await axios.delete(
-        `${connectionString}/admin/multipleDeleteShorts`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-          data: { shortIds },
-        }
-      );
-      toast.success("shorts  deleted successfully");
-      console.log(response);
-    } catch (error) {
-      toast.error("something went wrong");
-      console.log(error);
-    } finally {
-      setSelectedIds([]);
-      setDeleteVideoLoader(false);
-      setConfirmDelete(false);
-      setNotDeleteShow(false);
+    if (shortIds.length > 0) {
+      try {
+        setDeleteVideoLoader(true);
+        const response = await axios.delete(
+          `${connectionString}/admin/multipleDeleteShorts`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+            data: { shortIds },
+          }
+        );
+        toast.success("shorts  deleted successfully");
+        console.log(response);
+      } catch (error) {
+        toast.error("something went wrong");
+        console.log(error);
+      } finally {
+        setSelectedIds([]);
+        setDeleteVideoLoader(false);
+        setConfirmDelete(false);
+        setNotDeleteShow(false);
+      }
+    } else {
     }
   };
 
@@ -635,7 +643,7 @@ const EditMovies = () => {
                     //   </div>
                     // </div>
                     <div className="w-full flex justify-center">
-                      <div className="w-[150px] h-[220px] rounded-md relative group overflow-hidden">
+                      <div className="w-[150px] h-[220px] rounded-md relative group overflow-hidden cursor-pointer">
                         <img
                           src={
                             thumbnailUrlPreview
@@ -780,6 +788,15 @@ const EditMovies = () => {
                               opacity: 1, // fix for Safari/Firefox
                             },
                           },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#6B7280", // <<< set border color here
+                          },
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white", // <<< border color on hover
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#6B7280", // <<< border color when focused
+                          },
                           "& .MuiSvgIcon-root": {
                             display: "none", // hide dropdown arrow
                           },
@@ -795,6 +812,32 @@ const EditMovies = () => {
           <div className=" bg-[#2A3042] w-[100%] my-4 p-4">
             <div className="my-4 flex  text-[1.2rem] font-semibold border-b pb-2 border-gray-500 border-spacing-x-3 text-white justify-between items-center">
               <p>Shorts Section</p>
+
+              {selectedAction === "Delete Shorts" && (
+                <div
+                  onClick={() => {
+                    {
+                      selectedIds.length === shortsPreviewFromBackend.length
+                        ? (setSelectedIds([]), setShortName([]))
+                        : (setSelectedIds([]),
+                          shortsPreviewFromBackend.length > 0 &&
+                            shortsPreviewFromBackend.map((current, index) => {
+                              selectAllShorts(current?._id, current.name);
+                            }));
+                    }
+                  }}
+                  class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-[#C1A6E6] hover:text-white bg-gray-800 rounded-lg group border border-[#C1A6E6]"
+                >
+                  <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-[#A880DF] rounded-full group-hover:w-56 group-hover:h-56"></span>
+                  <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                  <span class="relative font-bold">
+                    {selectedIds.length === shortsPreviewFromBackend.length
+                      ? "Unselect All"
+                      : "Select All"}
+                  </span>
+                </div>
+              )}
+
               <div
                 onClick={() => {
                   selectedAction === "none"
@@ -845,32 +888,33 @@ const EditMovies = () => {
               </select>
             </div>
 
-            <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
-              <ShortsTableHeaders
-                shortsPreviewFromBackend={shortsPreviewFromBackend}
-              ></ShortsTableHeaders>
-              {/* if sequence changer is diabled then we will show this else we will show react sortable screen changer */}
-              <ReactSortable
-                list={shortsPreviewFromBackend.map((_, index) => ({
-                  id: index,
-                  name: shortsPreviewFromBackend[index]?.name,
-                }))}
-                setList={handleSort}
-                scroll={true}
-                // bubbleScroll
-                animation={300} // Animation duration in milliseconds
-                disabled={selectedAction !== "Change sequence"}
-              >
-                {shortsPreviewFromBackend?.length > 0 &&
-                  shortsPreviewFromBackend?.map((current, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="font-normal flex py-1 items-center text-[#c8cfd6] bg-gray-400  backdrop-blur-lg hover:text-white  border-b border-gray-500 px-2"
-                      >
-                        <div className="w-[30px] p-2  flex-shrink-0">
-                          <p className="px-2">{index + 1}</p>
-                          {/* {selectedAction !== "Change sequence" &&
+            {shortsPreviewFromBackend.length > 0 ? (
+              <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
+                <ShortsTableHeaders
+                  shortsPreviewFromBackend={shortsPreviewFromBackend}
+                ></ShortsTableHeaders>
+                {/* if sequence changer is diabled then we will show this else we will show react sortable screen changer */}
+                <ReactSortable
+                  list={shortsPreviewFromBackend.map((_, index) => ({
+                    id: index,
+                    name: shortsPreviewFromBackend[index]?.name,
+                  }))}
+                  setList={handleSort}
+                  scroll={true}
+                  // bubbleScroll
+                  animation={300} // Animation duration in milliseconds
+                  disabled={selectedAction !== "Change sequence"}
+                >
+                  {shortsPreviewFromBackend?.length > 0 &&
+                    shortsPreviewFromBackend?.map((current, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="font-normal flex py-1 items-center text-[#c8cfd6] bg-gray-400  backdrop-blur-lg hover:text-white  border-b border-gray-500 px-2"
+                        >
+                          <div className="w-[30px] p-2  flex-shrink-0">
+                            <p className="px-2">{index + 1}</p>
+                            {/* {selectedAction !== "Change sequence" &&
                             selectedAction !== "none" &&
                             current !== "Ads" &&
                             current?.name != "Personalised Ads" && (
@@ -881,10 +925,10 @@ const EditMovies = () => {
                                 }
                               ></input>
                             )} */}
-                        </div>
+                          </div>
 
-                        <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
-                          {/* {!notDeleteShow && (
+                          <div className="w-[90px] text-white font-semibold flex-shrink-0 ">
+                            {/* {!notDeleteShow && (
                             <p
                             className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer"
                             onClick={() => {
@@ -902,142 +946,148 @@ const EditMovies = () => {
                             Delete
                           </p>
                           )} */}
-                          {!notDeleteShow ? (
-                            <p
-                              className="bg-[#3C445A] rounded-sm p-2 m-3 cursor-pointer text-center"
-                              onClick={() => {
-                                console.log("hello");
-                                // deleteVideoFromBackendHandler(
-                                //   current?.name === "Personalised Ads"
-                                //     ? { name: "Ads", index: index }
-                                //     : { name: "Video", id: current?._id }
-                                // );
-                                const data =
-                                  current?.name === "Personalised Ads"
-                                    ? {
-                                        name: "Ads",
-                                        id: index,
-                                        shortName: "Personalised Ads",
-                                      }
-                                    : {
-                                        name: "Video",
-                                        id: current?._id,
-                                        shortName: current?.name,
-                                      };
-                                console.log(data);
-                                setShortName([data?.shortName]);
-                                setSelectedIds([data?.id]);
-                                setConfirmDelete(true);
-                                setCheckType(data?.name);
-                                // deleteVideoFromBackendHandler(current)
-                                setConfirmDelete(true);
-                                // setShortName((prev) => [...prev, current.name]);
-                                // setSelectedIds([current._id]);
-                              }}
-                            >
-                              Delete
-                            </p>
-                          ) : (
-                            selectedAction !== "Change sequence" &&
-                            selectedAction !== "none" &&
-                            current !== "Ads" &&
-                            current?.name != "Personalised Ads" && (
-                              <div className="h-6 flex justify-center items-center">
-                                <input
-                                  className="w-full h-full mr-5"
-                                  type="checkbox"
-                                  onChange={() =>
-                                    multipleIdsHAndler(
-                                      current?._id,
-                                      current.name
-                                    )
-                                  }
-                                ></input>
-                              </div>
-                            )
-                          )}
-                        </div>
-                        {/* ) : (
+                            {!notDeleteShow ? (
+                              <p
+                                className="bg-[#3C445A] rounded-sm p-2 m-3 cursor-pointer text-center"
+                                onClick={() => {
+                                  console.log("hello");
+                                  // deleteVideoFromBackendHandler(
+                                  //   current?.name === "Personalised Ads"
+                                  //     ? { name: "Ads", index: index }
+                                  //     : { name: "Video", id: current?._id }
+                                  // );
+                                  const data =
+                                    current?.name === "Personalised Ads"
+                                      ? {
+                                          name: "Ads",
+                                          id: index,
+                                          shortName: "Personalised Ads",
+                                        }
+                                      : {
+                                          name: "Video",
+                                          id: current?._id,
+                                          shortName: current?.name,
+                                        };
+                                  console.log(data);
+                                  setShortName([data?.shortName]);
+                                  setSelectedIds([data?.id]);
+                                  setConfirmDelete(true);
+                                  setCheckType(data?.name);
+                                  // deleteVideoFromBackendHandler(current)
+                                  setConfirmDelete(true);
+                                  // setShortName((prev) => [...prev, current.name]);
+                                  // setSelectedIds([current._id]);
+                                }}
+                              >
+                                Delete
+                              </p>
+                            ) : (
+                              selectedAction !== "Change sequence" &&
+                              selectedAction !== "none" &&
+                              current !== "Ads" &&
+                              current?.name != "Personalised Ads" && (
+                                <div className="h-6 flex justify-center items-center">
+                                  <input
+                                    className="w-full h-full mr-5"
+                                    type="checkbox"
+                                    checked={selectedIds.includes(current?._id)}
+                                    onChange={() =>
+                                      multipleIdsHAndler(
+                                        current?._id,
+                                        current.name
+                                      )
+                                    }
+                                  ></input>
+                                </div>
+                              )
+                            )}
+                          </div>
+                          {/* ) : (
                           <div className="w-[90px] text-yellow font-semibold flex-shrink-0 ">
                             <p className="bg-[#3C445A] rounded-sm p-2 m-2 cursor-pointer">
                               Uploading
                             </p>
                           </div>
                         )} */}
-                        {current !== "Ads" &&
-                        current?.name != "Personalised Ads" ? (
-                          <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
-                            <div className="min-w-[120px] w-[100%] flex items-center flex-shrink-1">
-                              <div className="w-[80px] flex-shrink-0">
-                                <img
-                                  // src={`${connectionString}/thumbnails${current.fileLocation.replace(
-                                  //   "uploads/thumbnail",
-                                  //   ""
-                                  // )}`}
-                                  className=" h-[80px] w-[100px] p-2"
-                                ></img>
+                          {current !== "Ads" &&
+                          current?.name != "Personalised Ads" ? (
+                            <div className="bg-[#151E2D] flex w-[100%] items-center rounded-md relative">
+                              <div className="min-w-[120px] w-[100%] flex items-center flex-shrink-1">
+                                <div className="w-[80px] flex-shrink-0">
+                                  <img
+                                    // src={`${connectionString}/thumbnails${current.fileLocation.replace(
+                                    //   "uploads/thumbnail",
+                                    //   ""
+                                    // )}`}
+                                    className=" h-[80px] w-[100px] p-2"
+                                  ></img>
+                                </div>
+                                <p className="p-2 w-full">{current?.name}</p>
                               </div>
-                              <p className="p-2 w-full">{current?.name}</p>
-                            </div>
-                            <div className="w-[80%] min-w-[100px] flex-shrink-1 flex items-center">
-                              <p className="p-2 break-words">
-                                {current?.views}
-                              </p>
-                            </div>{" "}
-                            <div className=" min-w-[60px]  flex-shrink-1">
-                              <p
-                                className="p-2 w-full border rounded-md"
-                                contentEditable={
-                                  selectedAction == "Points Deduction"
-                                }
-                                onInput={(e) => {
-                                  if (isNaN(e.target.textContent)) {
-                                    toast.error("only numerical value");
-                                    e.target.textContent = "";
-                                    return;
+                              <div className="w-[80%] min-w-[100px] flex-shrink-1 flex items-center">
+                                <p className="p-2 break-words">
+                                  {current?.views}
+                                </p>
+                              </div>{" "}
+                              <div className=" min-w-[60px]  flex-shrink-1">
+                                <p
+                                  className="p-2 w-full border rounded-md"
+                                  contentEditable={
+                                    selectedAction == "Points Deduction"
                                   }
-                                  shortsDeductionPointsSetter(
-                                    current._id,
-                                    e.target.textContent
-                                  );
+                                  onInput={(e) => {
+                                    if (isNaN(e.target.textContent)) {
+                                      toast.error("only numerical value");
+                                      e.target.textContent = "";
+                                      return;
+                                    }
+                                    shortsDeductionPointsSetter(
+                                      current._id,
+                                      e.target.textContent
+                                    );
+                                  }}
+                                >
+                                  {current?.deductionPoints || 0}
+                                </p>
+                                {/* <input></input> */}
+                              </div>
+                              <div className="w-[80%] min-w-[70px]  flex-shrink-1">
+                                <p className="p-2 break-words">
+                                  {current?.visible ? "true" : "false"}
+                                </p>
+                              </div>
+                              <div
+                                className="w-[80px]  flex-shrink-0 cursor-pointer p-2"
+                                onClick={() => {
+                                  // navigate(`/userDetails/${current._id}`);
                                 }}
                               >
-                                {current?.deductionPoints || 0}
-                              </p>
-                              {/* <input></input> */}
+                                <p className="p-2 px-3 font-semibold  border border-white hover:border-[#A880DF] hover:bg-[#A880DF] rounded-md text-white text-[.9rem] flex justify-center text-center ">
+                                  Watch
+                                </p>
+                              </div>
                             </div>
-                            <div className="w-[80%] min-w-[70px]  flex-shrink-1">
-                              <p className="p-2 break-words">
-                                {current?.visible ? "true" : "false"}
-                              </p>
-                            </div>
-                            <div
-                              className="w-[80px]  flex-shrink-0 cursor-pointer p-2"
-                              onClick={() => {
-                                // navigate(`/userDetails/${current._id}`);
-                              }}
-                            >
-                              <p className="p-2 px-3 font-semibold  border border-white hover:border-[#A880DF] hover:bg-[#A880DF] rounded-md text-white text-[.9rem] flex justify-center text-center ">
-                                Watch
-                              </p>
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            {/* <img className="h-[60px] w-[220px]" src={personalisedAds}></img> */}
-                            <div
-                              className="h-[60px] w-[100%] flex items-center justify-center rounded-md bg-[#A880DF] mb-2 sm:text-[1.1rem] font-semibold text-white p-1"
-                              src={personalisedAds}
-                            >
-                              Personalised Ads
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    );
-                  })}
-              </ReactSortable>
-            </div>
+                          ) : (
+                            <>
+                              {/* <img className="h-[60px] w-[220px]" src={personalisedAds}></img> */}
+                              <div
+                                className="h-[60px] w-[100%] flex items-center justify-center rounded-md bg-[#A880DF] mb-2 sm:text-[1.1rem] font-semibold text-white p-1"
+                                src={personalisedAds}
+                              >
+                                Personalised Ads
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                </ReactSortable>
+              </div>
+            ) : (
+              <div className="text-white text-center py-4 font-semibold">
+                No Shorts uploaded Yet!
+              </div>
+            )}
           </div>
         </section>
         {uploadMoreMovies && (
@@ -1094,28 +1144,31 @@ const EditMovies = () => {
                 : "I will add videos later"}
             </span>
           </div>
-          <div
-            onClick={() => {
-              // addMoviesHandler();
-              // setUploadMoreMovies(false)
-              setConfirmAdd(true);
-            }}
-            className="relative rounded px-5 py-2.5 overflow-hidden group bg-green-600  hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300 cursor-pointer"
-          >
-            <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-            <span className="relative font-semibold">Save Changes</span>
-          </div>
+          {selectedAction === "none" && (
+            <div
+              onClick={() => {
+                // addMoviesHandler();
+                // setUploadMoreMovies(false)
+                setConfirmAdd(true);
+              }}
+              className="relative rounded px-5 py-2.5 overflow-hidden group bg-green-600  hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 text-white hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300 cursor-pointer"
+            >
+              <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+              <span className="relative font-semibold">Save Changes</span>
+            </div>
+          )}
         </div>
       </div>
       {confirmDelete && (
         <DeleteConfirm
-          message={"Are you sure you want to delete shorts - "}
+          message={"Are you sure you want to delete Following items - "}
           name={shortName}
           setConfirmDelete={setConfirmDelete}
           deleteFun={checkAndDelete}
           selectedIds={selectedIds}
           checkType={checkType}
           deleteVideoLoader={deleteVideoLoader}
+          MovieName={titleRef?.current?.value}
         />
       )}
       {confirmAdd && (
@@ -1127,6 +1180,7 @@ const EditMovies = () => {
           addVideoLoader={addVideoLoader}
           addFun={addMoviesHandler}
           setUploadMoreMovies={setUploadMoreMovies}
+          MovieName={titleRef?.current?.value}
         />
       )}
     </>
