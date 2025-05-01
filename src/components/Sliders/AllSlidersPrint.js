@@ -4,7 +4,7 @@ import { sliderSliceACtion } from "../../store/sliderSlice";
 import { toast } from "react-toastify";
 import { deleteSliderApi } from "../../Api/Slider/SliderApi";
 
-const AllSlidersPrint = ({ allSliders }) => {
+const AllSlidersPrint = ({ allSliders, handleSelectChange }) => {
   const dispatch = useDispatch();
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
 
@@ -18,18 +18,18 @@ const AllSlidersPrint = ({ allSliders }) => {
       toast.error("something went wrong");
     }
   };
-  const handleSelectChange = (id, event) => {
-    const action = event.target.value;
-    console.log(action);
-    // Reset the select value after handling the event to ensure proper re-rendering
-    event.target.value = ""; // Reset the value to ensure change is recognized next time
+  // const handleSelectChange = (id, event, name) => {
+  //   const action = event.target.value;
+  //   console.log(action);
+  //   // Reset the select value after handling the event to ensure proper re-rendering
+  //   event.target.value = ""; // Reset the value to ensure change is recognized next time
 
-    if (action === "DELETE") {
-      deleteSliderHandler(id);
-    } else if (action === "EDIT") {
-      // navigate(`/allLayout/${id}`);
-    }
-  };
+  //   if (action === "DELETE") {
+  //     deleteSliderHandler(id);
+  //   } else if (action === "EDIT") {
+  //     // navigate(`/allLayout/${id}`);
+  //   }
+  // };
   return (
     <>
       {" "}
@@ -48,17 +48,17 @@ const AllSlidersPrint = ({ allSliders }) => {
                       : "bg-[#3C445A]"
                   } rounded-sm p-2`}
                   onChange={(event) => {
-                    handleSelectChange(current._id, event);
+                    handleSelectChange(current._id, event, current.schemaName);
                   }}
                 >
-                  <option
+                  {/* <option
                     value=""
                     // disabled
                     className="border-b-2 border-gray-400"
                   >
                     option
-                  </option>
-                  <option value="EDIT">EDIT</option>
+                  </option> */}
+                  {/* <option value="EDIT">EDIT</option> */}
                   <option value="DELETE">DELETE</option>
                 </select>
               </div>

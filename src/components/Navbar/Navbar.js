@@ -43,13 +43,13 @@ const Navbar = (props) => {
     <div className="bg-[#36394C]/70 backdrop-blur-sm w-[100vw] h-[70px] flex">
       {!smallSideBArActivated && width >= 992 ? (
         <div className={`flex flex-shrink-0 w-[240px] ${selectedTheme==="modern reeloid"?"bg-[#2A3142]/60 backdrop-blur-lg":"bg-[#2A3142]"} bg-[#2A3142] text-white  h-[100%] items-center justify-center`}>
-          <img src={logo} className="mt-3 w-[150px] h-[75%]"></img>
+          <img src={logo} className="mt-3 w-[150px] h-[70%]"></img>
          
         </div>
       ) : (
         <div className="flex flex-shrink-0 w-[70px] bg-[#2A3142]  text-white h-[100%] items-center justify-center">
-          <img src={logoIcon} className="w-[40px] h-[50px]"></img>
-          {/* <p className="text-3xl font-semibold mx-2">Reelies </p> */}
+          <img src={logoIcon} className="w-[40px] h-[40px]"></img>
+          {/* <p className="text-3xl font-semibold mx-2">Reeloid </p> */}
         </div>
       )}
       <div className="h-[100%] w-[100%] flex items-center justify-between pe-8">

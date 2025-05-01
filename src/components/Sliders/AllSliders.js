@@ -8,6 +8,8 @@ import Pagination from "../commonComponents/pagination";
 import AllSlidersPrint from "./AllSlidersPrint";
 import { allSlidersApi, deleteSliderApi } from "../../Api/Slider/SliderApi";
 import SearchAndSort from "../commonComponents/searchAndSort";
+import DeleteConfirm from "../Confirmation/DeleteConfirm";
+import { useNavigate } from "react-router-dom";
 
 const AllSliders = () => {
   // const [searchValue, setSearchValue] = useState(""); // Track input state
@@ -24,6 +26,9 @@ const AllSliders = () => {
   const dispatch = useDispatch();
   const allSliders = useSelector((state) => state.sliderData);
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [sliderName, setSliderName] = useState([]);
+      const navigate = useNavigate();
   useEffect(() => {
     console.log("hello limit", limit);
     // return;
@@ -64,6 +69,27 @@ const AllSliders = () => {
       toast.error("something went wrong");
     }
   };
+  const handleSelectChange = (id, event, name) => {
+    const action = event.target.value;
+    console.log(action);
+    setSliderName(prev => [...prev, name])
+    console.log(sliderName)
+    // Reset the select value after handling the event to ensure proper re-rendering
+    event.target.value = ""; // Reset the value to ensure change is recognized next time
+
+    if (action === "DELETE") {
+      setConfirmDelete(true)
+      // deleteSliderHandler(id);
+    } else if (action === "EDIT") {
+      // navigate(`/allLayout/${id}`);
+    }
+  };
+
+  useEffect(()=>{
+    if(!confirmDelete){
+      setSliderName([])
+    }
+  },[confirmDelete])
   const limitHandler = (data) => {
     setlimit(data);
     setStart(0);
@@ -118,7 +144,7 @@ const AllSliders = () => {
                 </div>
               </div>
 
-              <AllSlidersPrint allSliders={allSliders} />
+              <AllSlidersPrint allSliders={allSliders} handleSelectChange={handleSelectChange} />
             </div>
           </div>
         </div>{" "}
@@ -129,6 +155,13 @@ const AllSliders = () => {
           }}
         />
       </section>
+      {confirmDelete && (
+        <DeleteConfirm
+          message={"Are you sure you want to delete slider - "}
+          name={sliderName}
+          setConfirmDelete={setConfirmDelete}
+        />
+      )}
     </div>
   );
 };

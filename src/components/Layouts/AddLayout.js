@@ -77,7 +77,7 @@ const AddLayout = (req, res, next) => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
         <RoutesInfoDiv
           mainHeading={"Add Layout"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Layout section"}
           currentDir={"Add Layout"}
         ></RoutesInfoDiv>
@@ -133,7 +133,7 @@ const AddLayout = (req, res, next) => {
                 </FormGroup>
                 <p className="text-red-500 text-[.8rem]">
                   note * :
-                  <span className="text-yellow-400 text-[.75rem]">
+                  <span className="text-purple-300 text-[.75rem]">
                     {" "}
                     You can also Link movies later to any layout
                   </span>

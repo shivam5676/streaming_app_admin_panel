@@ -33,7 +33,7 @@ const Login = (props) => {
           <div className="h-[120px] bg-[#626ED4]  rounded-t-md w-full text-center p-4">
             <p className="text-white font-semibold">Welcome Back !</p>
             <p className="text-[.8rem] text-gray-300">
-              Sign in to continue to Reelies
+              Sign in to continue to Reeloid
             </p>
           </div>
           {/* Centered Circle */}

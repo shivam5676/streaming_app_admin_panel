@@ -130,7 +130,7 @@ const AddSlider = () => {
       <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
         <RoutesInfoDiv
           mainHeading={"Add Slider"}
-          websiteName={"Reelies"}
+          websiteName={"Reeloid"}
           sectionName={"Hero section"}
           currentDir={"Add Slider"}
         ></RoutesInfoDiv>

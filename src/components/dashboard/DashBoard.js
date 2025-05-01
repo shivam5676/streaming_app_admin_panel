@@ -91,7 +91,7 @@ const DashBoard = () => {
             selectedTheme === "modern reeloid" ? "text-white" : "text-gray-400"
           }`}
         >
-          <span>Welcome to Reelies Dashboard</span>
+          <span>Welcome to Reeloid Dashboard</span>
         </p>
         {
           <section className="w-[100%]  grid xl:grid-cols-4 sm:grid-cols-2  gap-4 py-2">

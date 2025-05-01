@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Box, Checkbox, Chip, MenuItem, FormControl, Select } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Chip,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 
 const LanguageSelector = (props) => {
   const connectionString = process.env.REACT_APP_API_URL;
   const [language, setLanguage] = useState([]); // Available languages from the API
   const [state, setState] = useState([]); // Selected language IDs
+  const [open, setOpen] = useState(false);
 
   // Fetch languages from the API
   useEffect(() => {
@@ -36,11 +44,17 @@ const LanguageSelector = (props) => {
   const handleMultiple = (e) => {
     const { value } = e.target; // The selected language IDs
     setState(value); // Update the selected IDs
+    // Auto-close when all items are selected
+    if (value.length === language.length) {
+      setOpen(false); // <--- Close dropdown
+    }
   };
 
   // Send selected languages back to the parent component
   useEffect(() => {
-    const selectedLanguages = language.filter((lang) => state.includes(lang._id));
+    const selectedLanguages = language.filter((lang) =>
+      state.includes(lang._id)
+    );
     props.selectedLanguage(selectedLanguages);
   }, [state, language, props]);
 
@@ -51,10 +65,17 @@ const LanguageSelector = (props) => {
           multiple
           value={state} // Pass selected IDs to `value`
           onChange={handleMultiple}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           sx={{
             borderBottom: "2px solid white",
-            "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after": {
-              borderBottom: "none", // Remove underline styles
+            "&:before, &:after, &:hover:not(.Mui-disabled):before, &.Mui-focused:after":
+              {
+                borderBottom: "none", // Remove underline styles
+              },
+            "& .MuiSelect-icon": {
+              color: "white", // <-- this makes the arrow icon white
             },
           }}
           renderValue={(selectedIds) => (
@@ -62,7 +83,7 @@ const LanguageSelector = (props) => {
               {selectedIds.map((id) => {
                 const selectedLang = language.find((lang) => lang._id === id);
                 return selectedLang ? (
-                  <Chip key={id} color="info" label={selectedLang.name} />
+                  <Chip key={id} color="success" label={selectedLang.name} />
                 ) : null;
               })}
             </Box>

@@ -9,6 +9,7 @@ import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
 import SearchAndSort from "../../commonComponents/searchAndSort";
 import Pagination from "../../commonComponents/pagination";
 import AllMoviesPrint from "./AllMoviesPrint";
+import DeleteConfirm from "../../Confirmation/DeleteConfirm";
 
 const AllMovies = () => {
   const selectedTheme = useSelector((state) => state.theme.SelectedTheme);
@@ -25,8 +26,13 @@ const AllMovies = () => {
   // const [allMovies, setAllMovies] = useState([]);
   const dispatch = useDispatch();
   const allMovies = useSelector((state) => state.movieData);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [movieName, setMovieName] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [deleteVideoLoader, setDeleteVideoLoader] = useState(false);
 
   useEffect(() => {
+    // navigate("/error/addMovies")
     try {
       (async () => {
         const res = await axios.get(
@@ -58,8 +64,9 @@ const AllMovies = () => {
   }, [dispatch, limit, start, searchValue]);
   const deleteMovieHandler = async (id) => {
     console.log(id);
-    return;
+    // return;
     try {
+      setDeleteVideoLoader(true);
       const response = await axios.delete(
         `${connectionString}/admin/deleteMovie/${id}`,
         {
@@ -70,20 +77,33 @@ const AllMovies = () => {
       );
       dispatch(movieSliceACtion.deleteMovie(id));
       toast.success("movie deleted successfully");
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setDeleteVideoLoader(false);
+      setConfirmDelete(false);
+    }
   };
-  const handleSelectChange = (id, event) => {
+  const handleSelectChange = (id, event, name) => {
     const action = event.target.value;
     console.log(action);
+    setMovieName((prev) => [...prev, name]);
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
     if (action === "DELETE") {
-      deleteMovieHandler(id);
+      // deleteMovieHandler(id);
+      setSelectedIds([id]);
+      setConfirmDelete(true);
     } else if (action === "EDIT") {
       navigate(`/allMovies/${id}`);
     }
   };
+  useEffect(() => {
+    if (!confirmDelete) {
+      setMovieName([]);
+    }
+  }, [confirmDelete]);
   const limitHandler = (data) => {
     setlimit(data);
     setStart(0);
@@ -92,7 +112,7 @@ const AllMovies = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-auto customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All Movies"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Movies section"}
         currentDir={"All Movies"}
       ></RoutesInfoDiv>
@@ -148,7 +168,6 @@ const AllMovies = () => {
                 allMovies={allMovies}
                 handleSelectChange={handleSelectChange}
               ></AllMoviesPrint>
-              
             </div>
           </div>
         </div>
@@ -159,6 +178,18 @@ const AllMovies = () => {
           }}
         />
       </section>
+      {confirmDelete && (
+        <DeleteConfirm
+          message={"Are you sure you want to delete movie - "}
+          name={movieName}
+          setConfirmDelete={setConfirmDelete}
+          selectedIds={selectedIds}
+          deleteFun={() => {
+            deleteMovieHandler(selectedIds[0]);
+          }}
+          deleteVideoLoader={deleteVideoLoader}
+        />
+      )}
     </div>
   );
 };

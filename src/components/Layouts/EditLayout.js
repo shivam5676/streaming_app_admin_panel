@@ -91,7 +91,7 @@ const EditLayout = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"Edit Layout"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Layout section"}
         currentDir={"Edit Layout"}
       ></RoutesInfoDiv>

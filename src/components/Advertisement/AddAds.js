@@ -56,7 +56,7 @@ const AddAds = () => {
       {" "}
       <RoutesInfoDiv
         mainHeading={"Add Ads"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Ads section"}
         currentDir={"Add Ads"}
       ></RoutesInfoDiv>

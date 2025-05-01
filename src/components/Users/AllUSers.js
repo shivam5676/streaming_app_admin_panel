@@ -14,7 +14,7 @@ const AllUsers = () => {
   const navigate = useNavigate();
   const [allMovies, setAllMovies] = useState([]);
 
-  const [limit, setlimit] = useState(1);
+  const [limit, setlimit] = useState(10);
   const [start, setStart] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [pageMetaData, setPageMetaData] = useState({
@@ -68,8 +68,8 @@ const AllUsers = () => {
     // Reset the select value after handling the event to ensure proper re-rendering
     event.target.value = ""; // Reset the value to ensure change is recognized next time
 
-    if (action === "DELETE") {
-      deleteMovieHandler(id);
+    if (action === "DISABLE") {
+      // deleteMovieHandler(id);
     } else if (action === "EDIT") {
       navigate(`/userDetails/${id}`);
     }
@@ -82,7 +82,7 @@ const AllUsers = () => {
     <div className=" w-[100%] h-[calc(100vh-70px)] overflow-y-scroll customScrollbar px-4 py-2">
       <RoutesInfoDiv
         mainHeading={"All User"}
-        websiteName={"Reelies"}
+        websiteName={"Reeloid"}
         sectionName={"Users section"}
         currentDir={"All Users"}
       ></RoutesInfoDiv>
@@ -149,7 +149,7 @@ const AllUsers = () => {
                           option
                         </option>
                         <option value="EDIT">EDIT</option>
-                        <option value="DELETE">DELETE</option>
+                        <option value="DELETE">DISABLE</option>
                       </select>
                     </div>
                     <div className="w-[100px] flex-shrink-0">

@@ -7,20 +7,24 @@ import Select from "@mui/material/Select";
 import axios from "axios";
 
 const LayoutSelector = (props) => {
-  console.log(props,"ppp")
+  console.log(props, "ppp");
   const [layouts, setLayouts] = useState([]);
   const [selectedLayouts, setSelectedLayouts] = useState([]);
-  const connectionString =  process.env.REACT_APP_API_URL
+  const [open, setOpen] = useState(false);
+  const connectionString = process.env.REACT_APP_API_URL;
 
   // Fetch layouts from the server
   useEffect(() => {
     async function fetchLayouts() {
       try {
-        const response = await axios.get(`${connectionString}/admin/allLayouts`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
+        const response = await axios.get(
+          `${connectionString}/admin/allLayouts`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
         setLayouts(response.data.Layout);
       } catch (error) {
         console.error(error);
@@ -32,7 +36,7 @@ const LayoutSelector = (props) => {
   // Initialize state with props.editLayouts if available
   useEffect(() => {
     if (props.editLayouts) {
-      setSelectedLayouts(props.editLayouts.map(layout => layout._id)); // Only store IDs
+      setSelectedLayouts(props.editLayouts.map((layout) => layout._id)); // Only store IDs
     }
   }, [props.editLayouts]);
 
@@ -42,12 +46,19 @@ const LayoutSelector = (props) => {
       target: { value },
     } = event;
     setSelectedLayouts(value); // Value should be an array of IDs
+
+    // Auto-close when all items are selected
+    if (value.length === layouts.length) {
+      setOpen(false); // <--- Close dropdown
+    }
   };
 
   // Notify parent component of selection changes
   useEffect(() => {
-    const selectedItems = layouts.filter(layout => selectedLayouts.includes(layout._id));
-    console.log(selectedItems)
+    const selectedItems = layouts.filter((layout) =>
+      selectedLayouts.includes(layout._id)
+    );
+    console.log(selectedItems);
     props.selectedArray(selectedItems);
   }, [selectedLayouts, layouts]);
 
@@ -58,18 +69,30 @@ const LayoutSelector = (props) => {
           multiple
           value={selectedLayouts}
           onChange={handleMultiple}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           sx={{
             borderBottom: "2px solid white",
             "&:before": { borderBottom: "none" },
             "&:after": { borderBottom: "none" },
             "&:hover:not(.Mui-disabled):before": { borderBottom: "none" },
             "&.Mui-focused:after": { borderBottom: "none" },
+            "& .MuiSelect-icon": {
+              color: "white", // <-- this makes the arrow icon white
+            },
           }}
           renderValue={(selectedIds) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {layouts.filter(layout => selectedIds.includes(layout._id)).map((selected) => (
-                <Chip key={selected._id} color="info" label={selected.name} />
-              ))}
+              {layouts
+                .filter((layout) => selectedIds.includes(layout._id))
+                .map((selected) => (
+                  <Chip
+                    key={selected._id}
+                    color="success"
+                    label={selected.name}
+                  />
+                ))}
             </Box>
           )}
         >
