@@ -24,6 +24,8 @@ import RoutesInfoDiv from "../../commonComponents/RoutesInfoDiv";
 import ShortsTableHeaders from "./shortsTableHeaders";
 import DeleteConfirm from "../../Confirmation/DeleteConfirm";
 import AddConfirm from "../../Confirmation/AddConfirm";
+import { useDispatch, useSelector } from "react-redux";
+import { movieSliceACtion } from "../../../store/movieSlice";
 
 const EditMovies = () => {
   const shortDeductionPointsRef = useRef(0);
@@ -69,6 +71,77 @@ const EditMovies = () => {
   const options = Array.from({ length: 51 }, (_, i) => i.toString()); // "0" to "50"
   const [value, setValue] = useState(""); // initial value as string
   const inputRef = useRef();
+
+  const [allMoviesdata, setAllMoviesdata] = useState([]);
+  const [shortsUploading, setShortsUploading] = useState(true);
+  useEffect(() => {
+    // navigate("/error/addMovies")
+    // try {
+    //   (async () => {
+    //     const res = await axios.get(`${connectionString}/admin/allMovies`, {
+    //       headers: {
+    //         Authorization: localStorage.getItem("token"),
+    //       },
+    //     });
+    //     // setAllMovies(res.data.allMovies);
+    //     if (res.data.allMovies) {
+    //       setAllMoviesdata(res.data.allMovies);
+    //     }
+    //   })();
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await axios.get(`${connectionString}/admin/allMovies`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+
+        // Update allMovies data from the API response
+        if (res.data.allMovies) {
+          setAllMoviesdata(res.data.allMovies);
+        }
+
+        // Check if the movie status is finished or not
+        const currentMovie = res.data.allMovies.find(
+          (i) => i._id === AllData._id
+        );
+
+        if (currentMovie?.status === "finished" || !currentMovie?.status) {
+          setShortsUploading(false);
+          console.log(shortsUploading);
+          console.log(currentMovie?.status);
+          clearInterval(interval); // Stop the interval when uploading is finished
+        } else {
+          setShortsUploading(true);
+          console.log(shortsUploading); // Keep the uploading state as true if it's not finished
+          console.log(currentMovie?.status); // Keep the uploading state as true if it's not finished
+        }
+      } catch (err) {
+        console.log("Error:", err);
+      }
+    }, 2000); // Call checkStatus every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on unmount or state change
+  }, [AllData._id]); // The effect will re-run whenever AllData._id changes
+
+  // console.log(allMoviesdata);
+  // console.log(shortsPreviewFromBackend?.length);
+
+  // console.log(
+  //   allMoviesdata.filter((i, index) => {
+  //     if (i._id === AllData._id) {
+  //       return allMoviesdata[index];
+  //     }
+  //   })
+  // );
+
+  // // console.log(allMoviesdata)
+  // console.log(AllData);
 
   useEffect(() => {
     if (shortDeductionPointsRef && inputRef.current) {
@@ -126,7 +199,8 @@ const EditMovies = () => {
     }
 
     fetchMovie();
-  }, [deleteVideoLoader, addVideoLoader]);
+    console.log(shortsUploading);
+  }, [deleteVideoLoader, addVideoLoader, shortsUploading]);
 
   const handletrailerTypeChange = (e) => {
     setTrailerType(e.target.value);
@@ -830,7 +904,7 @@ const EditMovies = () => {
                 >
                   <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-[#A880DF] rounded-full group-hover:w-56 group-hover:h-56"></span>
                   <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span class="relative font-bold">
+                  <span class="relative font-bold text-sm">
                     {selectedIds.length === shortsPreviewFromBackend.length
                       ? "Unselect All"
                       : "Select All"}
@@ -838,57 +912,64 @@ const EditMovies = () => {
                 </div>
               )}
 
-              <div
-                onClick={() => {
-                  selectedAction === "none"
-                    ? addAdsInShortHandler()
-                    : selectedActionPerform(selectedAction);
-                }}
-                class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-[#C1A6E6] hover:text-white bg-gray-800 rounded-lg group border border-[#C1A6E6]"
-              >
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-[#A880DF] rounded-full group-hover:w-56 group-hover:h-56"></span>
-                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                <span class="relative font-bold">
-                  {selectedAction !== "none" ? "Save" : "Add Ads"}
-                </span>
-              </div>
+              {!shortsUploading && (
+                <div
+                  onClick={() => {
+                    selectedAction === "none"
+                      ? addAdsInShortHandler()
+                      : selectedActionPerform(selectedAction);
+                  }}
+                  class="relative inline-flex items-center justify-center py-2 p-4 overflow-hidden font-mono font-medium tracking-tighter hover:cursor-pointer text-[#C1A6E6] hover:text-white bg-gray-800 rounded-lg group border border-[#C1A6E6]"
+                >
+                  <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-[#A880DF] rounded-full group-hover:w-56 group-hover:h-56"></span>
+                  <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                  <span class="relative font-bold text-sm">
+                    {selectedAction !== "none" ? "Save" : "Add Ads"}
+                  </span>
+                </div>
+              )}
 
-              <select
-                onChange={selectedActionHandler}
-                id="countries"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="none" selected={selectedAction === "none"}>
-                  Option
-                </option>
-                <option
-                  value="Change sequence"
-                  selected={selectedAction === "Change sequence"}
+              {!shortsUploading && (
+                <select
+                  onChange={selectedActionHandler}
+                  id="countries"
+                  className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  Change sequence
-                </option>
-                <option
-                  value="Delete Shorts"
-                  selected={selectedAction === "Delete Shorts"}
-                >
-                  Delete Shorts
-                </option>
-                <option value="Enable" selected={selectedAction === "Enable"}>
-                  Enable
-                </option>
-                <option value="Disable" selected={selectedAction === "Disable"}>
-                  Disable
-                </option>
-                <option
-                  value="Points Deduction"
-                  selected={selectedAction === "Points Deduction"}
-                >
-                  Points Deduction
-                </option>
-              </select>
+                  <option value="none" selected={selectedAction === "none"}>
+                    Option
+                  </option>
+                  <option
+                    value="Change sequence"
+                    selected={selectedAction === "Change sequence"}
+                  >
+                    Change sequence
+                  </option>
+                  <option
+                    value="Delete Shorts"
+                    selected={selectedAction === "Delete Shorts"}
+                  >
+                    Delete Shorts
+                  </option>
+                  <option value="Enable" selected={selectedAction === "Enable"}>
+                    Enable
+                  </option>
+                  <option
+                    value="Disable"
+                    selected={selectedAction === "Disable"}
+                  >
+                    Disable
+                  </option>
+                  <option
+                    value="Points Deduction"
+                    selected={selectedAction === "Points Deduction"}
+                  >
+                    Points Deduction
+                  </option>
+                </select>
+              )}
             </div>
 
-            {shortsPreviewFromBackend.length > 0 ? (
+            {shortsPreviewFromBackend.length > 0 && !shortsUploading ? (
               <div className="my-4 font-normal text-[.9rem]  overflow-x-auto">
                 <ShortsTableHeaders
                   shortsPreviewFromBackend={shortsPreviewFromBackend}
@@ -1083,6 +1164,13 @@ const EditMovies = () => {
                     })}
                 </ReactSortable>
               </div>
+            ) : shortsUploading ? (
+              <div className="flex items-center justify-center py-3 text-white gap-2">
+                <div className="w-5 h-5 rounded-full animate-spin border-2 border-t-transparent border-white"></div>
+                <div className="text-white font-semibold text-center">
+                  Checking available Shorts. Please wait...
+                </div>
+              </div>
             ) : (
               <div className="text-white text-center py-4 font-semibold">
                 No Shorts uploaded Yet!
@@ -1144,7 +1232,7 @@ const EditMovies = () => {
                 : "I will add videos later"}
             </span>
           </div>
-          {selectedAction === "none" && (
+          {selectedAction === "none" && !shortsUploading && (
             <div
               onClick={() => {
                 // addMoviesHandler();

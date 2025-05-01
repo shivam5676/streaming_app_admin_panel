@@ -199,7 +199,7 @@ const AddMovies = () => {
       if (err.response && err.response.data.msg)
         setMessage(err.response.data.msg);
     } finally {
-      setvideoFiles([]);
+      // setvideoFiles([]);
       // navigate("/allMovies");
     }
   };

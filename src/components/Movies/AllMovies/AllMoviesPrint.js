@@ -12,7 +12,7 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
               <p className="p-2">{index + 1}</p>
             </div>
             <div className="w-[90px] text-white font-semibold flex-shrink-0">
-              {current?.status == "finished" || !current?.status ? (
+              {/* {current?.status == "finished" || !current?.status ? (
                 <select
                   className="bg-[#3C445A] rounded-sm p-2"
                   onChange={(event) =>
@@ -35,7 +35,23 @@ const AllMoviesPrint = ({ allMovies, handleSelectChange }) => {
                     Uploading
                   </p>
                 </div>
-              )}
+              )} */}
+              <select
+                className="bg-[#3C445A] rounded-sm p-2"
+                onChange={(event) =>
+                  handleSelectChange(current._id, event, current.name)
+                }
+              >
+                <option
+                  value=""
+                  // disabled
+                  className="border-b-2 border-gray-400"
+                >
+                  option
+                </option>
+                <option value="EDIT">EDIT</option>
+                <option value="DELETE">DELETE</option>
+              </select>
             </div>
             <div className="w-[100px] flex-shrink-0">
               <img
